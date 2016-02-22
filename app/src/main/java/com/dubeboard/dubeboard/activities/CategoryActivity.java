@@ -4,19 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dubeboard.dubeboard.ManageDB;
 import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsCategory;
 import com.dubeboard.dubeboard.item.adapter.CategoryItem;
@@ -30,8 +29,9 @@ public class CategoryActivity extends AppCompatActivity {
 
     clsCategory CategoryObj = new clsCategory(Context);
     ArrayList<clsCategory> CategoryList = new ArrayList<clsCategory>();
-    CategoryItem imageAdapter;
+    CategoryItem adapter;
     GridView dataList;
+    String[] menuItems = new String[]{"Editar", "Eliminar"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +74,40 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
-        imageAdapter = new CategoryItem(this, R.layout.list_item, CategoryList);
-        dataList.setAdapter(imageAdapter);
+        adapter = new CategoryItem(this, R.layout.list_item, CategoryList);
+        dataList.setAdapter(adapter);
+        registerForContextMenu(dataList);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        if (v.getId() == R.id.gvCategorias) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+            menu.setHeaderTitle("Opciones");
+
+            for (int i = 0; i<menuItems.length; i++) {
+                menu.add(Menu.NONE, i, i, menuItems[i]);
+            }
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item)
+    {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        switch (item.getItemId()){
+            case 0:
+                break;
+            case 1:
+                clsCategory RowtoDelete = adapter.getItem(info.position);
+                CategoryObj.Delete(RowtoDelete.get_id());
+                adapter.remove(RowtoDelete);
+                adapter.notifyDataSetChanged();
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 
     @Override
