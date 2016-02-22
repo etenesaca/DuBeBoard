@@ -41,7 +41,9 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:freezesText="false"
-                android:layout_weight="0.25" />
+                android:layout_weight="0.25"
+                android:capitalize="words"
+                android:clickable="false" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -57,7 +59,7 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="257dp"
+                android:layout_height="240dp"
                 android:id="@+id/ivImage"
                 android:src="@drawable/img_def"
                 android:layout_weight="0.25" />

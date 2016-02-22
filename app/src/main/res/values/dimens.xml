@@ -6,4 +6,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <!-- MArgenes del Gridview de una actividad a pantallacompleya. -->
+    <dimen name="gv_view_full_screen">10dp</dimen>
 </resources>

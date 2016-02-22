@@ -32,7 +32,7 @@
 
         <activity android:name=".activities.AddCategoryActivity" />
         <activity
-            android:name=".activities.AddImageActivty"
+            android:name=".activities.AddImageActivity"
             android:label="@string/title_activity_add_image_activty"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

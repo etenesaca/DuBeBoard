@@ -3,6 +3,7 @@ package com.dubeboard.dubeboard.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,11 +17,14 @@ import android.widget.Toast;
 
 import com.dubeboard.dubeboard.ManageDB;
 import com.dubeboard.dubeboard.R;
-import com.dubeboard.dubeboard.clsCategory;
 import com.dubeboard.dubeboard.clsImage;
 
-public class AddImageActivty extends AppCompatActivity {
+import java.util.HashMap;
+import java.util.Locale;
+
+public class AddImageActivity extends AppCompatActivity {
     Context Context = (Context) this;
+    TextToSpeech tts;
 
     clsImage ImageObj = new clsImage(Context);
     EditText txtName;
@@ -28,16 +32,27 @@ public class AddImageActivty extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_image_activty);
+        setContentView(R.layout.activity_add_image_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        txtName = (EditText) findViewById(R.id.txtName);
+        tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    tts.setLanguage(Locale.UK);
+                }
+            }
+        });
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.btnSpeech);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                String toSpeak = txtName.getText().toString();
+                //Toast.makeText(getApplicationContext(), toSpeak,Toast.LENGTH_SHORT).show();
+                tts.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
             }
         });
 
@@ -69,7 +84,7 @@ public class AddImageActivty extends AppCompatActivity {
                 }else{
                     // Crear una categoria
                     ImageObj.AddRecord(NewImage);
-                    Intent CategoryActivity = new Intent(AddImageActivty.this, com.dubeboard.dubeboard.activities.HomeActivity.class);
+                    Intent CategoryActivity = new Intent(AddImageActivity.this, com.dubeboard.dubeboard.activities.HomeActivity.class);
                     startActivity(CategoryActivity);
                     return true;
                 }

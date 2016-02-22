@@ -86,8 +86,7 @@ public class HomeActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add_item) {
-            Intent ImageAcivity = new Intent(HomeActivity.this, com.dubeboard.dubeboard.activities.AddImageActivty.class);
-            startActivity(ImageAcivity);
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -102,7 +101,10 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.nav_man_category) {
             Intent CategoryActivity = new Intent(HomeActivity.this, com.dubeboard.dubeboard.activities.CategoryActivity.class);
             startActivity(CategoryActivity);
-        }else if (id == R.id.nav_Exit) {
+        } else if (id == R.id.nav_man_image) {
+            Intent ImageAcivity = new Intent(HomeActivity.this, ImageActivity.class);
+            startActivity(ImageAcivity);
+        } else if (id == R.id.nav_Exit) {
             finish();
         }
 

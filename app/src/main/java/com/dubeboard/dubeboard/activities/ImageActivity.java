@@ -1,15 +1,36 @@
 package com.dubeboard.dubeboard.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.dubeboard.dubeboard.R;
+import com.dubeboard.dubeboard.clsImage;
+import com.dubeboard.dubeboard.item.adapter.ImageItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ImageActivity extends AppCompatActivity {
+    android.content.Context Context = (Context) this;
+
+    clsImage ImageObj = new clsImage(Context);
+    ArrayList<clsImage> ImageList = new ArrayList<clsImage>();
+    ImageItem adapter;
+    ListView dataList;
+    String[] menuItems = new String[]{"Editar", "Eliminar"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,10 +43,93 @@ public class ImageActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent ImageActivity = new Intent(com.dubeboard.dubeboard.activities.
+                        ImageActivity.this, AddImageActivity.class);
+                startActivity(ImageActivity);
             }
         });
+
+        // Rescatamos el Action Bar y activamos el boton HomeActivity
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        dataList = (ListView) findViewById(R.id.lvImage);
+
+        // Obtener todas las imagenes de la base de datos
+        final List<clsImage> images = ImageObj.getAll();
+        for(clsImage im : images){
+            ImageList.add(im);
+        }
+
+        dataList.setRecyclerListener(new AbsListView.RecyclerListener() {
+            @Override
+            public void onMovedToScrapHeap(View view) {
+                final ImageView imgIcon = (ImageView) view.findViewById(R.id.imgIcon);
+                final TextView txtTitle = (TextView) view.findViewById(R.id.txtTitle);
+
+                txtTitle.setText(null);
+                imgIcon.setImageBitmap(null);
+                imgIcon.setImageDrawable(Context.getResources().getDrawable(R.drawable.image_def_128));
+            }
+        });
+
+        adapter = new ImageItem(this, R.layout.list_item_image, ImageList);
+        dataList.setAdapter(adapter);
+        registerForContextMenu(dataList);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        if (v.getId() == R.id.lvImage) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+            menu.setHeaderTitle("Opciones");
+
+            for (int i = 0; i<menuItems.length; i++) {
+                menu.add(Menu.NONE, i, i, menuItems[i]);
+            }
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item)
+    {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        switch (item.getItemId()){
+            case 0:
+                break;
+            case 1:
+                clsImage RowtoDelete = adapter.getItem(info.position);
+                ImageObj.Delete(RowtoDelete.get_id());
+                adapter.remove(RowtoDelete);
+                adapter.notifyDataSetChanged();
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //MenuInflater inflater = getMenuInflater();
+        //inflater.inflate(R.menu.category, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // app icon in action bar clicked; go home
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                return true;
+            case R.id.btnAdd:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }
