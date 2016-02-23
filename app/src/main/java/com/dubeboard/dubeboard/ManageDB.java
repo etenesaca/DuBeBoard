@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ManageDB extends SQLiteOpenHelper {
     // Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     // Database Name
     private static final String DATABASE_NAME = "dubeboard_db";
 
@@ -53,10 +53,11 @@ public class ManageDB extends SQLiteOpenHelper {
         // Crear la tabla Imagenes
         String CREATE_IMAGE_TABLE = "CREATE TABLE " + TABLE_IMAGE + "("
                 + ColumnsImage.IMAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + ColumnsImage.IMAGE_NAME + " VARCHAR(256) UNIQUE,"
+                + ColumnsImage.IMAGE_NAME + " VARCHAR(256),"
                 + ColumnsImage.IMAGE_CATEGORY_ID + " INTEGER,"
                 + ColumnsImage.IMAGE_IMAGE + " BLOB,"
                 + ColumnsImage.IMAGE_SOUND + " BLOB,"
+                + "UNIQUE(" + ColumnsImage.IMAGE_NAME + ", " + ColumnsImage.IMAGE_CATEGORY_ID + " ) ON CONFLICT REPLACE, "
                 + "FOREIGN KEY(" + ColumnsImage.IMAGE_CATEGORY_ID + ") REFERENCES " + TABLE_CATEGORIES + "(" + ColumnsCategory.CATEGORY_ID + ")"
                 + ")";
         db.execSQL(CREATE_IMAGE_TABLE);

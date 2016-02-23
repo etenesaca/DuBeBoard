@@ -99,7 +99,9 @@ public class clsCategory {
                 + " FROM " + ManageDB.TABLE_CATEGORIES;
 
         if (Field != null && value != null){
-            value = "'" + value + "'";
+            if (value instanceof String){
+                value = "'" + value + "'";
+            }
             selectQuery = selectQuery + " WHERE " + Field + " = " + value;
         }
 

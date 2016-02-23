@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +60,10 @@ public class clsImage {
         return _image;
     }
 
+    public void set_image(Bitmap bmp) {
+        this.set_image(gl.BitmaptoByteArray(bmp));
+    }
+
     public void set_image(byte[] _image) {
         this._image = _image;
     }
@@ -76,7 +81,9 @@ public class clsImage {
         // Armar el Insert
         ContentValues values = new ContentValues();
         values.put(ManageDB.ColumnsImage.IMAGE_NAME, NewRecord.get_name()); // Nombre
+        values.put(ManageDB.ColumnsImage.IMAGE_CATEGORY_ID, NewRecord.get_category().get_id()); // Categoria
         values.put(ManageDB.ColumnsImage.IMAGE_IMAGE, NewRecord.get_image()); // Imagen
+        values.put(ManageDB.ColumnsImage.IMAGE_SOUND, NewRecord.get_sound()); // Sonido
 
         // Insertar registro
         db.insert(ManageDB.TABLE_IMAGE, null, values);

@@ -246,29 +246,28 @@ public class AddImageActivity extends AppCompatActivity {
                 return true;
             case R.id.action_save:
                 // Obtener la categoria sleccionada
-                int Category_ID = MapCategory.get(spCategory.getSelectedItem().toString());
+                String CategorySelected = spCategory.getSelectedItem().toString();
 
                 clsImage NewImage = new clsImage();
                 NewImage.set_name(txtName.getText().toString());
-
-                ivImage.buildDrawingCache();
-                Bitmap bm = ivImage.getDrawingCache();
-
-                bm = gl.scaleDown(bm, 128, true);
-
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bm.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte[] byteArray = stream.toByteArray();
-                NewImage.set_image(byteArray);
 
                 // Verificar si la Imagen no ya no esta creda
                 if (NewImage.get_name().equals("")) {
                     Snackbar.make(findViewById(android.R.id.content), "Primero Ingrese un nombre", Snackbar.LENGTH_LONG)
                             .show();
+                } else if (!CategorySelected.equals("")) {
+                    int Category_ID = MapCategory.get(CategorySelected);
+                    NewImage.set_category(new clsCategory(Context, Category_ID));
                 } else if (ImageObj.getRecords(ManageDB.ColumnsCategory.CATEGORY_NAME, NewImage.get_name()).size() > 0){
                     Snackbar.make(findViewById(android.R.id.content), "Ya hay una Imagen con este nombre", Snackbar.LENGTH_LONG)
                             .show();
                 } else{
+                    // Redimensionar imagen
+                    ivImage.buildDrawingCache();
+                    Bitmap bm = ivImage.getDrawingCache();
+                    bm = gl.scaleDown(bm, 128, true);
+                    NewImage.set_image(bm);
+
                     // Crear una categoria
                     ImageObj.AddRecord(NewImage);
                     Intent CategoryActivity = new Intent(AddImageActivity.this, com.dubeboard.dubeboard.activities.CategoryActivity.class);
