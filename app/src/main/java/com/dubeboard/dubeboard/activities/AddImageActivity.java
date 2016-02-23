@@ -41,7 +41,8 @@ public class AddImageActivity extends AppCompatActivity {
             @Override
             public void onInit(int status) {
                 if(status != TextToSpeech.ERROR) {
-                    tts.setLanguage(Locale.UK);
+                    //tts.setLanguage(Locale.UK);
+                    tts.setLanguage(new Locale("spa", "ES"));
                 }
             }
         });
