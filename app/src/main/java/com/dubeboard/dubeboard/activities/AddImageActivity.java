@@ -1,8 +1,18 @@
 package com.dubeboard.dubeboard.activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,22 +22,54 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dubeboard.dubeboard.ManageDB;
 import com.dubeboard.dubeboard.R;
+import com.dubeboard.dubeboard.clsCategory;
 import com.dubeboard.dubeboard.clsImage;
+import com.dubeboard.dubeboard.clsImage;
+import com.dubeboard.dubeboard.gl;
+import com.dubeboard.dubeboard.item.adapter.CategoryItem;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class AddImageActivity extends AppCompatActivity {
     Context Context = (Context) this;
+
+    String imgDecodableString;
     TextToSpeech tts;
 
+    private String APP_DIRECTORY = "myPictureApp/";
+    private String MEDIA_DIRECTORY = APP_DIRECTORY + "media";
+    private String TEMPORAL_PICTURE_NAME = "temporal.jpg";
+
+    private final int PHOTO_CODE = 100;
+    private final int SELECT_PICTURE = 200;
+
     clsImage ImageObj = new clsImage(Context);
+    clsCategory CategoryObj = new clsCategory(Context);
     EditText txtName;
+    Spinner spCategory;
+    ImageView ivImage;
+
+    ArrayList<String> CategoryList = new ArrayList<String>();
+    HashMap<String,Integer> MapCategory = new HashMap<String,Integer>();
+    CategoryItem adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +78,54 @@ public class AddImageActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Rescatamos el Action Bar y activamos el boton HomeActivity
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        // Poner Titulo en la barra de direcciones
+        getSupportActionBar().setTitle("Agregar Categoría");
+
         txtName = (EditText) findViewById(R.id.txtName);
+        ivImage = (ImageView) findViewById(R.id.ivImage);
+        spCategory = (Spinner) findViewById(R.id.spCategory);
+
+        ivImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final CharSequence[] options = {"Tomar foto", "Galeria"};
+                final AlertDialog.Builder builder = new AlertDialog.Builder(AddImageActivity.this);
+                builder.setTitle("Elige una opcion");
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int seleccion) {
+                        if (options[seleccion] == "Tomar foto") {
+                            openCamera();
+                        } else if (options[seleccion] == "Galeria") {
+                            startActivityForResult(
+                                    Intent.createChooser(new Intent(Intent.ACTION_GET_CONTENT).setType("image/*"), "Seleccione la imagen"), SELECT_PICTURE
+                            );
+
+                            /*
+                            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                            intent.setType("image/*");
+                            intent.putExtra("crop", "true");
+                            intent.putExtra("aspectX", 0);
+                            intent.putExtra("aspectY", 0);
+                            intent.putExtra("outputX", 200);
+                            intent.putExtra("outputY", 150);
+                            intent.putExtra("return-data", true);
+                            startActivityForResult(
+                                    intent.createChooser(intent, "Seleccione la imagen"), SELECT_PICTURE
+                            );
+                            */
+                        } else if (options[seleccion] == "Cancelar") {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                builder.show();
+            }
+        });
         tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -57,14 +146,96 @@ public class AddImageActivity extends AppCompatActivity {
             }
         });
 
-        // Rescatamos el Action Bar y activamos el boton HomeActivity
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        // Obtener todas las categorias de la base de datos
+        final List<clsCategory> Categories = CategoryObj.getAll();
+        for(clsCategory im : Categories){
+            CategoryList.add(im.get_name());
+            MapCategory.put(im.get_name(), im.get_id());
+        }
 
-        // Poner Titulo en la barra de direcciones
-        getSupportActionBar().setTitle("Nueva Imagen");
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(Context,android.R.layout.simple_spinner_item, CategoryList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCategory.setAdapter(adapter);
+    }
 
-        //txtName = (EditText) findViewById(R.id.txtName);
+    private void openCamera() {
+        File file = new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY);
+        file.mkdirs();
+
+        String path = Environment.getExternalStorageDirectory() + File.separator
+                + MEDIA_DIRECTORY + File.separator + TEMPORAL_PICTURE_NAME;
+
+        File newFile = new File(path);
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newFile));
+        startActivityForResult(intent, PHOTO_CODE);
+    }
+
+    /**
+     * helper to retrieve the path of an image URI
+     */
+    public String getPath(Uri uri) {
+        if( uri == null ) {
+            return null;
+        }
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        if( cursor != null ){
+            int column_index = cursor
+                    .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        }
+        return uri.getPath();
+    }
+
+    private String selectedImagePath;
+    private Bitmap NewBitmap;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode){
+                case PHOTO_CODE:
+                    if(resultCode == RESULT_OK){
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+                            selectedImagePath =  Environment.getExternalStorageDirectory() + File.separator
+                                    + MEDIA_DIRECTORY + File.separator + TEMPORAL_PICTURE_NAME;
+                            Bitmap bitmap = BitmapFactory.decodeFile(selectedImagePath);
+                            ivImage.setImageBitmap(bitmap);
+                        } else {
+
+                        }
+                    }
+                    break;
+                case SELECT_PICTURE:
+                    Uri selectedImageUri = data.getData();
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+                        selectedImagePath = getPath(selectedImageUri);
+                        Bitmap bitmap = BitmapFactory.decodeFile(selectedImagePath);
+                        /*
+                        Bitmap bitmap = data.getExtras().getParcelable("data");
+                        // convert bitmap to byte
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                        */
+                        ivImage.setImageBitmap(bitmap);
+                    } else {
+                        ParcelFileDescriptor parcelFileDescriptor;
+                        try {
+                            parcelFileDescriptor = getContentResolver().openFileDescriptor(selectedImageUri, "r");
+                            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+                            Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+                            parcelFileDescriptor.close();
+                            ivImage.setImageBitmap(image);
+                        }
+                        catch (FileNotFoundException e) { e.printStackTrace(); }
+                        catch (IOException e) { e.printStackTrace(); }
+                    }
+                    break;
+            }
+        }
     }
 
     @Override
@@ -74,18 +245,33 @@ public class AddImageActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_save:
+                // Obtener la categoria sleccionada
+                int Category_ID = MapCategory.get(spCategory.getSelectedItem().toString());
+
                 clsImage NewImage = new clsImage();
                 NewImage.set_name(txtName.getText().toString());
 
-                // Verificar si la categoria no ya no esta creda
-                if (ImageObj.getRecords(ManageDB.ColumnsCategory.CATEGORY_NAME, NewImage.get_name()).size() > 0){
-                    Toast.makeText(Context, "Ya hay una Imagen con este nombre", Toast.LENGTH_LONG);
-                    //Snackbar.make(AddCategoryActivity.this, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    //        .setAction("Action", null).show();
-                }else{
+                ivImage.buildDrawingCache();
+                Bitmap bm = ivImage.getDrawingCache();
+
+                bm = gl.scaleDown(bm, 128, true);
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bm.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+                NewImage.set_image(byteArray);
+
+                // Verificar si la Imagen no ya no esta creda
+                if (NewImage.get_name().equals("")) {
+                    Snackbar.make(findViewById(android.R.id.content), "Primero Ingrese un nombre", Snackbar.LENGTH_LONG)
+                            .show();
+                } else if (ImageObj.getRecords(ManageDB.ColumnsCategory.CATEGORY_NAME, NewImage.get_name()).size() > 0){
+                    Snackbar.make(findViewById(android.R.id.content), "Ya hay una Imagen con este nombre", Snackbar.LENGTH_LONG)
+                            .show();
+                } else{
                     // Crear una categoria
                     ImageObj.AddRecord(NewImage);
-                    Intent CategoryActivity = new Intent(AddImageActivity.this, com.dubeboard.dubeboard.activities.HomeActivity.class);
+                    Intent CategoryActivity = new Intent(AddImageActivity.this, com.dubeboard.dubeboard.activities.CategoryActivity.class);
                     startActivity(CategoryActivity);
                     return true;
                 }
@@ -97,7 +283,7 @@ public class AddImageActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.add_imagen, menu);
+        inflater.inflate(R.menu.add_category, menu);
         return true;
     }
 }
