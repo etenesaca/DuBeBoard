@@ -22,23 +22,18 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dubeboard.dubeboard.ManageDB;
 import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsCategory;
 import com.dubeboard.dubeboard.clsImage;
-import com.dubeboard.dubeboard.clsImage;
 import com.dubeboard.dubeboard.gl;
-import com.dubeboard.dubeboard.item.adapter.CategoryItem;
+import com.dubeboard.dubeboard.item.adapter.CaregoryItem_1;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
@@ -69,7 +64,7 @@ public class AddImageActivity extends AppCompatActivity {
 
     ArrayList<String> CategoryList = new ArrayList<String>();
     HashMap<String,Integer> MapCategory = new HashMap<String,Integer>();
-    CategoryItem adapter;
+    CaregoryItem_1 adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +80,7 @@ public class AddImageActivity extends AppCompatActivity {
         // Poner Titulo en la barra de direcciones
         getSupportActionBar().setTitle("Agregar Categoría");
 
-        txtName = (EditText) findViewById(R.id.txtName);
+        txtName = (EditText) findViewById(R.id.tvName);
         ivImage = (ImageView) findViewById(R.id.ivImage);
         spCategory = (Spinner) findViewById(R.id.spCategory);
 
@@ -246,7 +241,7 @@ public class AddImageActivity extends AppCompatActivity {
                 return true;
             case R.id.action_save:
                 // Obtener la categoria sleccionada
-                String CategorySelected = spCategory.getSelectedItem().toString();
+                String CategorySelected = spCategory.getSelectedItem() + "";
 
                 clsImage NewImage = new clsImage();
                 NewImage.set_name(txtName.getText().toString());
@@ -255,24 +250,34 @@ public class AddImageActivity extends AppCompatActivity {
                 if (NewImage.get_name().equals("")) {
                     Snackbar.make(findViewById(android.R.id.content), "Primero Ingrese un nombre", Snackbar.LENGTH_LONG)
                             .show();
-                } else if (!CategorySelected.equals("")) {
+                } else if (CategorySelected.equals("null")) {
+                    Snackbar.make(findViewById(android.R.id.content), "Primero seleccione la Categoria", Snackbar.LENGTH_LONG)
+                            .show();
+                } else {
+                    // Obtener la categoria
                     int Category_ID = MapCategory.get(CategorySelected);
                     NewImage.set_category(new clsCategory(Context, Category_ID));
-                } else if (ImageObj.getRecords(ManageDB.ColumnsCategory.CATEGORY_NAME, NewImage.get_name()).size() > 0){
-                    Snackbar.make(findViewById(android.R.id.content), "Ya hay una Imagen con este nombre", Snackbar.LENGTH_LONG)
-                            .show();
-                } else{
-                    // Redimensionar imagen
-                    ivImage.buildDrawingCache();
-                    Bitmap bm = ivImage.getDrawingCache();
-                    bm = gl.scaleDown(bm, 128, true);
-                    NewImage.set_image(bm);
 
-                    // Crear una categoria
-                    ImageObj.AddRecord(NewImage);
-                    Intent CategoryActivity = new Intent(AddImageActivity.this, com.dubeboard.dubeboard.activities.CategoryActivity.class);
-                    startActivity(CategoryActivity);
-                    return true;
+                    // Verificar que no hay un registro con el mismo nombre y la misma categoria
+                    List<Object[]> args = new ArrayList<Object[]>();
+                    args.add(new Object[] {ManageDB.ColumnsImage.IMAGE_NAME, "=", NewImage.get_name()});
+                    args.add(new Object[]{ManageDB.ColumnsImage.IMAGE_CATEGORY_ID, "=", NewImage.get_category().get_id()});
+                    if (ImageObj.getRecords(args).size() > 0){
+                        Snackbar.make(findViewById(android.R.id.content), "Ya hay una Imagen con este nombre para esta Categoria", Snackbar.LENGTH_LONG)
+                                .show();
+                    }else{
+                        // Redimensionar imagen
+                        ivImage.buildDrawingCache();
+                        Bitmap bm = ivImage.getDrawingCache();
+                        bm = gl.scaleDown(bm, 300, true);
+                        NewImage.set_image(bm);
+
+                        // Crear una Imagen
+                        ImageObj.AddRecord(NewImage);
+                        Intent CategoryActivity = new Intent(AddImageActivity.this, com.dubeboard.dubeboard.activities.ImageActivity.class);
+                        startActivity(CategoryActivity);
+                        return true;
+                    }
                 }
             default:
                 return super.onOptionsItemSelected(item);

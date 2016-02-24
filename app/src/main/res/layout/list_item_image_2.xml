@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="200dp"
+    android:padding="5dp" >
+
+    <ImageView
+        android:id="@+id/ivImage"
+        android:layout_width="match_parent"
+        android:layout_height="185dp"
+        android:scaleType="center"
+        android:src="@drawable/img_def_48x48" />
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:maxLines="1"
+        android:padding="12dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textColor="@android:color/white"
+        android:background="@color/background_footer"
+        android:layout_gravity="bottom"
+        android:text="Título" />
+
+    <TextView
+        android:id="@+id/tvCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:maxLines="1"
+        android:padding="12dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textColor="@android:color/white"
+        android:background="@color/background_footer"
+        android:layout_gravity="center_horizontal|top"
+        android:text="Título" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnSpeech"
+        android:layout_gravity="right|center_vertical"
+        android:src="@drawable/ic_surround_sound_black_24dp" />
+
+</FrameLayout>

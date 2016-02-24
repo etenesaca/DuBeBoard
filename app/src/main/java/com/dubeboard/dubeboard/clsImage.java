@@ -101,14 +101,19 @@ public class clsImage {
 
     // Obtener todas las categorias
     public List<clsImage> getAll() {
-        return getRecords(null, null);
+        return getRecords(new ArrayList<Object[]>());
     }
-
-    public List<clsImage> getRecords(int Image_ID) {
-        return getRecords(ManageDB.ColumnsImage.IMAGE_ID, Image_ID);
+    public List<clsImage> getRecords(int Category_ID) {
+        List<Object[]> args = new ArrayList<Object[]>();
+        args.add(new Object[] {ManageDB.ColumnsCategory.CATEGORY_ID, "=", Category_ID});
+        return getRecords(args);
     }
-
-    public List<clsImage> getRecords(String Field, Object value) {
+    public List<clsImage> getRecords(Object[] arg) {
+        List<Object[]> args = new ArrayList<Object[]>();
+        args.add(new Object[]{arg[0], arg[1], arg[2]});
+        return getRecords(args);
+    }
+    public List<clsImage> getRecords(List<Object[]> args) {
         List<clsImage> RecordList = new ArrayList<clsImage>();
         SQLiteDatabase db = new ManageDB(Context).getWritableDatabase();
         // Select All Query
@@ -120,12 +125,25 @@ public class clsImage {
                 + ManageDB.ColumnsImage.IMAGE_SOUND
                 + " FROM " + ManageDB.TABLE_IMAGE;
 
-        if (Field != null && value != null){
-            value = "'" + value + "'";
-            selectQuery = selectQuery + " WHERE " + Field + " = " + value;
+        String WhereQuery = "";
+        String _and = " and ";
+        if (args.size() > 0)
+            WhereQuery = " WHERE ";
+        for (Object[] arg: args) {
+            String field = arg[0].toString();
+            String operator = arg[1].toString();
+            Object value = arg[2];
+            if (field != null && value != null){
+                if (value instanceof String){
+                    value = "'" + value + "'";
+                }
+                WhereQuery = WhereQuery + field + " " + operator + " " + value + _and;
+            }
         }
-
-        selectQuery = selectQuery +  " ORDER BY " + ManageDB.ColumnsImage.IMAGE_NAME;
+        if (WhereQuery.length() > _and.length() && WhereQuery.substring(WhereQuery.length() - _and.length(), WhereQuery.length()).equals(_and)){
+            WhereQuery = WhereQuery.substring(0, WhereQuery.length() - _and.length());
+        }
+        selectQuery = selectQuery + WhereQuery +  " ORDER BY " + ManageDB.ColumnsImage.IMAGE_CATEGORY_ID + ","  + ManageDB.ColumnsImage.IMAGE_NAME;
 
         Cursor cursor = db.rawQuery(selectQuery, null);
         // looping through all rows and adding to list
@@ -165,11 +183,40 @@ public class clsImage {
 
     // Count Records
     public int CountRecords() {
+        return CountRecords(new ArrayList<Object[]>());
+    }
+    public int CountRecords(Object[] arg) {
+        List<Object[]> args = new ArrayList<Object[]>();
+        args.add(new Object[]{arg[0], arg[1], arg[2]});
+        return CountRecords(args);
+    }
+    public int CountRecords(List<Object[]> args) {
         SQLiteDatabase db = new ManageDB(Context).getWritableDatabase();
 
-        String countQuery = "SELECT " + ManageDB.ColumnsImage.IMAGE_ID + " FROM " + ManageDB.TABLE_IMAGE;
-        Cursor cursor = db.rawQuery(countQuery, null);
-        cursor.close();
-        return cursor.getCount();
+        String selectQuery = "SELECT " + ManageDB.ColumnsImage.IMAGE_ID + " FROM " + ManageDB.TABLE_IMAGE;
+        String WhereQuery = "";
+        String _and = " and ";
+        if (args.size() > 0)
+            WhereQuery = " WHERE ";
+        for (Object[] arg: args) {
+            String field = arg[0].toString();
+            String operator = arg[1].toString();
+            Object value = arg[2];
+            if (field != null && value != null){
+                if (value instanceof String){
+                    value = "'" + value + "'";
+                }
+                WhereQuery = WhereQuery + field + " " + operator + " " + value + _and;
+            }
+        }
+        if (WhereQuery.length() > _and.length() && WhereQuery.substring(WhereQuery.length() - _and.length(), WhereQuery.length()).equals(_and)){
+            WhereQuery = WhereQuery.substring(0, WhereQuery.length() - _and.length());
+        }
+        selectQuery = selectQuery + WhereQuery;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        int result = cursor.getCount();
+        db.close();
+        return result;
     }
 }

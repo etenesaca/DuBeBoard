@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ManageDB extends SQLiteOpenHelper {
     // Database Version
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 6;
     // Database Name
     private static final String DATABASE_NAME = "dubeboard_db";
 
@@ -45,20 +45,20 @@ public class ManageDB extends SQLiteOpenHelper {
         // Crear la tabla Categorias
         String CREATE_CATEGORY_TABLE = "CREATE TABLE " + TABLE_CATEGORIES + "("
                 + ColumnsCategory.CATEGORY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + ColumnsCategory.CATEGORY_NAME + " VARCHAR(256) UNIQUE,"
+                + ColumnsCategory.CATEGORY_NAME + " VARCHAR(256) UNIQUE NOT NULL,"
                 + ColumnsCategory.CATEGORY_IMAGE + " BLOB"
                 + ")";
         db.execSQL(CREATE_CATEGORY_TABLE);
 
         // Crear la tabla Imagenes
         String CREATE_IMAGE_TABLE = "CREATE TABLE " + TABLE_IMAGE + "("
-                + ColumnsImage.IMAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + ColumnsImage.IMAGE_NAME + " VARCHAR(256),"
-                + ColumnsImage.IMAGE_CATEGORY_ID + " INTEGER,"
+                + ColumnsImage.IMAGE_ID + " INTEGER PRIMARY KEY  AUTOINCREMENT,"
+                + ColumnsImage.IMAGE_NAME + " VARCHAR(256) NOT NULL,"
+                + ColumnsImage.IMAGE_CATEGORY_ID + " INTEGER NOT NULL,"
                 + ColumnsImage.IMAGE_IMAGE + " BLOB,"
                 + ColumnsImage.IMAGE_SOUND + " BLOB,"
                 + "UNIQUE(" + ColumnsImage.IMAGE_NAME + ", " + ColumnsImage.IMAGE_CATEGORY_ID + " ) ON CONFLICT REPLACE, "
-                + "FOREIGN KEY(" + ColumnsImage.IMAGE_CATEGORY_ID + ") REFERENCES " + TABLE_CATEGORIES + "(" + ColumnsCategory.CATEGORY_ID + ")"
+                + "FOREIGN KEY(" + ColumnsImage.IMAGE_CATEGORY_ID + ") REFERENCES " + TABLE_CATEGORIES + "(" + ColumnsCategory.CATEGORY_ID + ") ON DELETE RESTRICT"
                 + ")";
         db.execSQL(CREATE_IMAGE_TABLE);
     }

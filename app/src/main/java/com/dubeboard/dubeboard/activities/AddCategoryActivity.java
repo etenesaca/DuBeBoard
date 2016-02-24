@@ -1,6 +1,5 @@
 package com.dubeboard.dubeboard.activities;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,12 +7,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -24,20 +21,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.dubeboard.dubeboard.ManageDB;
 import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsCategory;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.concurrent.Executors;
+
 import com.dubeboard.dubeboard.*;
 
 
@@ -69,7 +62,7 @@ public class AddCategoryActivity extends AppCompatActivity {
         // Poner Titulo en la barra de direcciones
         getSupportActionBar().setTitle("Agregar Categoría");
 
-        txtName = (EditText) findViewById(R.id.txtName);
+        txtName = (EditText) findViewById(R.id.tvName);
         ivImage = (ImageView) findViewById(R.id.ivImage);
         ivImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,24 +193,20 @@ public class AddCategoryActivity extends AppCompatActivity {
                 clsCategory NewCategory = new clsCategory();
                 NewCategory.set_name(txtName.getText().toString());
 
-                ivImage.buildDrawingCache();
-                Bitmap bm = ivImage.getDrawingCache();
-
-                bm = gl.scaleDown(bm, 128, true);
-
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bm.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte[] byteArray = stream.toByteArray();
-                NewCategory.set_image(byteArray);
-
                 // Verificar si la categoria no ya no esta creda
                 if (NewCategory.get_name().equals("")) {
                     Snackbar.make(findViewById(android.R.id.content), "Primero Ingrese un nombre", Snackbar.LENGTH_LONG)
                             .show();
-                } else if (CategoryObj.getRecords(ManageDB.ColumnsCategory.CATEGORY_NAME, NewCategory.get_name()).size() > 0){
+                } else if (CategoryObj.getRecords(new Object[] {ManageDB.ColumnsCategory.CATEGORY_NAME, "=", NewCategory.get_name()}).size() > 0){
                     Snackbar.make(findViewById(android.R.id.content), "Ya hay una categoria con este nombre", Snackbar.LENGTH_LONG)
                             .show();
-                } else{
+                } else {
+                    // Redimensionar imagen
+                    ivImage.buildDrawingCache();
+                    Bitmap bm = ivImage.getDrawingCache();
+                    bm = gl.scaleDown(bm, 300, true);
+                    NewCategory.set_image(bm);
+
                     // Crear una categoria
                     CategoryObj.AddRecord(NewCategory);
                     Intent CategoryActivity = new Intent(AddCategoryActivity.this, com.dubeboard.dubeboard.activities.CategoryActivity.class);

@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,7 +30,7 @@ public class ImageActivity extends AppCompatActivity {
     clsImage ImageObj = new clsImage(Context);
     ArrayList<clsImage> ImageList = new ArrayList<clsImage>();
     ImageItem adapter;
-    ListView dataList;
+    GridView dataList;
     String[] menuItems = new String[]{"Editar", "Eliminar"};
 
     @Override
@@ -53,7 +54,7 @@ public class ImageActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        dataList = (ListView) findViewById(R.id.lvImage);
+        dataList = (GridView) findViewById(R.id.lvImage);
 
         // Obtener todas las imagenes de la base de datos
         final List<clsImage> images = ImageObj.getAll();
@@ -64,16 +65,18 @@ public class ImageActivity extends AppCompatActivity {
         dataList.setRecyclerListener(new AbsListView.RecyclerListener() {
             @Override
             public void onMovedToScrapHeap(View view) {
-                final ImageView imgIcon = (ImageView) view.findViewById(R.id.imgIcon);
-                final TextView txtTitle = (TextView) view.findViewById(R.id.txtTitle);
+                final ImageView ivImage = (ImageView) view.findViewById(R.id.ivImage);
+                final TextView tvName = (TextView) view.findViewById(R.id.tvName);
+                final TextView tvCategory = (TextView) view.findViewById(R.id.tvCategory);
 
-                txtTitle.setText(null);
-                imgIcon.setImageBitmap(null);
-                imgIcon.setImageDrawable(Context.getResources().getDrawable(R.drawable.image_def_128));
+                tvName.setText(null);
+                tvCategory.setText(null);
+                ivImage.setImageBitmap(null);
+                ivImage.setImageDrawable(Context.getResources().getDrawable(R.drawable.img_def_48x48));
             }
         });
 
-        adapter = new ImageItem(this, R.layout.list_item_image, ImageList);
+        adapter = new ImageItem(this, R.layout.list_item_image_1, ImageList);
         dataList.setAdapter(adapter);
         registerForContextMenu(dataList);
     }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.content.Context;
+import android.graphics.Bitmap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,10 @@ public class clsCategory {
         return _image;
     }
 
+    public void set_image(Bitmap bmp) {
+        this.set_image(gl.BitmaptoByteArray(bmp));
+    }
+
     public void set_image(byte[] _image) {
         this._image = _image;
     }
@@ -74,21 +79,27 @@ public class clsCategory {
     public clsCategory getById(int Category_ID) {
         clsCategory result = null;
         List<clsCategory> Categories = getRecords(Category_ID);
-        if (Categories.size() > 1)
+        if (Categories.size() > 0)
             result = Categories.get(0);
         return result;
     }
 
     // Obtener todas las categorias
     public List<clsCategory> getAll() {
-        return getRecords(null, null);
+        return getRecords(new ArrayList<Object[]>());
     }
 
     public List<clsCategory> getRecords(int Category_ID) {
-        return getRecords(ColumnsCategory.CATEGORY_ID, Category_ID);
+        List<Object[]> args = new ArrayList<Object[]>();
+        args.add(new Object[] {ColumnsCategory.CATEGORY_ID, "=", Category_ID});
+        return getRecords(args);
     }
-
-    public List<clsCategory> getRecords(String Field, Object value) {
+    public List<clsCategory> getRecords(Object[] arg) {
+        List<Object[]> args = new ArrayList<Object[]>();
+        args.add(new Object[] {arg[0], arg[1], arg[2]});
+        return getRecords(args);
+    }
+    public List<clsCategory> getRecords(List<Object[]> args) {
         List<clsCategory> RecordList = new ArrayList<clsCategory>();
         SQLiteDatabase db = new ManageDB(Context).getWritableDatabase();
         // Select All Query
@@ -98,14 +109,25 @@ public class clsCategory {
                 + ColumnsCategory.CATEGORY_IMAGE
                 + " FROM " + ManageDB.TABLE_CATEGORIES;
 
-        if (Field != null && value != null){
-            if (value instanceof String){
-                value = "'" + value + "'";
+        String WhereQuery = "";
+        String _and = " and ";
+        if (args.size() > 0)
+            WhereQuery = " WHERE ";
+        for (Object[] arg: args) {
+            String field = arg[0].toString();
+            String operator = arg[1].toString();
+            Object value = arg[2];
+            if (field != null && value != null){
+                if (value instanceof String){
+                    value = "'" + value + "'";
+                }
+                WhereQuery = WhereQuery + field + " " + operator + " " + value + _and;
             }
-            selectQuery = selectQuery + " WHERE " + Field + " = " + value;
         }
-
-        selectQuery = selectQuery +  " ORDER BY " + ColumnsImage.IMAGE_NAME;
+        if (WhereQuery.length() > _and.length() && WhereQuery.substring(WhereQuery.length() - _and.length(), WhereQuery.length()).equals(_and)){
+            WhereQuery = WhereQuery.substring(0, WhereQuery.length() - _and.length());
+        }
+        selectQuery = selectQuery + WhereQuery + " ORDER BY " + ColumnsCategory.CATEGORY_NAME;
 
         Cursor cursor = db.rawQuery(selectQuery, null);
         // looping through all rows and adding to list
@@ -143,11 +165,40 @@ public class clsCategory {
 
     // Count Records
     public int CountRecords() {
+        return CountRecords(new ArrayList<Object[]>());
+    }
+    public int CountRecords(Object[] arg) {
+        List<Object[]> args = new ArrayList<Object[]>();
+        args.add(new Object[]{arg[0], arg[1], arg[2]});
+        return CountRecords(args);
+    }
+    public int CountRecords(List<Object[]> args) {
         SQLiteDatabase db = new ManageDB(Context).getWritableDatabase();
 
-        String countQuery = "SELECT " + ColumnsCategory.CATEGORY_ID + " FROM " + ManageDB.TABLE_CATEGORIES;
-        Cursor cursor = db.rawQuery(countQuery, null);
-        cursor.close();
-        return cursor.getCount();
+        String selectQuery = "SELECT " + ColumnsCategory.CATEGORY_ID + " FROM " + ManageDB.TABLE_CATEGORIES;
+        String WhereQuery = "";
+        String _and = " and ";
+        if (args.size() > 0)
+            WhereQuery = " WHERE ";
+        for (Object[] arg: args) {
+            String field = arg[0].toString();
+            String operator = arg[1].toString();
+            Object value = arg[2];
+            if (field != null && value != null){
+                if (value instanceof String){
+                    value = "'" + value + "'";
+                }
+                WhereQuery = WhereQuery + field + " " + operator + " " + value + _and;
+            }
+        }
+        if (WhereQuery.length() > _and.length() && WhereQuery.substring(WhereQuery.length() - _and.length(), WhereQuery.length()).equals(_and)){
+            WhereQuery = WhereQuery.substring(0, WhereQuery.length() - _and.length());
+        }
+        selectQuery = selectQuery + WhereQuery;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        int result = cursor.getCount();
+        db.close();
+        return result;
     }
 }

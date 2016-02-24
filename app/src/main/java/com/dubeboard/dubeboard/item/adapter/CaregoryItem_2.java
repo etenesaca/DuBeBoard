@@ -18,14 +18,13 @@ import com.dubeboard.dubeboard.clsCategory;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-public class CategoryItem extends ArrayAdapter<clsCategory> {
+public class CaregoryItem_2 extends ArrayAdapter<clsCategory> {
     Context context;
     int layoutResourceId;
     ArrayList<clsCategory> data = new ArrayList<clsCategory>();
 
-    public CategoryItem(Context context, int layoutResourceId, ArrayList<clsCategory> data) {
+    public CaregoryItem_2(Context context, int layoutResourceId, ArrayList<clsCategory> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -87,13 +86,14 @@ public class CategoryItem extends ArrayAdapter<clsCategory> {
             if (outImage != null){
                 ByteArrayInputStream imageStream = new ByteArrayInputStream(outImage);
                 icon = BitmapFactory.decodeStream(imageStream);
-
+                imgIcon.setScaleType(ImageView.ScaleType.CENTER_CROP);
             }else{
                 // En el caso de que no se pueda cargar la imagen
-                icon = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_def_128);
+                icon = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_def_48x48);
+                imgIcon.setScaleType(ImageView.ScaleType.CENTER);
             }
-            //icon = scaleDown(icon, 128, true);
             imgIcon.setImageBitmap(icon);
+            //icon = scaleDown(icon, 128, true);
         }
 
         @Override

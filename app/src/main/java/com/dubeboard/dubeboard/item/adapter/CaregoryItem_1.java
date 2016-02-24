@@ -6,32 +6,28 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.dubeboard.dubeboard.ManageDB;
 import com.dubeboard.dubeboard.R;
+import com.dubeboard.dubeboard.clsCategory;
 import com.dubeboard.dubeboard.clsImage;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
-import java.util.Locale;
+import java.util.HashMap;
 
-public class ImageItem extends ArrayAdapter<clsImage> {
+public class CaregoryItem_1 extends ArrayAdapter<clsCategory> {
     Context context;
     int layoutResourceId;
-    ArrayList<clsImage> data = new ArrayList<clsImage>();
+    ArrayList<clsCategory> data = new ArrayList<clsCategory>();
 
-    ImageButton btnSpeech;
-    TextToSpeech tts;
-
-    public ImageItem(Context context, int layoutResourceId, ArrayList<clsImage> data) {
+    public CaregoryItem_1(Context context, int layoutResourceId, ArrayList<clsCategory> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -41,7 +37,6 @@ public class ImageItem extends ArrayAdapter<clsImage> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         CategoryHolder holder = null;
-        final clsImage Record = data.get(position);
 
         if (convertView == null) {
             holder = new CategoryHolder();
@@ -52,24 +47,7 @@ public class ImageItem extends ArrayAdapter<clsImage> {
             holder = (CategoryHolder) convertView.getTag();
         }
 
-        tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if(status != TextToSpeech.ERROR) {
-                    //tts.setLanguage(Locale.UK);
-                    tts.setLanguage(new Locale("spa", "ES"));
-                }
-            }
-        });
-
-        btnSpeech = (ImageButton) convertView.findViewById(R.id.btnSpeech);
-        btnSpeech.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tts.speak(Record.get_name() + "", TextToSpeech.QUEUE_FLUSH, null);
-            }
-        });
-
+        clsCategory Record = data.get(position);
         // Ejecutar la Tarea de acuerdo a la version de Android
         LoadView Task = new LoadView(convertView, Record);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -82,14 +60,14 @@ public class ImageItem extends ArrayAdapter<clsImage> {
 
     /** Clase Asincrona para recuperar los datos de la fila **/
     protected class LoadView extends AsyncTask<String, Void, String> {
-        protected clsImage Record;
+        protected clsCategory Record;
         protected View convertView;
 
-        protected TextView tvName;
-        protected TextView tvCategory;
-        protected ImageView ivImage;
+        protected TextView txtTitle;
+        protected TextView tvCount;
+        protected ImageView imgIcon;
 
-        public LoadView(View convertView, clsImage Record) {
+        public LoadView(View convertView, clsCategory Record) {
             this.Record = Record;
             this.convertView = convertView;
         }
@@ -98,31 +76,34 @@ public class ImageItem extends ArrayAdapter<clsImage> {
         protected void onPreExecute() {
             super.onPreExecute();
 
-            tvName = (TextView) convertView.findViewById(R.id.tvName);
-            tvCategory = (TextView) convertView.findViewById(R.id.tvCategory);
-            ivImage = (ImageView) convertView.findViewById(R.id.ivImage);
+            txtTitle = (TextView) convertView.findViewById(R.id.txtTitle);
+            tvCount = (TextView) convertView.findViewById(R.id.tvCount);
+            imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            tvName.setText(Record.get_name());
-            tvCategory.setText(Record.get_category().get_name());
+            txtTitle.setText(Record.get_name());
             byte[] outImage = Record.get_image();
             Bitmap icon;
             if (outImage != null){
                 ByteArrayInputStream imageStream = new ByteArrayInputStream(outImage);
                 icon = BitmapFactory.decodeStream(imageStream);
-
+                imgIcon.setScaleType(ImageView.ScaleType.CENTER_CROP);
             }else{
                 // En el caso de que no se pueda cargar la imagen
-                icon = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_def_128);
+                icon = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_def_48x48);
+                imgIcon.setScaleType(ImageView.ScaleType.CENTER);
             }
+            imgIcon.setImageBitmap(icon);
             //icon = scaleDown(icon, 128, true);
-            ivImage.setImageBitmap(icon);
 
-
+            // Contar cuatos registros están vinculadas a esta Categoria
+            clsImage ImageObj = new clsImage(context);
+            int count = ImageObj.CountRecords(new Object[]{ManageDB.ColumnsImage.IMAGE_CATEGORY_ID, "=", Record.get_id()});
+            tvCount.setText(count + "");
         }
 
         @Override
