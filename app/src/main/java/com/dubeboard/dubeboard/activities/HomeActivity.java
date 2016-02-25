@@ -24,7 +24,8 @@ import android.widget.TextView;
 import com.dubeboard.dubeboard.ManageDB;
 import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsCategory;
-import com.dubeboard.dubeboard.item.adapter.CaregoryItem_1;
+import com.dubeboard.dubeboard.clsImage;
+import com.dubeboard.dubeboard.item.adapter.CategoryItem_2;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -40,14 +41,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
-    ManageDB db;
 
     GridView gvImage;
     ListView lvCategory;
 
     clsCategory CategoryObj = new clsCategory(Context);
     ArrayList<clsCategory> CategoryList = new ArrayList<clsCategory>();
-    CaregoryItem_1 adapter;
+    CategoryItem_2 adapterCategory;
+
+    clsImage ImageObj = new clsImage(Context);
+    ArrayList<clsImage> ImageList = new ArrayList<clsImage>();
+    CategoryItem_2 adapterImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,18 +95,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public void onMovedToScrapHeap(View view) {
                 final ImageView imgIcon = (ImageView) view.findViewById(R.id.imgIcon);
                 final TextView txtTitle = (TextView) view.findViewById(R.id.txtTitle);
-                final TextView tvCount = (TextView) view.findViewById(R.id.tvCount);
 
                 txtTitle.setText(null);
-                tvCount.setText(null);
+                txtTitle.setVisibility(View.GONE);
                 imgIcon.setImageBitmap(null);
                 imgIcon.setScaleType(ImageView.ScaleType.CENTER);
                 imgIcon.setImageDrawable(Context.getResources().getDrawable(R.drawable.img_def_48x48));
             }
         });
 
-        adapter = new CaregoryItem_1(this, R.layout.list_item_category_1, CategoryList);
-        lvCategory.setAdapter(adapter);
+        adapterCategory = new CategoryItem_2(this, R.layout.list_item_category_2, CategoryList);
+        lvCategory.setAdapter(adapterCategory);
     }
 
     @Override
@@ -133,7 +136,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.action_add_item) {
 
         }
-
         return super.onOptionsItemSelected(item);
     }
 

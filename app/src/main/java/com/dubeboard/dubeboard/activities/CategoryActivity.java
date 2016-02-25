@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsCategory;
-import com.dubeboard.dubeboard.item.adapter.CaregoryItem_1;
+import com.dubeboard.dubeboard.item.adapter.CategoryItem_1;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public class CategoryActivity extends AppCompatActivity {
 
     clsCategory CategoryObj = new clsCategory(Context);
     ArrayList<clsCategory> CategoryList = new ArrayList<clsCategory>();
-    CaregoryItem_1 adapter;
+    CategoryItem_1 adapter;
     GridView dataList;
     String[] menuItems = new String[]{"Editar", "Eliminar"};
 
@@ -77,7 +77,7 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
-        adapter = new CaregoryItem_1(this, R.layout.list_item_category_1, CategoryList);
+        adapter = new CategoryItem_1(this, R.layout.list_item_category_1, CategoryList);
         dataList.setAdapter(adapter);
         registerForContextMenu(dataList);
     }

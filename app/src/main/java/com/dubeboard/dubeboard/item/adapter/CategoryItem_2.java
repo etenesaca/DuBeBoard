@@ -19,12 +19,12 @@ import com.dubeboard.dubeboard.clsCategory;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 
-public class CaregoryItem_2 extends ArrayAdapter<clsCategory> {
+public class CategoryItem_2 extends ArrayAdapter<clsCategory> {
     Context context;
     int layoutResourceId;
     ArrayList<clsCategory> data = new ArrayList<clsCategory>();
 
-    public CaregoryItem_2(Context context, int layoutResourceId, ArrayList<clsCategory> data) {
+    public CategoryItem_2(Context context, int layoutResourceId, ArrayList<clsCategory> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -33,35 +33,37 @@ public class CaregoryItem_2 extends ArrayAdapter<clsCategory> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        CategoryHolder holder = null;
+        ViewHolder holder = null;
+        clsCategory Record = data.get(position);
 
         if (convertView == null) {
-            holder = new CategoryHolder();
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             convertView = inflater.inflate(layoutResourceId, null);
+
+            holder = new ViewHolder();
+            holder.txtTitle = (TextView) convertView.findViewById(R.id.txtTitle);
+            holder.imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
             convertView.setTag(holder);
         } else {
-            holder = (CategoryHolder) convertView.getTag();
+            holder = (ViewHolder) convertView.getTag();
         }
 
-        clsCategory Record = data.get(position);
         // Ejecutar la Tarea de acuerdo a la version de Android
         LoadView Task = new LoadView(convertView, Record);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            Task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            Task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, holder);
         } else {
-            Task.execute();
+            Task.execute(holder);
         }
         return convertView;
     }
 
     /** Clase Asincrona para recuperar los datos de la fila **/
-    protected class LoadView extends AsyncTask<String, Void, String> {
+    protected class LoadView extends AsyncTask<ViewHolder, Void, Bitmap> {
+        protected ViewHolder v;
+
         protected clsCategory Record;
         protected View convertView;
-
-        protected TextView txtTitle;
-        protected ImageView imgIcon;
 
         public LoadView(View convertView, clsCategory Record) {
             this.Record = Record;
@@ -71,29 +73,6 @@ public class CaregoryItem_2 extends ArrayAdapter<clsCategory> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
-            txtTitle = (TextView) convertView.findViewById(R.id.txtTitle);
-            imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-            txtTitle.setText(Record.get_name());
-            byte[] outImage = Record.get_image();
-            Bitmap icon;
-            if (outImage != null){
-                ByteArrayInputStream imageStream = new ByteArrayInputStream(outImage);
-                icon = BitmapFactory.decodeStream(imageStream);
-                imgIcon.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            }else{
-                // En el caso de que no se pueda cargar la imagen
-                icon = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_def_48x48);
-                imgIcon.setScaleType(ImageView.ScaleType.CENTER);
-            }
-            imgIcon.setImageBitmap(icon);
-            //icon = scaleDown(icon, 128, true);
         }
 
         @Override
@@ -102,12 +81,31 @@ public class CaregoryItem_2 extends ArrayAdapter<clsCategory> {
         }
 
         @Override
-        protected String doInBackground(String... params) {
-            return null;
+        protected Bitmap doInBackground(ViewHolder... params) {
+            v = params[0];
+            byte[] outImage = Record.get_image();
+            Bitmap bmp;
+            if (outImage != null){
+                ByteArrayInputStream imageStream = new ByteArrayInputStream(outImage);
+                bmp = BitmapFactory.decodeStream(imageStream);
+            } else {
+                bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_def_48x48);
+            }
+            return bmp;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bmp) {
+            super.onPostExecute(bmp);
+
+            v.txtTitle.setText(Record.get_name());
+            v.txtTitle.setVisibility(View.VISIBLE);
+            v.imgIcon.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            v.imgIcon.setImageBitmap(bmp);
         }
     }
 
-    static class CategoryHolder
+    static class ViewHolder
     {
         ImageView imgIcon;
         TextView txtTitle;
