@@ -1,5 +1,6 @@
 package com.dubeboard.dubeboard.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,15 +15,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AbsListView;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.dubeboard.dubeboard.ManageDB;
 import com.dubeboard.dubeboard.R;
+import com.dubeboard.dubeboard.clsCategory;
+import com.dubeboard.dubeboard.item.adapter.CaregoryItem_1;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+import java.util.ArrayList;
+import java.util.List;
+
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    android.content.Context Context = (Context) this;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -30,6 +41,13 @@ public class HomeActivity extends AppCompatActivity
      */
     private GoogleApiClient client;
     ManageDB db;
+
+    GridView gvImage;
+    ListView lvCategory;
+
+    clsCategory CategoryObj = new clsCategory(Context);
+    ArrayList<clsCategory> CategoryList = new ArrayList<clsCategory>();
+    CaregoryItem_1 adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +76,33 @@ public class HomeActivity extends AppCompatActivity
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        lvCategory = (ListView) findViewById(R.id.lvCategory);
+        gvImage = (GridView) findViewById(R.id.gvImage);
+
+        // Obtener todas las categorias de la base de datos
+        final List<clsCategory> Categories = CategoryObj.getAll();
+        for(clsCategory im : Categories){
+            CategoryList.add(im);
+        }
+
+        lvCategory.setRecyclerListener(new AbsListView.RecyclerListener() {
+            @Override
+            public void onMovedToScrapHeap(View view) {
+                final ImageView imgIcon = (ImageView) view.findViewById(R.id.imgIcon);
+                final TextView txtTitle = (TextView) view.findViewById(R.id.txtTitle);
+                final TextView tvCount = (TextView) view.findViewById(R.id.tvCount);
+
+                txtTitle.setText(null);
+                tvCount.setText(null);
+                imgIcon.setImageBitmap(null);
+                imgIcon.setScaleType(ImageView.ScaleType.CENTER);
+                imgIcon.setImageDrawable(Context.getResources().getDrawable(R.drawable.img_def_48x48));
+            }
+        });
+
+        adapter = new CaregoryItem_1(this, R.layout.list_item_category_1, CategoryList);
+        lvCategory.setAdapter(adapter);
     }
 
     @Override
