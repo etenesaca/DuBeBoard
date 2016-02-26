@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -74,6 +75,9 @@ public class AddCategoryActivity extends AppCompatActivity {
         lblImage = (TextView) findViewById(R.id.lblImage);
         txtName = (EditText) findViewById(R.id.tvName);
         ivImage = (ImageView) findViewById(R.id.ivImage);
+        //btnGallery = (Button) findViewById(R.id.btnGallery);
+        //btnCamera = (Button) findViewById(R.id.btnCamera);
+
         // Establecer las fuentes
         Typeface Roboto_light = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
         Typeface Roboto_bold = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Bold.ttf");
@@ -81,21 +85,27 @@ public class AddCategoryActivity extends AppCompatActivity {
         lblName.setTypeface(Roboto_bold);
         lblImage.setTypeface(Roboto_bold);
 
-        ivImage.setOnClickListener(new View.OnClickListener() {
+        /*
+        btnGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final CharSequence[] options = {"Tomar foto", "Galeria"};
-                final AlertDialog.Builder builder = new AlertDialog.Builder(AddCategoryActivity.this);
-                builder.setTitle("Elige una opcion");
-                builder.setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int seleccion) {
-                        if (options[seleccion] == "Tomar foto") {
-                            openCamera();
-                        } else if (options[seleccion] == "Galeria") {
-                            startActivityForResult(
-                                    Intent.createChooser(new Intent(Intent.ACTION_GET_CONTENT).setType("image/*"), "Seleccione la imagen"), SELECT_PICTURE
-                            );
+                openGallery();
+            }
+        });
+
+        btnCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openCamera();
+            }
+        });
+        */
+    }
+
+    private void openGallery() {
+        startActivityForResult(
+                Intent.createChooser(new Intent(Intent.ACTION_GET_CONTENT).setType("image/*"), "Seleccione la imagen"), SELECT_PICTURE
+        );
 
                             /*
                             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -110,16 +120,7 @@ public class AddCategoryActivity extends AppCompatActivity {
                                     intent.createChooser(intent, "Seleccione la imagen"), SELECT_PICTURE
                             );
                             */
-                        } else if (options[seleccion] == "Cancelar") {
-                            dialog.dismiss();
-                        }
-                    }
-                });
-                builder.show();
-            }
-        });
     }
-
     private void openCamera() {
         File file = new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY);
         file.mkdirs();
