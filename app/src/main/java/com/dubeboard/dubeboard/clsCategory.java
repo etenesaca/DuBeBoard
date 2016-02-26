@@ -69,6 +69,13 @@ public class clsCategory {
         return count;
     }
 
+    public List<clsImage> getChildImages(Context context) {
+        // Obtener los registros hijos
+        clsImage ImageObj = new clsImage(context);
+        List<clsImage> ChildImages = ImageObj.getRecords(new Object[]{ManageDB.ColumnsImage.IMAGE_CATEGORY_ID, "=", this.get_id()});
+        return ChildImages;
+    }
+
     public void AddRecord(clsCategory NewRecord) {
         SQLiteDatabase db = new ManageDB(Context).getWritableDatabase();
         // Armar el Insert

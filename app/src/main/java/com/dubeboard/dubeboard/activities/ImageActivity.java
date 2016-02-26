@@ -14,12 +14,11 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsImage;
-import com.dubeboard.dubeboard.item.adapter.ImageItem;
+import com.dubeboard.dubeboard.item.adapter.ImageItem_1;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public class ImageActivity extends AppCompatActivity {
 
     clsImage ImageObj = new clsImage(Context);
     ArrayList<clsImage> ImageList = new ArrayList<clsImage>();
-    ImageItem adapter;
+    ImageItem_1 adapter;
     GridView dataList;
     String[] menuItems = new String[]{"Editar", "Eliminar"};
 
@@ -76,7 +75,7 @@ public class ImageActivity extends AppCompatActivity {
             }
         });
 
-        adapter = new ImageItem(this, R.layout.list_item_image_1, ImageList);
+        adapter = new ImageItem_1(this, R.layout.list_item_image_1, ImageList);
         dataList.setAdapter(adapter);
         registerForContextMenu(dataList);
     }

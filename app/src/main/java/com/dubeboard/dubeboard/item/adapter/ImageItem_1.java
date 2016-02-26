@@ -23,7 +23,7 @@ import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class ImageItem extends ArrayAdapter<clsImage> {
+public class ImageItem_1 extends ArrayAdapter<clsImage> {
     Context context;
     int layoutResourceId;
     ArrayList<clsImage> data = new ArrayList<clsImage>();
@@ -31,7 +31,7 @@ public class ImageItem extends ArrayAdapter<clsImage> {
     ImageButton btnSpeech;
     TextToSpeech tts;
 
-    public ImageItem(Context context, int layoutResourceId, ArrayList<clsImage> data) {
+    public ImageItem_1(Context context, int layoutResourceId, ArrayList<clsImage> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;

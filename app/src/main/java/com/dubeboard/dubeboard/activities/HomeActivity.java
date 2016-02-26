@@ -2,8 +2,10 @@ package com.dubeboard.dubeboard.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -16,22 +18,26 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.dubeboard.dubeboard.ManageDB;
 import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsCategory;
 import com.dubeboard.dubeboard.clsImage;
 import com.dubeboard.dubeboard.item.adapter.CategoryItem_2;
+import com.dubeboard.dubeboard.item.adapter.ImageItem_1;
+import com.dubeboard.dubeboard.item.adapter.ImageItem_2;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     android.content.Context Context = (Context) this;
@@ -44,6 +50,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     GridView gvImage;
     ListView lvCategory;
+    TextView tvWords;
+    Button btnClear;
+    TextToSpeech tts;
 
     clsCategory CategoryObj = new clsCategory(Context);
     ArrayList<clsCategory> CategoryList = new ArrayList<clsCategory>();
@@ -51,7 +60,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     clsImage ImageObj = new clsImage(Context);
     ArrayList<clsImage> ImageList = new ArrayList<clsImage>();
-    CategoryItem_2 adapterImage;
+    ImageItem_2 adapterImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +73,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                tts.speak(tvWords.getText() + "", TextToSpeech.QUEUE_FLUSH, null);
             }
         });
 
@@ -83,6 +91,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         lvCategory = (ListView) findViewById(R.id.lvCategory);
         gvImage = (GridView) findViewById(R.id.gvImage);
+        tvWords = (TextView) findViewById(R.id.tvWords);
+        btnClear = (Button) findViewById(R.id.btnClear);
 
         // Obtener todas las categorias de la base de datos
         final List<clsCategory> Categories = CategoryObj.getAll();
@@ -101,11 +111,77 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 imgIcon.setImageBitmap(null);
                 imgIcon.setScaleType(ImageView.ScaleType.CENTER);
                 imgIcon.setImageDrawable(Context.getResources().getDrawable(R.drawable.img_def_48x48));
+
+                //view.setBackgroundColor(Color.TRANSPARENT);
+            }
+        });
+        lvCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                clsCategory CategorySelected = adapterCategory.getItem(position);
+                // Obtener las imagenes relacionadas a esta categoria
+                ImageList.clear();
+                for (clsImage im : CategorySelected.getChildImages(Context)) {
+                    ImageList.add(im);
+                }
+                adapterImage = new ImageItem_2(Context, R.layout.list_item_simple, ImageList);
+                gvImage.setAdapter(adapterImage);
+
+                for (int a = 0; a < parent.getChildCount(); a++) {
+                    parent.getChildAt(a).setBackgroundColor(Color.TRANSPARENT);
+                }
+                view.setBackgroundColor(Color.GREEN);
             }
         });
 
-        adapterCategory = new CategoryItem_2(this, R.layout.list_item_category_2, CategoryList);
+        adapterCategory = new CategoryItem_2(this, R.layout.list_item_simple, CategoryList);
         lvCategory.setAdapter(adapterCategory);
+
+        gvImage.setRecyclerListener(new AbsListView.RecyclerListener() {
+            @Override
+            public void onMovedToScrapHeap(View view) {
+                final ImageView imgIcon = (ImageView) view.findViewById(R.id.imgIcon);
+                final TextView txtTitle = (TextView) view.findViewById(R.id.txtTitle);
+
+                txtTitle.setText(null);
+                txtTitle.setVisibility(View.GONE);
+                imgIcon.setImageBitmap(null);
+                imgIcon.setScaleType(ImageView.ScaleType.CENTER);
+                imgIcon.setImageDrawable(Context.getResources().getDrawable(R.drawable.img_def_48x48));
+
+                //view.setBackgroundColor(Color.TRANSPARENT);
+            }
+        });
+        gvImage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                clsImage ImageSelected = adapterImage.getItem(position);
+                tvWords.setText(tvWords.getText() + " " + ImageSelected.get_name());
+            }
+        });
+        btnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tvWords.setText("");
+            }
+        });
+
+        tts = new TextToSpeech(Context, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    //tts.setLanguage(Locale.UK);
+                    tts.setLanguage(new Locale("spa", "ES"));
+                }
+            }
+        });
+
+        final List<clsImage> images = ImageObj.getAll();
+        for (clsImage im : images) {
+            ImageList.add(im);
+        }
+        adapterImage = new ImageItem_2(Context, R.layout.list_item_simple, ImageList);
+        gvImage.setAdapter(adapterImage);
     }
 
     @Override
