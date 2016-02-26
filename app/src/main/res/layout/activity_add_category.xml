@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="0dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
+    android:background="@color/common_signin_btn_dark_text_disabled"
     tools:context=".activities.AddCategoryActivity">
 
     <ScrollView
@@ -20,49 +21,86 @@
             android:layout_height="wrap_content"
             android:weightSum="1">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/lbl_name"
-                android:id="@+id/textView2"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_weight="0.25" />
-
-            <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="0dp"
-                android:id="@+id/tvName"
-                android:layout_below="@+id/textView2"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:freezesText="false"
-                android:layout_weight="0.25"
-                android:capitalize="words"
-                android:clickable="false" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/select_image"
-                android:id="@+id/textView3"
-                android:layout_below="@+id/tvName"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="47dp"
-                android:layout_weight="0.25" />
-
-            <ImageView
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
-                android:id="@+id/ivImage"
-                android:src="@drawable/img_def"
-                android:layout_weight="0.25" />
+                android:layout_margin="10dp"
+                android:background="@drawable/shape"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/lbl_name"
+                    android:id="@+id/lblName"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_weight="0.25"
+                    android:typeface="normal" />
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:id="@+id/tvName"
+                    android:layout_below="@+id/lblName"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:freezesText="false"
+                    android:layout_weight="0.25"
+                    android:capitalize="words"
+                    android:clickable="false" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:background="@drawable/shape"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Imagen"
+                    android:id="@+id/lblImage"
+                    android:layout_below="@+id/tvName"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="0.25" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="240dp"
+                    android:id="@+id/ivImage"
+                    android:src="@drawable/img_def"
+                    android:layout_weight="0.25" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:gravity="center_horizontal"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Galeria"
+                        android:drawableLeft="@drawable/ic_image_18pt"
+                        android:id="@+id/btnGallery" />
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Camara"
+                        android:drawableLeft="@drawable/ic_camera_alt_black_18dp"
+                        android:id="@+id/btnCamera" />
+                </LinearLayout>
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

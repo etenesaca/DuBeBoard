@@ -87,8 +87,12 @@ public class CategoryItem_2 extends ArrayAdapter<clsCategory> {
             byte[] outImage = Record.get_image();
             Bitmap bmp;
             if (outImage != null){
-                ByteArrayInputStream imageStream = new ByteArrayInputStream(outImage);
-                bmp = BitmapFactory.decodeStream(imageStream);
+                try {
+                    ByteArrayInputStream imageStream = new ByteArrayInputStream(outImage);
+                    bmp = BitmapFactory.decodeStream(imageStream);
+                } catch (Throwable e) {
+                    bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_def_48x48);
+                }
             } else {
                 bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_def_48x48);
             }

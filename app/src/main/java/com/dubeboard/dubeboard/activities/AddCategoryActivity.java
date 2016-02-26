@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -19,8 +20,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.dubeboard.dubeboard.ManageDB;
 import com.dubeboard.dubeboard.R;
@@ -49,6 +52,11 @@ public class AddCategoryActivity extends AppCompatActivity {
     clsCategory CategoryObj = new clsCategory(Context);
     EditText txtName;
     ImageView ivImage;
+    TextView lblName;
+    TextView lblImage;
+    Button btnGallery;
+    Button btnCamera;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +70,17 @@ public class AddCategoryActivity extends AppCompatActivity {
         // Poner Titulo en la barra de direcciones
         getSupportActionBar().setTitle("Agregar Categoría");
 
+        lblName = (TextView) findViewById(R.id.lblName);
+        lblImage = (TextView) findViewById(R.id.lblImage);
         txtName = (EditText) findViewById(R.id.tvName);
         ivImage = (ImageView) findViewById(R.id.ivImage);
+        // Establecer las fuentes
+        Typeface Roboto_light = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
+        Typeface Roboto_bold = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Bold.ttf");
+
+        lblName.setTypeface(Roboto_bold);
+        lblImage.setTypeface(Roboto_bold);
+
         ivImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
