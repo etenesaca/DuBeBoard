@@ -204,7 +204,7 @@ public class AddCategoryActivity extends AppCompatActivity {
                     // Redimensionar imagen
                     ivImage.buildDrawingCache();
                     Bitmap bm = ivImage.getDrawingCache();
-                    bm = gl.scaleDown(bm, 300, true);
+                    bm = gl.scaleDown(bm, 512, true);
                     NewCategory.set_image(bm);
 
                     // Crear una categoria

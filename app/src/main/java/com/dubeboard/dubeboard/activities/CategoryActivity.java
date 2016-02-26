@@ -67,10 +67,12 @@ public class CategoryActivity extends AppCompatActivity {
             public void onMovedToScrapHeap(View view) {
                 final ImageView imgIcon = (ImageView) view.findViewById(R.id.imgIcon);
                 final TextView txtTitle = (TextView) view.findViewById(R.id.txtTitle);
-                final TextView tvCount = (TextView) view.findViewById(R.id.tvCount);
+                final TextView txtCount = (TextView) view.findViewById(R.id.txtCount);
 
                 txtTitle.setText(null);
-                tvCount.setText(null);
+                txtCount.setVisibility(View.GONE);
+                txtCount.setText(null);
+                txtTitle.setVisibility(View.GONE);
                 imgIcon.setImageBitmap(null);
                 imgIcon.setScaleType(ImageView.ScaleType.CENTER);
                 imgIcon.setImageDrawable(Context.getResources().getDrawable(R.drawable.img_def_48x48));

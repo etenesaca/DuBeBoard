@@ -25,7 +25,7 @@
         android:text="Título" />
 
     <TextView
-        android:id="@+id/tvCount"
+        android:id="@+id/txtCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="bottom"

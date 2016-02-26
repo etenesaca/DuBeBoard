@@ -92,8 +92,9 @@ public class CategoryItem_2 extends ArrayAdapter<clsCategory> {
             } else {
                 bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_def_48x48);
             }
-            HashMap<String, Object> res;
-            return bmp;
+            HashMap<String, Object> res = new HashMap<String, Object>();
+            res.put("bmp", bmp);
+            return res;
         }
 
         @Override

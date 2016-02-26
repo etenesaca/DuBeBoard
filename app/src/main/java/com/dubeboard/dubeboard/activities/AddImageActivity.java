@@ -269,7 +269,7 @@ public class AddImageActivity extends AppCompatActivity {
                         // Redimensionar imagen
                         ivImage.buildDrawingCache();
                         Bitmap bm = ivImage.getDrawingCache();
-                        bm = gl.scaleDown(bm, 300, true);
+                        bm = gl.scaleDown(bm, 512, true);
                         NewImage.set_image(bm);
 
                         // Crear una Imagen

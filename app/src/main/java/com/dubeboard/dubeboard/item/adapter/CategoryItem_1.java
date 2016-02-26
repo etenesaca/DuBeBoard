@@ -18,6 +18,7 @@ import com.dubeboard.dubeboard.clsCategory;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CategoryItem_1 extends ArrayAdapter<clsCategory> {
     Context context;
@@ -42,7 +43,7 @@ public class CategoryItem_1 extends ArrayAdapter<clsCategory> {
 
             holder = new ViewHolder();
             holder.txtTitle = (TextView) convertView.findViewById(R.id.txtTitle);
-            holder.tvCount = (TextView) convertView.findViewById(R.id.tvCount);
+            holder.txtCount = (TextView) convertView.findViewById(R.id.txtCount);
             holder.imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
             convertView.setTag(holder);
         } else {
@@ -60,7 +61,7 @@ public class CategoryItem_1 extends ArrayAdapter<clsCategory> {
     }
 
     /** Clase Asincrona para recuperar los datos de la fila **/
-    protected class LoadView extends AsyncTask<ViewHolder, Void, Bitmap> {
+    protected class LoadView extends AsyncTask<ViewHolder, Void, HashMap<String, Object>> {
         protected ViewHolder v;
 
         protected clsCategory Record;
@@ -82,8 +83,9 @@ public class CategoryItem_1 extends ArrayAdapter<clsCategory> {
         }
 
         @Override
-        protected Bitmap doInBackground(ViewHolder... params) {
+        protected HashMap<String, Object> doInBackground(ViewHolder... params) {
             v = params[0];
+            // Obtener la imagen
             byte[] outImage = Record.get_image();
             Bitmap bmp;
             if (outImage != null){
@@ -92,16 +94,23 @@ public class CategoryItem_1 extends ArrayAdapter<clsCategory> {
             } else {
                 bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_def_48x48);
             }
-            return bmp;
+            HashMap<String, Object> res = new HashMap<String, Object>();
+            res.put("bmp", bmp);
+            // Obtener el numero de Imagenes relacionadas a esta categoria
+            res.put("num_images", Record.getNumImages(context));
+            return res;
         }
+
         @Override
-        protected void onPostExecute(Bitmap bmp) {
-            super.onPostExecute(bmp);
+        protected void onPostExecute(HashMap<String, Object> res) {
+            super.onPostExecute(res);
 
             v.txtTitle.setText(Record.get_name());
             v.txtTitle.setVisibility(View.VISIBLE);
+            v.txtCount.setText(res.get("num_images") + "");
+            v.txtCount.setVisibility(View.VISIBLE);
             v.imgIcon.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            v.imgIcon.setImageBitmap(bmp);
+            v.imgIcon.setImageBitmap((Bitmap) res.get("bmp"));
         }
     }
 
@@ -109,6 +118,6 @@ public class CategoryItem_1 extends ArrayAdapter<clsCategory> {
     {
         ImageView imgIcon;
         TextView txtTitle;
-        TextView tvCount;
+        TextView txtCount;
     }
 }
