@@ -17,6 +17,13 @@ public class clsCategory {
     protected String _name;
     protected byte[] _image = null;
 
+    public int getNumImages() {
+        // Contar cuatos registros están vinculadas a esta Categoria
+        clsImage ImageObj = new clsImage(Context);
+        int count = ImageObj.CountRecords(new Object[]{ManageDB.ColumnsImage.IMAGE_CATEGORY_ID, "=", this.get_id()});
+        return count;
+    }
+
     public clsCategory() { }
 
     public clsCategory(Context Context, int Category_ID) {

@@ -18,6 +18,7 @@ import com.dubeboard.dubeboard.clsCategory;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CategoryItem_2 extends ArrayAdapter<clsCategory> {
     Context context;
@@ -59,7 +60,7 @@ public class CategoryItem_2 extends ArrayAdapter<clsCategory> {
     }
 
     /** Clase Asincrona para recuperar los datos de la fila **/
-    protected class LoadView extends AsyncTask<ViewHolder, Void, Bitmap> {
+    protected class LoadView extends AsyncTask<ViewHolder, Void, HashMap<String, Object>> {
         protected ViewHolder v;
 
         protected clsCategory Record;
@@ -81,7 +82,7 @@ public class CategoryItem_2 extends ArrayAdapter<clsCategory> {
         }
 
         @Override
-        protected Bitmap doInBackground(ViewHolder... params) {
+        protected HashMap<String, Object> doInBackground(ViewHolder... params) {
             v = params[0];
             byte[] outImage = Record.get_image();
             Bitmap bmp;
@@ -91,17 +92,18 @@ public class CategoryItem_2 extends ArrayAdapter<clsCategory> {
             } else {
                 bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_def_48x48);
             }
+            HashMap<String, Object> res;
             return bmp;
         }
 
         @Override
-        protected void onPostExecute(Bitmap bmp) {
-            super.onPostExecute(bmp);
+        protected void onPostExecute(HashMap<String, Object> res) {
+            super.onPostExecute(res);
 
             v.txtTitle.setText(Record.get_name());
             v.txtTitle.setVisibility(View.VISIBLE);
             v.imgIcon.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            v.imgIcon.setImageBitmap(bmp);
+            v.imgIcon.setImageBitmap((Bitmap) res.get("bmp"));
         }
     }
 
