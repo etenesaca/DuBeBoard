@@ -9,6 +9,7 @@
     android:paddingRight="5dp"
     android:paddingTop="@dimen/gv_view_full_screen"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:background="@drawable/bg4"
     tools:context=".activities.CategoryActivity"
     tools:showIn="@layout/activity_category">
 

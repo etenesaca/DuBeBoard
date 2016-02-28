@@ -21,7 +21,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_add_image_activty" />
+    <include layout="@layout/content_add_image_activity" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btnSpeech"

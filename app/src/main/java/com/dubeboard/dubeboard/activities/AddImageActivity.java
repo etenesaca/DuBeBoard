@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,9 +24,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.dubeboard.dubeboard.ManageDB;
 import com.dubeboard.dubeboard.R;
@@ -61,6 +64,11 @@ public class AddImageActivity extends AppCompatActivity {
     EditText txtName;
     Spinner spCategory;
     ImageView ivImage;
+    TextView lblName;
+    TextView lblCategory;
+    TextView lblImage;
+    Button btnGallery;
+    Button btnCamera;
 
     ArrayList<String> CategoryList = new ArrayList<String>();
     HashMap<String,Integer> MapCategory = new HashMap<String,Integer>();
@@ -80,47 +88,38 @@ public class AddImageActivity extends AppCompatActivity {
         // Poner Titulo en la barra de direcciones
         getSupportActionBar().setTitle("Agregar Categoría");
 
+        lblName = (TextView) findViewById(R.id.lblName);
+        lblCategory = (TextView) findViewById(R.id.lblCategory);
+        lblImage = (TextView) findViewById(R.id.lblImage);
         txtName = (EditText) findViewById(R.id.tvName);
         ivImage = (ImageView) findViewById(R.id.ivImage);
         spCategory = (Spinner) findViewById(R.id.spCategory);
 
-        ivImage.setOnClickListener(new View.OnClickListener() {
+        btnGallery = (Button) findViewById(R.id.btnGallery);
+        btnCamera = (Button) findViewById(R.id.btnCamera);
+
+        // Establecer las fuentes
+        Typeface Roboto_light = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
+        Typeface Roboto_bold = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Bold.ttf");
+
+        lblName.setTypeface(Roboto_bold);
+        lblImage.setTypeface(Roboto_bold);
+        lblCategory.setTypeface(Roboto_bold);
+
+        btnGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final CharSequence[] options = {"Tomar foto", "Galeria"};
-                final AlertDialog.Builder builder = new AlertDialog.Builder(AddImageActivity.this);
-                builder.setTitle("Elige una opcion");
-                builder.setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int seleccion) {
-                        if (options[seleccion] == "Tomar foto") {
-                            openCamera();
-                        } else if (options[seleccion] == "Galeria") {
-                            startActivityForResult(
-                                    Intent.createChooser(new Intent(Intent.ACTION_GET_CONTENT).setType("image/*"), "Seleccione la imagen"), SELECT_PICTURE
-                            );
-
-                            /*
-                            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                            intent.setType("image/*");
-                            intent.putExtra("crop", "true");
-                            intent.putExtra("aspectX", 0);
-                            intent.putExtra("aspectY", 0);
-                            intent.putExtra("outputX", 200);
-                            intent.putExtra("outputY", 150);
-                            intent.putExtra("return-data", true);
-                            startActivityForResult(
-                                    intent.createChooser(intent, "Seleccione la imagen"), SELECT_PICTURE
-                            );
-                            */
-                        } else if (options[seleccion] == "Cancelar") {
-                            dialog.dismiss();
-                        }
-                    }
-                });
-                builder.show();
+                openGallery();
             }
         });
+
+        btnCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openCamera();
+            }
+        });
+
         tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -153,6 +152,25 @@ public class AddImageActivity extends AppCompatActivity {
         spCategory.setAdapter(adapter);
     }
 
+    private void openGallery() {
+        startActivityForResult(
+                Intent.createChooser(new Intent(Intent.ACTION_GET_CONTENT).setType("image/*"), "Seleccione la imagen"), SELECT_PICTURE
+        );
+
+                            /*
+                            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                            intent.setType("image/*");
+                            intent.putExtra("crop", "true");
+                            intent.putExtra("aspectX", 0);
+                            intent.putExtra("aspectY", 0);
+                            intent.putExtra("outputX", 200);
+                            intent.putExtra("outputY", 150);
+                            intent.putExtra("return-data", true);
+                            startActivityForResult(
+                                    intent.createChooser(intent, "Seleccione la imagen"), SELECT_PICTURE
+                            );
+                            */
+    }
     private void openCamera() {
         File file = new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY);
         file.mkdirs();
