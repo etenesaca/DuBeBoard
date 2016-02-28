@@ -75,8 +75,8 @@ public class AddCategoryActivity extends AppCompatActivity {
         lblImage = (TextView) findViewById(R.id.lblImage);
         txtName = (EditText) findViewById(R.id.tvName);
         ivImage = (ImageView) findViewById(R.id.ivImage);
-        //btnGallery = (Button) findViewById(R.id.btnGallery);
-        //btnCamera = (Button) findViewById(R.id.btnCamera);
+        btnGallery = (Button) findViewById(R.id.btnGallery);
+        btnCamera = (Button) findViewById(R.id.btnCamera);
 
         // Establecer las fuentes
         Typeface Roboto_light = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
@@ -85,7 +85,6 @@ public class AddCategoryActivity extends AppCompatActivity {
         lblName.setTypeface(Roboto_bold);
         lblImage.setTypeface(Roboto_bold);
 
-        /*
         btnGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,7 +98,6 @@ public class AddCategoryActivity extends AppCompatActivity {
                 openCamera();
             }
         });
-        */
     }
 
     private void openGallery() {

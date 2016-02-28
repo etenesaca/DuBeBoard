@@ -14,13 +14,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsImage;
+import com.dubeboard.dubeboard.clsImage;
+import com.dubeboard.dubeboard.gl;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class ImageItem_1 extends ArrayAdapter<clsImage> {
@@ -40,16 +42,20 @@ public class ImageItem_1 extends ArrayAdapter<clsImage> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        CategoryHolder holder = null;
+        ViewHolder holder = null;
         final clsImage Record = data.get(position);
 
         if (convertView == null) {
-            holder = new CategoryHolder();
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             convertView = inflater.inflate(layoutResourceId, null);
+
+            holder = new ViewHolder();
+            holder.tvName = (TextView) convertView.findViewById(R.id.tvName);
+            holder.tvCategory = (TextView) convertView.findViewById(R.id.tvCategory);
+            holder.ivImage = (ImageView) convertView.findViewById(R.id.ivImage);
             convertView.setTag(holder);
         } else {
-            holder = (CategoryHolder) convertView.getTag();
+            holder = (ViewHolder) convertView.getTag();
         }
 
         tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
@@ -73,21 +79,19 @@ public class ImageItem_1 extends ArrayAdapter<clsImage> {
         // Ejecutar la Tarea de acuerdo a la version de Android
         LoadView Task = new LoadView(convertView, Record);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            Task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            Task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, holder);
         } else {
-            Task.execute();
+            Task.execute(holder);
         }
         return convertView;
     }
 
     /** Clase Asincrona para recuperar los datos de la fila **/
-    protected class LoadView extends AsyncTask<String, Void, String> {
+    protected class LoadView extends AsyncTask<ViewHolder, Void, HashMap<String, Object>> {
+        protected ViewHolder v;
+
         protected clsImage Record;
         protected View convertView;
-
-        protected TextView tvName;
-        protected TextView tvCategory;
-        protected ImageView ivImage;
 
         public LoadView(View convertView, clsImage Record) {
             this.Record = Record;
@@ -97,32 +101,6 @@ public class ImageItem_1 extends ArrayAdapter<clsImage> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
-            tvName = (TextView) convertView.findViewById(R.id.tvName);
-            tvCategory = (TextView) convertView.findViewById(R.id.tvCategory);
-            ivImage = (ImageView) convertView.findViewById(R.id.ivImage);
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-            tvName.setText(Record.get_name());
-            tvCategory.setText(Record.get_category().get_name());
-            byte[] outImage = Record.get_image();
-            Bitmap icon;
-            if (outImage != null){
-                ByteArrayInputStream imageStream = new ByteArrayInputStream(outImage);
-                icon = BitmapFactory.decodeStream(imageStream);
-
-            }else{
-                // En el caso de que no se pueda cargar la imagen
-                icon = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_def_128);
-            }
-            //icon = scaleDown(icon, 128, true);
-            ivImage.setImageBitmap(icon);
-
-
         }
 
         @Override
@@ -131,14 +109,31 @@ public class ImageItem_1 extends ArrayAdapter<clsImage> {
         }
 
         @Override
-        protected String doInBackground(String... params) {
-            return null;
+        protected HashMap<String, Object> doInBackground(ViewHolder... params) {
+            v = params[0];
+            HashMap<String, Object> res = new HashMap<String, Object>();
+            // Obtener la imagen
+            res.put("bmp", gl.build_image(context, Record.get_image()));
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(HashMap<String, Object> res) {
+            super.onPostExecute(res);
+
+            v.tvName.setText(Record.get_name());
+            v.tvName.setVisibility(View.VISIBLE);
+            v.tvCategory.setText(Record.get_category().get_name());
+            v.tvCategory.setVisibility(View.VISIBLE);
+            v.ivImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            v.ivImage.setImageBitmap((Bitmap) res.get("bmp"));
         }
     }
 
-    static class CategoryHolder
+    static class ViewHolder
     {
-        ImageView imgIcon;
-        TextView txtTitle;
+        TextView tvName;
+        TextView tvCategory;
+        ImageView ivImage;
     }
 }

@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsCategory;
+import com.dubeboard.dubeboard.gl;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
@@ -85,17 +86,9 @@ public class CategoryItem_1 extends ArrayAdapter<clsCategory> {
         @Override
         protected HashMap<String, Object> doInBackground(ViewHolder... params) {
             v = params[0];
-            // Obtener la imagen
-            byte[] outImage = Record.get_image();
-            Bitmap bmp;
-            if (outImage != null){
-                ByteArrayInputStream imageStream = new ByteArrayInputStream(outImage);
-                bmp = BitmapFactory.decodeStream(imageStream);
-            } else {
-                bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_def_48x48);
-            }
             HashMap<String, Object> res = new HashMap<String, Object>();
-            res.put("bmp", bmp);
+            // Obtener la imagen
+            res.put("bmp", gl.build_image(context, Record.get_image()));
             // Obtener el numero de Imagenes relacionadas a esta categoria
             res.put("num_images", Record.getNumImages(context));
             return res;

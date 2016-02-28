@@ -7,7 +7,7 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
-    android:background="@color/common_signin_btn_dark_text_disabled"
+    android:background="@drawable/bg4"
     tools:context=".activities.AddCategoryActivity">
 
     <ScrollView

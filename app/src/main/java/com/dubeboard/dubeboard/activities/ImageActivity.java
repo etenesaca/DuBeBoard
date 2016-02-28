@@ -133,5 +133,4 @@ public class ImageActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
 }

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsImage;
 import com.dubeboard.dubeboard.clsImage;
+import com.dubeboard.dubeboard.gl;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
@@ -88,21 +89,9 @@ public class ImageItem_2 extends ArrayAdapter<clsImage> {
         @Override
         protected HashMap<String, Object> doInBackground(ViewHolder... params) {
             v = params[0];
-            // Obtener la imagen
-            byte[] outImage = Record.get_image();
-            Bitmap bmp;
-            if (outImage != null){
-                try{
-                    ByteArrayInputStream imageStream = new ByteArrayInputStream(outImage);
-                    bmp = BitmapFactory.decodeStream(imageStream);
-                } catch (Throwable e) {
-                    bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_def_48x48);
-                }
-            } else {
-                bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_def_48x48);
-            }
             HashMap<String, Object> res = new HashMap<String, Object>();
-            res.put("bmp", bmp);
+            // Obtener la imagen
+            res.put("bmp", gl.build_image(context, Record.get_image()));
             return res;
         }
 

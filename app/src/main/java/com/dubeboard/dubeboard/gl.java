@@ -1,7 +1,10 @@
 package com.dubeboard.dubeboard;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 /**
@@ -24,5 +27,21 @@ public class gl {
         bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
         return  byteArray;
+    }
+
+    public static Bitmap build_image(Context context, byte[] img){
+        Bitmap bmp;
+        if (img != null){
+            try{
+                ByteArrayInputStream imageStream = new ByteArrayInputStream(img);
+                bmp = BitmapFactory.decodeStream(imageStream);
+            } catch (Throwable e) {
+                bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_def_48x48);
+            }
+        }else{
+            // En el caso de que no se pueda cargar la imagen se devuelve una por defecto
+            bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_def_128);
+        }
+        return bmp;
     }
 }
