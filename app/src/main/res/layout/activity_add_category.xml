@@ -26,7 +26,8 @@
                 android:layout_width="match_parent"
                 android:layout_margin="10dp"
                 android:background="@drawable/shape"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:id="@+id/lyName">
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -60,7 +61,8 @@
                 android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:background="@drawable/shape"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:id="@+id/lyImage">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -76,7 +78,7 @@
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="240dp"
+                    android:layout_height="220dp"
                     android:id="@+id/ivImage"
                     android:src="@drawable/img_def"
                     android:layout_weight="0.25" />
@@ -101,6 +103,33 @@
                         android:id="@+id/btnCamera" />
                 </LinearLayout>
             </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:background="@drawable/shape"
+            android:layout_height="match_parent"
+            android:id="@+id/lyChildImages">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Images Relacionadas"
+                android:id="@+id/lblChildImages"
+                android:layout_below="@+id/lvImages"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="15dp"
+                android:layout_weight="0.25" />
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/lvImages" />
+        </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

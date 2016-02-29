@@ -54,13 +54,6 @@ public class ImageActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
         dataList = (GridView) findViewById(R.id.lvImage);
-
-        // Obtener todas las imagenes de la base de datos
-        final List<clsImage> images = ImageObj.getAll();
-        for(clsImage im : images){
-            ImageList.add(im);
-        }
-
         dataList.setRecyclerListener(new AbsListView.RecyclerListener() {
             @Override
             public void onMovedToScrapHeap(View view) {
@@ -75,6 +68,11 @@ public class ImageActivity extends AppCompatActivity {
             }
         });
 
+        // Obtener todas las imagenes de la base de datos
+        final List<clsImage> images = ImageObj.getAll();
+        for(clsImage im : images){
+            ImageList.add(im);
+        }
         adapter = new ImageItem_1(this, R.layout.list_item_image_1, ImageList);
         dataList.setAdapter(adapter);
         registerForContextMenu(dataList);

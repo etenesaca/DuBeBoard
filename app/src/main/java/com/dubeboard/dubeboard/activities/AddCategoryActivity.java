@@ -9,7 +9,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
@@ -24,6 +26,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dubeboard.dubeboard.ManageDB;
@@ -34,14 +38,26 @@ import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import com.dubeboard.dubeboard.*;
+import com.dubeboard.dubeboard.item.adapter.CategoryItem_1;
+import com.dubeboard.dubeboard.item.adapter.ImageItem_1;
+import com.dubeboard.dubeboard.item.adapter.ImageItem_3;
 
 
 public class AddCategoryActivity extends AppCompatActivity {
     Context Context = (Context) this;
+    clsCategory SelectedRecord;
 
     String imgDecodableString;
+    ArrayList<clsImage> ImageList = new ArrayList<clsImage>();
+    ImageItem_3 adapterImage;
+
+    Typeface Roboto_light;
+    Typeface Roboto_bold;
 
     private String APP_DIRECTORY = "myPictureApp/";
     private String MEDIA_DIRECTORY = APP_DIRECTORY + "media";
@@ -51,10 +67,14 @@ public class AddCategoryActivity extends AppCompatActivity {
     private final int SELECT_PICTURE = 200;
 
     clsCategory CategoryObj = new clsCategory(Context);
+    clsImage ImageObj = new clsImage(Context);
     EditText txtName;
     ImageView ivImage;
     TextView lblName;
     TextView lblImage;
+    TextView lblChildImages;
+    ListView lvImages;
+    LinearLayout lyChildImages;
     Button btnGallery;
     Button btnCamera;
 
@@ -73,14 +93,18 @@ public class AddCategoryActivity extends AppCompatActivity {
 
         lblName = (TextView) findViewById(R.id.lblName);
         lblImage = (TextView) findViewById(R.id.lblImage);
+        lblImage = (TextView) findViewById(R.id.lblImage);
+        lblChildImages = (TextView) findViewById(R.id.lblChildImages);
+        lvImages = (ListView) findViewById(R.id.lvImages);
+        lyChildImages = (LinearLayout) findViewById(R.id.lyChildImages);
         txtName = (EditText) findViewById(R.id.tvName);
         ivImage = (ImageView) findViewById(R.id.ivImage);
         btnGallery = (Button) findViewById(R.id.btnGallery);
         btnCamera = (Button) findViewById(R.id.btnCamera);
 
         // Establecer las fuentes
-        Typeface Roboto_light = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
-        Typeface Roboto_bold = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Bold.ttf");
+        Roboto_light = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
+        Roboto_bold = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Bold.ttf");
 
         lblName.setTypeface(Roboto_bold);
         lblImage.setTypeface(Roboto_bold);
@@ -98,6 +122,62 @@ public class AddCategoryActivity extends AppCompatActivity {
                 openCamera();
             }
         });
+
+        // Obtener los parametros que se le pasan
+        Bundle bundle = getIntent().getExtras();
+        if (!bundle.getString("current_id").equals("")){
+            LoadData Task = new LoadData(Integer.parseInt(bundle.getString("current_id") + ""));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                Task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            } else { Task.execute(); }
+        }
+        else{
+            lyChildImages.setVisibility(View.GONE);
+        }
+    }
+    /** Clase Asincrona para recuperar los datos del registro seleccionado **/
+    protected class LoadData extends AsyncTask<String, Void, HashMap<String, Object>> {
+        int RecordID;
+        public LoadData(int RecordID) {
+            this.RecordID = RecordID;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected HashMap<String, Object> doInBackground(String... params) {
+            SelectedRecord = new clsCategory(Context, RecordID);
+            HashMap<String, Object> res = new HashMap<String, Object>();
+            // Obtener la imagen
+            res.put("bmp", gl.build_image(Context, SelectedRecord.get_image()));
+            // Recuperar Imagenes reacionadas
+            for(clsImage im : SelectedRecord.getChildImages(Context)){
+                ImageList.add(im);
+            }
+            adapterImage = new ImageItem_3(Context, R.layout.list_item_image_3, ImageList);
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(HashMap<String, Object> res) {
+            super.onPostExecute(res);
+
+            txtName.setText(SelectedRecord.get_name());
+            ivImage.setImageBitmap((Bitmap) res.get("bmp"));
+            lvImages.setAdapter(adapterImage);
+            ListViewDinamicSize.getListViewSize(lvImages);
+
+            lyChildImages.setVisibility(View.VISIBLE);
+            lblChildImages.setTypeface(Roboto_bold);
+        }
     }
 
     private void openGallery() {
@@ -229,6 +309,13 @@ public class AddCategoryActivity extends AppCompatActivity {
                     startActivity(CategoryActivity);
                     return true;
                 }
+
+            case R.id.action_save_edit:
+                return true;
+            case R.id.action_delete:
+                CategoryObj.Delete(SelectedRecord.get_id());
+                finish();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -237,7 +324,11 @@ public class AddCategoryActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.add_category, menu);
+        if (SelectedRecord == null){
+            inflater.inflate(R.menu.add_category, menu);
+        } else {
+            inflater.inflate(R.menu.edit_category, menu);
+        }
         return true;
     }
 }

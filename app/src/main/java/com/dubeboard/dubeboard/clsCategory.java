@@ -171,6 +171,11 @@ public class clsCategory {
 
     // Delete
     public void Delete(int record_id) {
+        clsImage ImageObj = new clsImage(Context);
+        List<clsImage> ChildImages = ImageObj.getRecords(new Object[]{ManageDB.ColumnsImage.IMAGE_CATEGORY_ID, "=", record_id});
+        for (clsImage im : ChildImages){
+            ImageObj.Delete(im.get_id());
+        }
         SQLiteDatabase db = new ManageDB(Context).getWritableDatabase();
         db.delete(ManageDB.TABLE_CATEGORIES, ColumnsCategory.CATEGORY_ID + " = " + record_id, null);
         db.close();

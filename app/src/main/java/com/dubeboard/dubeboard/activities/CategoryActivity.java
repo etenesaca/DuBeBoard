@@ -18,7 +18,10 @@ import android.widget.TextView;
 
 import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsCategory;
+import com.dubeboard.dubeboard.clsImage;
 import com.dubeboard.dubeboard.item.adapter.CategoryItem_1;
+import com.dubeboard.dubeboard.activities.*;
+import com.dubeboard.dubeboard.item.adapter.ImageItem_1;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +37,11 @@ public class CategoryActivity extends AppCompatActivity {
     String[] menuItems = new String[]{"Editar", "Eliminar"};
 
     @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
@@ -44,9 +52,8 @@ public class CategoryActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent CategoryActivity = new Intent(com.dubeboard.dubeboard.activities.CategoryActivity.this, AddCategoryActivity.class);
+                Intent CategoryActivity = new Intent(CategoryActivity.this, AddCategoryActivity.class);
                 startActivity(CategoryActivity);
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
 
@@ -55,13 +62,15 @@ public class CategoryActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
         dataList = (GridView) findViewById(R.id.gvCategorias);
-
-        // Obtener todas las categorias de la base de datos
-        final List<clsCategory> Categories = CategoryObj.getAll();
-        for(clsCategory im : Categories){
-            CategoryList.add(im);
-        }
-
+        dataList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent CategoryActivity = new Intent(CategoryActivity.this, AddCategoryActivity.class);
+                clsCategory ItemSelected = adapter.getItem(position);
+                CategoryActivity.putExtra("current_id", ItemSelected.get_id() + "");
+                startActivity(CategoryActivity);
+            }
+        });
         dataList.setRecyclerListener(new AbsListView.RecyclerListener() {
             @Override
             public void onMovedToScrapHeap(View view) {
@@ -79,6 +88,11 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
+        // Obtener todas las categorias de la base de datos
+        final List<clsCategory> Categories = CategoryObj.getAll();
+        for(clsCategory im : Categories){
+            CategoryList.add(im);
+        }
         adapter = new CategoryItem_1(this, R.layout.list_item_category_1, CategoryList);
         dataList.setAdapter(adapter);
         registerForContextMenu(dataList);
