@@ -1,12 +1,15 @@
 package com.dubeboard.dubeboard.activities;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,6 +18,7 @@ import android.provider.MediaStore;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -46,6 +50,7 @@ import java.util.Locale;
 
 public class AddImageActivity extends AppCompatActivity {
     Context Context = (Context) this;
+    clsImage SelectedRecord;
 
     String imgDecodableString;
     TextToSpeech tts;
@@ -82,9 +87,6 @@ public class AddImageActivity extends AppCompatActivity {
         // Rescatamos el Action Bar y activamos el boton HomeActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
-        // Poner Titulo en la barra de direcciones
-        getSupportActionBar().setTitle("Agregar Categoría");
 
         lblName = (TextView) findViewById(R.id.lblName);
         lblCategory = (TextView) findViewById(R.id.lblCategory);
@@ -148,6 +150,56 @@ public class AddImageActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(Context,android.R.layout.simple_spinner_item, CategoryList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCategory.setAdapter(adapter);
+
+        // Obtener los parametros que se le pasan
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null && bundle.containsKey("current_id")){
+            getSupportActionBar().setTitle("Editar");
+            SelectedRecord = new clsImage();
+            LoadData Task = new LoadData(Integer.parseInt(bundle.getString("current_id") + ""));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                Task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            } else { Task.execute(); }
+        }
+        else{
+            SelectedRecord = null;
+            getSupportActionBar().setTitle("Agregar Imagen");
+        }
+    }
+
+    /** Clase Asincrona para recuperar los datos del registro seleccionado **/
+    protected class LoadData extends AsyncTask<String, Void, HashMap<String, Object>> {
+        int RecordID;
+        public LoadData(int RecordID) {
+            this.RecordID = RecordID;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected HashMap<String, Object> doInBackground(String... params) {
+            SelectedRecord = new clsImage(Context, RecordID);
+            HashMap<String, Object> res = new HashMap<String, Object>();
+            // Obtener la imagen
+            res.put("bmp", gl.build_image(Context, SelectedRecord.get_image()));
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(HashMap<String, Object> res) {
+            super.onPostExecute(res);
+
+            txtName.setText(SelectedRecord.get_name());
+            ivImage.setImageBitmap((Bitmap) res.get("bmp"));
+        }
     }
 
     private void openGallery() {
@@ -251,13 +303,15 @@ public class AddImageActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        final Intent ImageActivity = new Intent(AddImageActivity.this, ImageActivity.class);
+        String CategorySelected;
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;
             case R.id.action_save:
                 // Obtener la categoria sleccionada
-                String CategorySelected = spCategory.getSelectedItem() + "";
+                CategorySelected = spCategory.getSelectedItem() + "";
 
                 clsImage NewImage = new clsImage();
                 NewImage.set_name(txtName.getText().toString());
@@ -290,11 +344,40 @@ public class AddImageActivity extends AppCompatActivity {
 
                         // Crear una Imagen
                         ImageObj.AddRecord(NewImage);
-                        Intent CategoryActivity = new Intent(AddImageActivity.this, com.dubeboard.dubeboard.activities.ImageActivity.class);
-                        startActivity(CategoryActivity);
+                        startActivity(ImageActivity);
                         return true;
                     }
                 }
+            case R.id.action_save_edit:
+                ContentValues vals = new ContentValues();
+                vals.put(ManageDB.ColumnsImage.IMAGE_NAME, txtName.getText().toString());
+
+                // Obtener la categoria
+                CategorySelected = spCategory.getSelectedItem() + "";
+                vals.put(ManageDB.ColumnsImage.IMAGE_CATEGORY_ID, MapCategory.get(CategorySelected));
+
+                // Redimensionar imagen
+                ivImage.buildDrawingCache();
+                Bitmap bmp = ivImage.getDrawingCache();
+                bmp = gl.scaleDown(bmp, 512, true);
+                vals.put(ManageDB.ColumnsImage.IMAGE_IMAGE, gl.BitmaptoByteArray(bmp));
+
+                ImageObj.Update(SelectedRecord.get_id(), vals);
+                startActivity(ImageActivity);
+                finish();
+                return true;
+            case R.id.action_delete:
+                new AlertDialog.Builder(this)
+                        .setTitle("Eliminar Categoria")
+                        .setMessage("¿Seguro de Eliminar esta categoria?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                ImageObj.Delete(SelectedRecord.get_id());
+                                startActivity(ImageActivity);
+                                finish();
+                            }})
+                        .setNegativeButton(android.R.string.no, null).show();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -303,7 +386,11 @@ public class AddImageActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.category_menu_add, menu);
+        if (SelectedRecord == null){
+            inflater.inflate(R.menu.category_menu_add, menu);
+        } else {
+            inflater.inflate(R.menu.category_menu_edit, menu);
+        }
         return true;
     }
 }

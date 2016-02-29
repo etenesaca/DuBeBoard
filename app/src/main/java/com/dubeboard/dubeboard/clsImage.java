@@ -22,6 +22,13 @@ public class clsImage {
 
     public clsImage() { }
 
+    public clsImage(Context Context, int Category_ID) {
+        clsImage res_image = new clsImage(Context).getById(Category_ID);
+        this._id = res_image.get_id();
+        this._name = res_image.get_name();
+        this._image = res_image.get_image();
+    }
+
     public clsImage(Context Context) { this.Context = Context; }
 
     public clsImage(int _id, String _name, clsCategory _category, byte[] _image, byte[] _sound) {
@@ -94,7 +101,7 @@ public class clsImage {
     public clsImage getById(int Image_ID) {
         clsImage result = null;
         List<clsImage> Images = getRecords(Image_ID);
-        if (Images.size() > 1)
+        if (Images.size() > 0)
             result = Images.get(0);
         return result;
     }
@@ -103,9 +110,9 @@ public class clsImage {
     public List<clsImage> getAll() {
         return getRecords(new ArrayList<Object[]>());
     }
-    public List<clsImage> getRecords(int Category_ID) {
+    public List<clsImage> getRecords(int Image_ID) {
         List<Object[]> args = new ArrayList<Object[]>();
-        args.add(new Object[] {ManageDB.ColumnsCategory.CATEGORY_ID, "=", Category_ID});
+        args.add(new Object[] {ManageDB.ColumnsImage.IMAGE_ID, "=", Image_ID});
         return getRecords(args);
     }
     public List<clsImage> getRecords(Object[] arg) {

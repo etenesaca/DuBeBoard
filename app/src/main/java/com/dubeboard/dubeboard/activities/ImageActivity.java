@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.method.CharacterPickerDialog;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dubeboard.dubeboard.R;
+import com.dubeboard.dubeboard.clsCategory;
 import com.dubeboard.dubeboard.clsImage;
 import com.dubeboard.dubeboard.item.adapter.ImageItem_1;
 
@@ -31,6 +33,9 @@ public class ImageActivity extends AppCompatActivity {
     ImageItem_1 adapter;
     GridView dataList;
     String[] menuItems = new String[]{"Editar", "Eliminar"};
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +70,15 @@ public class ImageActivity extends AppCompatActivity {
                 tvCategory.setText(null);
                 ivImage.setImageBitmap(null);
                 ivImage.setImageDrawable(Context.getResources().getDrawable(R.drawable.img_def_48x48));
+            }
+        });
+        dataList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent ImageActivity = new Intent(ImageActivity.this, AddImageActivity.class);
+                clsImage ItemSelected = adapter.getItem(position);
+                ImageActivity.putExtra("current_id", ItemSelected.get_id() + "");
+                startActivity(ImageActivity);
             }
         });
 
