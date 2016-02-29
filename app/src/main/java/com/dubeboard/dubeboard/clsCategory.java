@@ -113,7 +113,7 @@ public class clsCategory {
         return getRecords(args);
     }
 
-    public List<clsCategory> getRecords(List<Object[]> args, String[] fields) {
+    public List<clsCategory> getRecords(List<Object[]> args) {
         List<clsCategory> RecordList = new ArrayList<clsCategory>();
         SQLiteDatabase db = new ManageDB(Context).getWritableDatabase();
         // Select All Query

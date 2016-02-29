@@ -1,6 +1,8 @@
 package com.dubeboard.dubeboard.activities;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -13,6 +15,7 @@ import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -81,9 +84,6 @@ public class AddCategoryActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        // Poner Titulo en la barra de direcciones
-        getSupportActionBar().setTitle("Agregar Categoría");
-
         lblName = (TextView) findViewById(R.id.lblName);
         lblImage = (TextView) findViewById(R.id.lblImage);
         lblImage = (TextView) findViewById(R.id.lblImage);
@@ -118,13 +118,17 @@ public class AddCategoryActivity extends AppCompatActivity {
 
         // Obtener los parametros que se le pasan
         Bundle bundle = getIntent().getExtras();
-        if (!bundle.getString("current_id").equals("")){
+        if (bundle != null && bundle.containsKey("current_id")){
+            getSupportActionBar().setTitle("Editar");
+            SelectedRecord = new clsCategory();
             LoadData Task = new LoadData(Integer.parseInt(bundle.getString("current_id") + ""));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                 Task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             } else { Task.execute(); }
         }
         else{
+            SelectedRecord = null;
+            getSupportActionBar().setTitle("Agregar Categoría");
             lyChildImages.setVisibility(View.GONE);
         }
     }
@@ -274,6 +278,7 @@ public class AddCategoryActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        final Intent CategoryActivity = new Intent(AddCategoryActivity.this, com.dubeboard.dubeboard.activities.CategoryActivity.class);
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
@@ -298,17 +303,36 @@ public class AddCategoryActivity extends AppCompatActivity {
 
                     // Crear una categoria
                     CategoryObj.AddRecord(NewCategory);
-                    Intent CategoryActivity = new Intent(AddCategoryActivity.this, com.dubeboard.dubeboard.activities.CategoryActivity.class);
                     startActivity(CategoryActivity);
                     return true;
                 }
 
             case R.id.action_save_edit:
-                return true;
-            case R.id.action_delete:
-                CategoryObj.Delete(SelectedRecord.get_id());
+                ContentValues vals = new ContentValues();
+                vals.put(ManageDB.ColumnsCategory.CATEGORY_NAME, txtName.getText().toString());
+
+                // Redimensionar imagen
+                ivImage.buildDrawingCache();
+                Bitmap bmp = ivImage.getDrawingCache();
+                bmp = gl.scaleDown(bmp, 512, true);
+                vals.put(ManageDB.ColumnsCategory.CATEGORY_IMAGE, gl.BitmaptoByteArray(bmp));
+
+                CategoryObj.Update(SelectedRecord.get_id(), vals);
+                startActivity(CategoryActivity);
                 finish();
                 return true;
+            case R.id.action_delete:
+                new AlertDialog.Builder(this)
+                        .setTitle("Eliminar Categoria")
+                        .setMessage("¿Seguro de Eliminar esta categoria?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                CategoryObj.Delete(SelectedRecord.get_id());
+                                startActivity(CategoryActivity);
+                                finish();
+                            }})
+                        .setNegativeButton(android.R.string.no, null).show();
             default:
                 return super.onOptionsItemSelected(item);
         }
