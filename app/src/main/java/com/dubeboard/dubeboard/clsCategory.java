@@ -112,7 +112,8 @@ public class clsCategory {
         args.add(new Object[] {arg[0], arg[1], arg[2]});
         return getRecords(args);
     }
-    public List<clsCategory> getRecords(List<Object[]> args) {
+
+    public List<clsCategory> getRecords(List<Object[]> args, String[] fields) {
         List<clsCategory> RecordList = new ArrayList<clsCategory>();
         SQLiteDatabase db = new ManageDB(Context).getWritableDatabase();
         // Select All Query
@@ -160,13 +161,9 @@ public class clsCategory {
     }
 
     // Update
-    public int Update(clsCategory NewValues) {
+    public int Update(int record_id, ContentValues values) {
         SQLiteDatabase db = new ManageDB(Context).getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(ColumnsCategory.CATEGORY_NAME, NewValues.get_name());
-        values.put(ColumnsCategory.CATEGORY_IMAGE, NewValues.get_image());
-        return db.update(ManageDB.TABLE_CATEGORIES, values, ColumnsCategory.CATEGORY_ID + " = " + NewValues.get_id(), null);
+        return db.update(ManageDB.TABLE_CATEGORIES, values, ColumnsCategory.CATEGORY_ID + " = " + record_id, null);
     }
 
     // Delete
@@ -176,9 +173,7 @@ public class clsCategory {
         for (clsImage im : ChildImages){
             ImageObj.Delete(im.get_id());
         }
-        SQLiteDatabase db = new ManageDB(Context).getWritableDatabase();
-        db.delete(ManageDB.TABLE_CATEGORIES, ColumnsCategory.CATEGORY_ID + " = " + record_id, null);
-        db.close();
+        ManageDB.DeleteRecord(Context, ManageDB.TABLE_CATEGORIES, record_id);
     }
 
     // Count Records

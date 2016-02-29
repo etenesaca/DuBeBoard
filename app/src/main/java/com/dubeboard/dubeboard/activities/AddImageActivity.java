@@ -1,8 +1,6 @@
 package com.dubeboard.dubeboard.activities;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -305,7 +303,7 @@ public class AddImageActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.add_category, menu);
+        inflater.inflate(R.menu.category_menu_add, menu);
         return true;
     }
 }

@@ -18,10 +18,7 @@ import android.widget.TextView;
 
 import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsCategory;
-import com.dubeboard.dubeboard.clsImage;
 import com.dubeboard.dubeboard.item.adapter.CategoryItem_1;
-import com.dubeboard.dubeboard.activities.*;
-import com.dubeboard.dubeboard.item.adapter.ImageItem_1;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,11 +32,6 @@ public class CategoryActivity extends AppCompatActivity {
     CategoryItem_1 adapter;
     GridView dataList;
     String[] menuItems = new String[]{"Editar", "Eliminar"};
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

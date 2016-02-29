@@ -7,11 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ManageDB extends SQLiteOpenHelper {
     // Database Version
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
     // Database Name
     private static final String DATABASE_NAME = "dubeboard_db";
 
@@ -72,5 +73,12 @@ public class ManageDB extends SQLiteOpenHelper {
 
         // Create tables again
         onCreate(db);
+    }
+
+    // Metodo para eliminar un registro de la base de datos
+    public static void DeleteRecord(Context context, String TableName, int record_id) {
+        SQLiteDatabase db = new ManageDB(context).getWritableDatabase();
+        db.delete(TableName, "id" + " = " + record_id, null);
+        db.close();
     }
 }

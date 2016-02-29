@@ -1,15 +1,11 @@
 package com.dubeboard.dubeboard.activities;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -40,11 +36,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import com.dubeboard.dubeboard.*;
-import com.dubeboard.dubeboard.item.adapter.CategoryItem_1;
-import com.dubeboard.dubeboard.item.adapter.ImageItem_1;
 import com.dubeboard.dubeboard.item.adapter.ImageItem_3;
 
 
@@ -325,9 +318,9 @@ public class AddCategoryActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         if (SelectedRecord == null){
-            inflater.inflate(R.menu.add_category, menu);
+            inflater.inflate(R.menu.category_menu_add, menu);
         } else {
-            inflater.inflate(R.menu.edit_category, menu);
+            inflater.inflate(R.menu.category_menu_edit, menu);
         }
         return true;
     }

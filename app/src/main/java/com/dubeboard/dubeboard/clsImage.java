@@ -165,13 +165,9 @@ public class clsImage {
     }
 
     // Update
-    public int Update(clsImage NewValues) {
+    public int Update(int record_id, ContentValues values) {
         SQLiteDatabase db = new ManageDB(Context).getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(ManageDB.ColumnsImage.IMAGE_NAME, NewValues.get_name());
-        values.put(ManageDB.ColumnsImage.IMAGE_IMAGE, NewValues.get_image());
-        return db.update(ManageDB.TABLE_IMAGE, values, ManageDB.ColumnsImage.IMAGE_ID + " = " + NewValues.get_id(), null);
+        return db.update(ManageDB.TABLE_IMAGE, values, ManageDB.ColumnsImage.IMAGE_ID + " = " + record_id, null);
     }
 
     // Delete
