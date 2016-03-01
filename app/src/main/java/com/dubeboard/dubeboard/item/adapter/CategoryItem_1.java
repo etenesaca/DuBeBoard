@@ -2,8 +2,10 @@ package com.dubeboard.dubeboard.item.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -97,9 +99,13 @@ public class CategoryItem_1 extends ArrayAdapter<clsCategory> {
         @Override
         protected void onPostExecute(HashMap<String, Object> res) {
             super.onPostExecute(res);
+            Context ctx = (Context) context;
+            Typeface Roboto_bold = Typeface.createFromAsset(ctx.getAssets(), "fonts/Roboto-Bold.ttf");
+            Typeface Roboto_light = Typeface.createFromAsset(ctx.getAssets(), "fonts/Roboto-Light.ttf");
 
             v.txtTitle.setText(Record.get_name());
             v.txtTitle.setVisibility(View.VISIBLE);
+            v.txtTitle.setTypeface(Roboto_light);
             v.txtCount.setText(res.get("num_images") + "");
             v.txtCount.setVisibility(View.VISIBLE);
             v.imgIcon.setScaleType(ImageView.ScaleType.CENTER_CROP);

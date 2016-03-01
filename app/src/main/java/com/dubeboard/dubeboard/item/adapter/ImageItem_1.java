@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
@@ -121,10 +122,16 @@ public class ImageItem_1 extends ArrayAdapter<clsImage> {
         protected void onPostExecute(HashMap<String, Object> res) {
             super.onPostExecute(res);
 
+            Context ctx = (Context) context;
+            Typeface Roboto_bold = Typeface.createFromAsset(ctx.getAssets(), "fonts/Roboto-Bold.ttf");
+            Typeface Roboto_light = Typeface.createFromAsset(ctx.getAssets(), "fonts/Roboto-Light.ttf");
+
             v.tvName.setText(Record.get_name());
             v.tvName.setVisibility(View.VISIBLE);
+            v.tvName.setTypeface(Roboto_light);
             v.tvCategory.setText(Record.get_category().get_name());
             v.tvCategory.setVisibility(View.VISIBLE);
+            v.tvCategory.setTypeface(Roboto_bold);
             v.ivImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
             v.ivImage.setImageBitmap((Bitmap) res.get("bmp"));
         }
