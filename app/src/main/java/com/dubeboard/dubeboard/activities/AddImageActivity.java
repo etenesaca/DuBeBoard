@@ -160,6 +160,7 @@ public class AddImageActivity extends AppCompatActivity {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                 Task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             } else { Task.execute(); }
+            btnGallery.requestFocus();
         }
         else{
             SelectedRecord = null;
@@ -190,6 +191,7 @@ public class AddImageActivity extends AppCompatActivity {
             HashMap<String, Object> res = new HashMap<String, Object>();
             // Obtener la imagen
             res.put("bmp", gl.build_image(Context, SelectedRecord.get_image()));
+            res.put("category_index", gl.getIndexSpinner(spCategory, SelectedRecord.get_category().get_name()));
             return res;
         }
 
@@ -199,8 +201,11 @@ public class AddImageActivity extends AppCompatActivity {
 
             txtName.setText(SelectedRecord.get_name());
             ivImage.setImageBitmap((Bitmap) res.get("bmp"));
+            spCategory.setSelection(Integer.parseInt(res.get("category_index") + ""));
         }
     }
+
+
 
     private void openGallery() {
         startActivityForResult(

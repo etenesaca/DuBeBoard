@@ -125,6 +125,7 @@ public class AddCategoryActivity extends AppCompatActivity {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                 Task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             } else { Task.execute(); }
+            btnGallery.requestFocus();
         }
         else{
             SelectedRecord = null;

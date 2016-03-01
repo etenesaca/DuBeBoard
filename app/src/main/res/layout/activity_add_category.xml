@@ -81,7 +81,8 @@
                     android:layout_height="220dp"
                     android:id="@+id/ivImage"
                     android:src="@drawable/img_def"
-                    android:layout_weight="0.25" />
+                    android:layout_weight="0.25"
+                    android:focusable="true" />
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -94,7 +95,9 @@
                         android:layout_height="wrap_content"
                         android:text="Galeria"
                         android:drawableLeft="@drawable/ic_image_18pt"
-                        android:id="@+id/btnGallery" />
+                        android:id="@+id/btnGallery"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true" />
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

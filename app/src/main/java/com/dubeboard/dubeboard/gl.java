@@ -3,6 +3,7 @@ package com.dubeboard.dubeboard;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.widget.Spinner;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -43,5 +44,15 @@ public class gl {
             bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.image_def_128);
         }
         return bmp;
+    }
+
+    public static int getIndexSpinner(Spinner spinner, String myString){
+        int index = 0;
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).equals(myString)){
+                index = i;
+            }
+        }
+        return index;
     }
 }

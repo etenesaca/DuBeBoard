@@ -27,6 +27,7 @@ public class clsImage {
         this._id = res_image.get_id();
         this._name = res_image.get_name();
         this._image = res_image.get_image();
+        this._category = res_image.get_category();
     }
 
     public clsImage(Context Context) { this.Context = Context; }
