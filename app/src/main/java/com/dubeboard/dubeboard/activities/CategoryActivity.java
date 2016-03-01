@@ -1,7 +1,11 @@
 package com.dubeboard.dubeboard.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -16,11 +20,16 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dubeboard.dubeboard.ListViewDinamicSize;
 import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsCategory;
+import com.dubeboard.dubeboard.clsImage;
+import com.dubeboard.dubeboard.gl;
 import com.dubeboard.dubeboard.item.adapter.CategoryItem_1;
+import com.dubeboard.dubeboard.item.adapter.ImageItem_3;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -80,14 +89,52 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
-        // Obtener todas las categorias de la base de datos
-        final List<clsCategory> Categories = CategoryObj.getAll();
-        for(clsCategory im : Categories){
-            CategoryList.add(im);
-        }
-        adapter = new CategoryItem_1(this, R.layout.list_item_category_1, CategoryList);
-        dataList.setAdapter(adapter);
+        LoadCategories Task = new LoadCategories();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            Task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } else { Task.execute(); }
         registerForContextMenu(dataList);
+    }
+
+    protected class LoadCategories extends AsyncTask<String, Void, HashMap<String, Object>> {
+        ProgressDialog pDialog;
+
+        public LoadCategories() { }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Context ctx = (Context) Context;
+
+            pDialog = new ProgressDialog(CategoryActivity.this);
+            pDialog.setMessage("Cargando Datos");
+            pDialog.setCancelable(false);
+            pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pDialog.show();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected HashMap<String, Object> doInBackground(String... params) {
+            // Obtener todas las categorias de la base de datos
+            final List<clsCategory> Categories = CategoryObj.getAll();
+            for(clsCategory im : Categories){
+                CategoryList.add(im);
+            }
+            adapter = new CategoryItem_1(Context, R.layout.list_item_category_1, CategoryList);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(HashMap<String, Object> res) {
+            super.onPostExecute(res);
+            dataList.setAdapter(adapter);
+            pDialog.dismiss();
+        }
     }
 
     @Override

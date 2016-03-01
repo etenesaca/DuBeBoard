@@ -305,9 +305,8 @@ public class AddCategoryActivity extends AppCompatActivity {
                     // Crear una categoria
                     CategoryObj.AddRecord(NewCategory);
                     startActivity(CategoryActivity);
-                    return true;
                 }
-
+                return true;
             case R.id.action_save_edit:
                 ContentValues vals = new ContentValues();
                 vals.put(ManageDB.ColumnsCategory.CATEGORY_NAME, txtName.getText().toString());
