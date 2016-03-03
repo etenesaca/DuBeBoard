@@ -1,15 +1,13 @@
 package com.dubeboard.dubeboard.activities;
 
-import android.content.ContentValues;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -17,15 +15,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
-import com.dubeboard.dubeboard.ManageDB;
 import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsCategory;
 import com.dubeboard.dubeboard.clsImage;
 import com.dubeboard.dubeboard.gl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class SettingsActivity extends AppCompatActivity {
     Context Context = (Context) this;
@@ -183,6 +180,88 @@ public class SettingsActivity extends AppCompatActivity {
         ImageObj.AddRecord("Hospital", R.drawable.zi_hospital, CatID);
     }
 
+    // Categoria CUERPO
+    void Create_Cuerpo(){
+        int CatID = CategoryObj.AddRecord("Partes del Cuerpo", R.drawable.zc_cuerpo);
+        ImageObj.AddRecord("Ojo", R.drawable.zi_ojo, CatID);
+        ImageObj.AddRecord("Pies", R.drawable.zi_pies, CatID);
+        ImageObj.AddRecord("Piernas", R.drawable.zi_piernas, CatID);
+        ImageObj.AddRecord("Espalda", R.drawable.zi_espalda, CatID);
+        ImageObj.AddRecord("Labios", R.drawable.zi_labios, CatID);
+        ImageObj.AddRecord("Manos", R.drawable.zi_manos, CatID);
+        ImageObj.AddRecord("Pecho", R.drawable.zi_pecho, CatID);
+        ImageObj.AddRecord("Nariz", R.drawable.zi_nariz, CatID);
+        ImageObj.AddRecord("Cuello", R.drawable.zi_cuello, CatID);
+        ImageObj.AddRecord("Dientes", R.drawable.zi_dientes, CatID);
+        ImageObj.AddRecord("Lengua", R.drawable.zi_lengua, CatID);
+        ImageObj.AddRecord("Rodilla", R.drawable.zi_rodilla, CatID);
+        ImageObj.AddRecord("Brazo", R.drawable.zi_brazo, CatID);
+        ImageObj.AddRecord("Oreja", R.drawable.zi_oreja, CatID);
+        ImageObj.AddRecord("Cabello", R.drawable.zi_cabello, CatID);
+        ImageObj.AddRecord("Estomago", R.drawable.zi_estomago, CatID);
+    }
+
+    // Categoria POSTRES
+    void Create_Postres(){
+        int CatID = CategoryObj.AddRecord("Postres", R.drawable.zc_postre);
+        ImageObj.AddRecord("Postre", R.drawable.zc_postre, CatID);
+        ImageObj.AddRecord("Chocolate", R.drawable.zi_chocolate, CatID);
+        ImageObj.AddRecord("Galeltas", R.drawable.zi_galleta, CatID);
+        ImageObj.AddRecord("Pastel", R.drawable.zi_pastel, CatID);
+        ImageObj.AddRecord("Brawonie", R.drawable.zi_brownie, CatID);
+        ImageObj.AddRecord("Tarta", R.drawable.zi_tarta, CatID);
+        ImageObj.AddRecord("Gelatina", R.drawable.zi_gelatina, CatID);
+        ImageObj.AddRecord("Chicle", R.drawable.zi_chicle, CatID);
+        ImageObj.AddRecord("Dulces", R.drawable.zi_dulces, CatID);
+    }
+
+    // Categoria POSTRES
+    void Create_Verbos(){
+        int Img = R.drawable.image_def_128;
+        int CatID = CategoryObj.AddRecord("Verbos", Img);
+        ImageObj.AddRecord("Estar", Img, CatID);
+        ImageObj.AddRecord("Ser", Img, CatID);
+        ImageObj.AddRecord("Ver", Img, CatID);
+        ImageObj.AddRecord("Oir", Img, CatID);
+        ImageObj.AddRecord("Despertar", Img, CatID);
+        ImageObj.AddRecord("Jugar", Img, CatID);
+        ImageObj.AddRecord("Meter", Img, CatID);
+        ImageObj.AddRecord("Romper", Img, CatID);
+        ImageObj.AddRecord("Pintar", Img, CatID);
+        ImageObj.AddRecord("Tener", Img, CatID);
+        ImageObj.AddRecord("Sentir", Img, CatID);
+        ImageObj.AddRecord("Tocar", Img, CatID);
+        ImageObj.AddRecord("Buscar", Img, CatID);
+        ImageObj.AddRecord("Olvidar", Img, CatID);
+        ImageObj.AddRecord("Cortar", Img, CatID);
+        ImageObj.AddRecord("Amar", Img, CatID);
+        ImageObj.AddRecord("Coger", Img, CatID);
+        ImageObj.AddRecord("Ir", Img, CatID);
+        ImageObj.AddRecord("Venir", Img, CatID);
+        ImageObj.AddRecord("Cerrar", Img, CatID);
+        ImageObj.AddRecord("Caer", Img, CatID);
+        ImageObj.AddRecord("Traer", Img, CatID);
+        ImageObj.AddRecord("Llevar", Img, CatID);
+        ImageObj.AddRecord("Ayudar", Img, CatID);
+        ImageObj.AddRecord("Dar", Img, CatID);
+        ImageObj.AddRecord("Recibir", Img, CatID);
+        ImageObj.AddRecord("Querer", Img, CatID);
+        ImageObj.AddRecord("Dormir", Img, CatID);
+        ImageObj.AddRecord("Comer", Img, CatID);
+        ImageObj.AddRecord("Beber", Img, CatID);
+        ImageObj.AddRecord("Hablar", Img, CatID);
+        ImageObj.AddRecord("Estudiar", Img, CatID);
+        ImageObj.AddRecord("Pensar", Img, CatID);
+        ImageObj.AddRecord("Nadar", Img, CatID);
+        ImageObj.AddRecord("Sentar", Img, CatID);
+        ImageObj.AddRecord("Parar", Img, CatID);
+        ImageObj.AddRecord("Correr", Img, CatID);
+        ImageObj.AddRecord("Caminar", Img, CatID);
+        ImageObj.AddRecord("Puner", Img, CatID);
+        ImageObj.AddRecord("Necesitar", Img, CatID);
+
+    }
+
     void LoadDefData(){
         Create_Animales();
         Create_Cocina();
@@ -191,12 +270,39 @@ public class SettingsActivity extends AppCompatActivity {
         Create_Escuela();
         Create_Hogar();
         Create_Lugares();
+        Create_Cuerpo();
+        Create_Postres();
+        Create_Verbos();
+    }
+    protected class LoadData extends AsyncTask<String, Void, String> {
+        ProgressDialog pDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = ProgressDialog.show(SettingsActivity.this, "", "Cargando Datos");
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            LoadDefData();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String res) {
+            super.onPostExecute(res);
+            pDialog.dismiss();
+        }
     }
 
     View.OnClickListener LoadDefDataHandler = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            LoadDefData();
+            LoadData Task = new LoadData();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                Task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            } else { Task.execute(); }
         }
     };
 

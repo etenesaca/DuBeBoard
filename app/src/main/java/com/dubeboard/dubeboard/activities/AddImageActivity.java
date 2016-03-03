@@ -205,8 +205,6 @@ public class AddImageActivity extends AppCompatActivity {
         }
     }
 
-
-
     private void openGallery() {
         startActivityForResult(
                 Intent.createChooser(new Intent(Intent.ACTION_GET_CONTENT).setType("image/*"), "Seleccione la imagen"), SELECT_PICTURE

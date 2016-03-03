@@ -47,7 +47,8 @@ public class ImageItem_1 extends ArrayAdapter<clsImage> {
         final clsImage Record = data.get(position);
 
         if (convertView == null) {
-            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+            //LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(layoutResourceId, null);
 
             holder = new ViewHolder();
