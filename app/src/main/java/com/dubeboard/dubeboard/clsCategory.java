@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +89,25 @@ public class clsCategory {
         db.insert(ManageDB.TABLE_CATEGORIES, null, values);
         db.close();
     }
+    public int AddRecord(String Name, int intImg) {
+        clsCategory record = getByName(Name);
+        Bitmap bmp = BitmapFactory.decodeResource(Context.getResources(), intImg);
+        bmp = gl.scaleDown(bmp, 4, true);
+        byte[] Img = gl.BitmaptoByteArray(bmp);
+
+        if (record == null) {
+            clsCategory NewRecord = new clsCategory();
+            NewRecord.set_name(Name);
+            NewRecord.set_image(Img);
+            AddRecord(NewRecord);
+            record = getByName(Name);
+        } else {
+            ContentValues vals = new ContentValues();
+            vals.put(ColumnsCategory.CATEGORY_IMAGE, Img);
+            Update(record.get_id(), vals);
+        }
+        return record.get_id();
+    }
 
     // Obtener una Categoria
     public clsCategory getById(int Category_ID) {
@@ -94,6 +115,16 @@ public class clsCategory {
         List<clsCategory> Categories = getRecords(Category_ID);
         if (Categories.size() > 0)
             result = Categories.get(0);
+        return result;
+    }
+    public clsCategory getByName(String Name) {
+        clsCategory result = null;
+        List<Object[]> args = new ArrayList<Object[]>();
+        args.add(new Object[]{ColumnsCategory.CATEGORY_NAME, "=", Name});
+        List<clsCategory> res =  getRecords(args);
+        if ( res.size() > 0){
+            result = res.get(0);
+        }
         return result;
     }
 

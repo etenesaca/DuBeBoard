@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +85,29 @@ public class clsImage {
         this._sound = _sound;
     }
 
+    public int AddRecord(String Name, int intImg, int CategoryID) {
+        clsImage record = getByName(Name);
+        Bitmap bmp = BitmapFactory.decodeResource(Context.getResources(), intImg);
+        bmp = gl.scaleDown(bmp, 512, true);
+        byte[] Img = gl.BitmaptoByteArray(bmp);
+        clsCategory NewCategory =  new clsCategory(Context, CategoryID);
+
+        if (record == null){
+            clsImage NewRecord = new clsImage();
+            NewRecord.set_name(Name);
+            NewRecord.set_category(NewCategory);
+            NewRecord.set_image(Img);
+            AddRecord(NewRecord);
+            record = getByName(Name);
+        } else {
+            ContentValues vals = new ContentValues();
+            vals.put(ManageDB.ColumnsImage.IMAGE_IMAGE, Img);
+            vals.put(ManageDB.ColumnsImage.IMAGE_CATEGORY_ID, NewCategory.get_id());
+            Update(record.get_id(), vals);
+        }
+        return record.get_id();
+    }
+
     public void AddRecord(clsImage NewRecord) {
         SQLiteDatabase db = new ManageDB(Context).getWritableDatabase();
         // Armar el Insert
@@ -104,6 +128,16 @@ public class clsImage {
         List<clsImage> Images = getRecords(Image_ID);
         if (Images.size() > 0)
             result = Images.get(0);
+        return result;
+    }
+    public clsImage getByName(String Name) {
+        clsImage result = null;
+        List<Object[]> args = new ArrayList<Object[]>();
+        args.add(new Object[]{ManageDB.ColumnsImage.IMAGE_NAME, "=", Name});
+        List<clsImage> res =  getRecords(args);
+        if ( res.size() > 0){
+            result = res.get(0);
+        }
         return result;
     }
 

@@ -41,7 +41,7 @@ public class ImageItem_2 extends ArrayAdapter<clsImage> {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         clsImage Record = data.get(position);
-
+        /*
         if (convertView == null) {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             convertView = inflater.inflate(layoutResourceId, null);
@@ -53,6 +53,14 @@ public class ImageItem_2 extends ArrayAdapter<clsImage> {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+        */
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        convertView = inflater.inflate(layoutResourceId, null);
+
+        holder = new ViewHolder();
+        holder.txtTitle = (TextView) convertView.findViewById(R.id.txtTitle);
+        holder.imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
+        convertView.setTag(holder);
 
         // Ejecutar la Tarea de acuerdo a la version de Android
         LoadView Task = new LoadView(convertView, Record);

@@ -392,9 +392,9 @@ public class AddImageActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         if (SelectedRecord == null){
-            inflater.inflate(R.menu.category_menu_add, menu);
+            inflater.inflate(R.menu.menu_add, menu);
         } else {
-            inflater.inflate(R.menu.category_menu_edit, menu);
+            inflater.inflate(R.menu.menu_edit, menu);
         }
         return true;
     }

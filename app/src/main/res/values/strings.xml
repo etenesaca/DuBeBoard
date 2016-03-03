@@ -16,4 +16,5 @@
     <string name="btnSave">Guardar</string>
     <string name="btnDelete">Eliminar</string>
     <string name="title_activity_image">Imágenes</string>
+    <string name="title_activity_settings">SettingsActivity</string>
 </resources>

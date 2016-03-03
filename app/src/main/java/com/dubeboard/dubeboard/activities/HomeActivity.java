@@ -227,7 +227,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_man_image) {
             Intent ImageAcivity = new Intent(HomeActivity.this, ImageActivity.class);
             startActivity(ImageAcivity);
-        } else if (id == R.id.nav_Exit) {
+        } else if (id == R.id.nav_settings) {
+            Intent SettingsActivity = new Intent(HomeActivity.this, SettingsActivity.class);
+            startActivity(SettingsActivity);
+        }else if (id == R.id.nav_Exit) {
             finish();
         }
 
