@@ -41,7 +41,6 @@ public class ImageItem_2 extends ArrayAdapter<clsImage> {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         clsImage Record = data.get(position);
-        /*
         if (convertView == null) {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             convertView = inflater.inflate(layoutResourceId, null);
@@ -53,7 +52,7 @@ public class ImageItem_2 extends ArrayAdapter<clsImage> {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        */
+
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         convertView = inflater.inflate(layoutResourceId, null);
 
@@ -106,6 +105,9 @@ public class ImageItem_2 extends ArrayAdapter<clsImage> {
         @Override
         protected void onPostExecute(HashMap<String, Object> res) {
             super.onPostExecute(res);
+
+            //v.txtTitle = (TextView) convertView.findViewById(R.id.txtTitle);
+            //v.imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
 
             v.txtTitle.setText(Record.get_name());
             v.txtTitle.setVisibility(View.VISIBLE);

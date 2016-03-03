@@ -24,19 +24,6 @@
         android:layout_gravity="bottom"
         android:text="Título" />
 
-    <TextView
-        android:id="@+id/tvCategory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="bottom"
-        android:maxLines="1"
-        android:padding="12dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        android:textColor="@android:color/white"
-        android:background="@color/background_footer"
-        android:layout_gravity="center_horizontal|top"
-        android:text="Título" />
-
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

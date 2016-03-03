@@ -51,7 +51,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     // Categoria Animales
     void Create_Animales(){
-        //Bitmap bmp = BitmapFactory.decodeResource(Context.getResources(), R.drawable.zc_animales);
         int CatID = CategoryObj.AddRecord("Animales", R.drawable.zc_animales);
         ImageObj.AddRecord("Perro", R.drawable.zi_perro, CatID);
         ImageObj.AddRecord("Gato", R.drawable.zi_gato, CatID);
@@ -77,8 +76,24 @@ public class SettingsActivity extends AppCompatActivity {
         ImageObj.AddRecord("Pantera", R.drawable.zi_pantera, CatID);
 
     }
+
+    // Categoria COCINA
+    void Create_Cocina(){
+        int CatID = CategoryObj.AddRecord("Cocina", R.drawable.zc_cocina);
+        ImageObj.AddRecord("Vaso", R.drawable.zi_vaso, CatID);
+        ImageObj.AddRecord("Plato", R.drawable.zi_plato, CatID);
+        ImageObj.AddRecord("Servilleta", R.drawable.zi_servilleta, CatID);
+        ImageObj.AddRecord("Tenedor", R.drawable.zi_tenedor, CatID);
+        ImageObj.AddRecord("Taza", R.drawable.zi_taza, CatID);
+        ImageObj.AddRecord("Salero", R.drawable.zi_salero, CatID);
+        ImageObj.AddRecord("Cuchillo", R.drawable.zi_cuchillo, CatID);
+        ImageObj.AddRecord("Cuchara", R.drawable.zi_cuchara, CatID);
+
+    }
+
     void LoadDefData(){
         Create_Animales();
+        Create_Cocina();
     }
 
     View.OnClickListener LoadDefDataHandler = new View.OnClickListener() {
