@@ -74,7 +74,6 @@ public class SettingsActivity extends AppCompatActivity {
         ImageObj.AddRecord("Lobo", R.drawable.zi_lobo, CatID);
         ImageObj.AddRecord("Jaguar", R.drawable.zi_jaguar, CatID);
         ImageObj.AddRecord("Pantera", R.drawable.zi_pantera, CatID);
-
     }
 
     // Categoria COCINA
@@ -88,12 +87,110 @@ public class SettingsActivity extends AppCompatActivity {
         ImageObj.AddRecord("Salero", R.drawable.zi_salero, CatID);
         ImageObj.AddRecord("Cuchillo", R.drawable.zi_cuchillo, CatID);
         ImageObj.AddRecord("Cuchara", R.drawable.zi_cuchara, CatID);
+    }
 
+    // Categoria COMIDA
+    void Create_Comida(){
+        int CatID = CategoryObj.AddRecord("Comida", R.drawable.zc_comida);
+        ImageObj.AddRecord("Sanduche", R.drawable.zi_sanduche, CatID);
+        ImageObj.AddRecord("Café", R.drawable.zi_cafe, CatID);
+        ImageObj.AddRecord("Pan", R.drawable.zi_pan, CatID);
+        ImageObj.AddRecord("Verduras", R.drawable.zi_verduras, CatID);
+        ImageObj.AddRecord("Fruta", R.drawable.zi_fruta, CatID);
+        ImageObj.AddRecord("Leche", R.drawable.zi_leche, CatID);
+        ImageObj.AddRecord("Pescado", R.drawable.zi_pescado, CatID);
+        ImageObj.AddRecord("Huevo", R.drawable.zi_huevo, CatID);
+        ImageObj.AddRecord("Carne", R.drawable.zi_carne, CatID);
+        ImageObj.AddRecord("Pollo", R.drawable.zi_pollo, CatID);
+        ImageObj.AddRecord("Sopa", R.drawable.zi_sopa, CatID);
+        ImageObj.AddRecord("Jugo", R.drawable.zi_jugo, CatID);
+        ImageObj.AddRecord("Tortilla", R.drawable.zi_tortilla, CatID);
+        ImageObj.AddRecord("Fréjol", R.drawable.zi_frejol, CatID);
+    }
+
+    // Categoria COSAS
+    void Create_Cosas(){
+        int CatID = CategoryObj.AddRecord("Cosas", R.drawable.zc_cosas);
+        ImageObj.AddRecord("Juguete", R.drawable.zi_juguete, CatID);
+        ImageObj.AddRecord("Reloj", R.drawable.zi_reloj, CatID);
+        ImageObj.AddRecord("Celular", R.drawable.zi_celular, CatID);
+        ImageObj.AddRecord("Peine", R.drawable.zi_peine, CatID);
+        ImageObj.AddRecord("Jabón", R.drawable.zi_jabon, CatID);
+        ImageObj.AddRecord("Almohada", R.drawable.zi_almohadas, CatID);
+        ImageObj.AddRecord("Radio", R.drawable.zi_radio, CatID);
+        ImageObj.AddRecord("Televisor", R.drawable.zi_televisor, CatID);
+        ImageObj.AddRecord("Botella", R.drawable.zi_botella, CatID);
+        ImageObj.AddRecord("Silla de ruedas", R.drawable.zi_silla_de_ruedas, CatID);
+        ImageObj.AddRecord("Computador", R.drawable.zi_computador, CatID);
+        ImageObj.AddRecord("Tableta", R.drawable.zi_tablet, CatID);
+        ImageObj.AddRecord("Desodorante", R.drawable.zi_desodorante, CatID);
+    }
+
+    // Categoria ESCUELA
+    void Create_Escuela(){
+        int CatID = CategoryObj.AddRecord("Escuela", R.drawable.zc_escuelaprincipal);
+        ImageObj.AddRecord("Escuela", R.drawable.zi_escuela, CatID);
+        ImageObj.AddRecord("Regla", R.drawable.zi_regla, CatID);
+        ImageObj.AddRecord("Tarea", R.drawable.zi_tarea, CatID);
+        ImageObj.AddRecord("Pinturas", R.drawable.zi_pinturas, CatID);
+        ImageObj.AddRecord("Papel", R.drawable.zi_papel, CatID);
+        ImageObj.AddRecord("Borrador", R.drawable.zi_borrador, CatID);
+        ImageObj.AddRecord("Libros", R.drawable.zi_libros, CatID);
+        ImageObj.AddRecord("Lápiz", R.drawable.zi_lapiz, CatID);
+        ImageObj.AddRecord("Cuaderno", R.drawable.zi_cuaderno, CatID);
+        ImageObj.AddRecord("Pizarrón", R.drawable.zi_pizarron, CatID);
+        ImageObj.AddRecord("Tijeras", R.drawable.zi_tijeras, CatID);
+        ImageObj.AddRecord("Mochila", R.drawable.zi_mochila, CatID);
+        ImageObj.AddRecord("Goma", R.drawable.zi_goma, CatID);
+    }
+
+    // Categoria HOGAR
+    void Create_Hogar(){
+        int CatID = CategoryObj.AddRecord("Hogar", R.drawable.zc_casahogar);
+        ImageObj.AddRecord("Hogar", R.drawable.zc_casahogar, CatID);
+        ImageObj.AddRecord("Baño", R.drawable.zi_banio, CatID);
+        ImageObj.AddRecord("Dormitorio", R.drawable.zi_dormitorio, CatID);
+        ImageObj.AddRecord("Cama", R.drawable.zi_cama, CatID);
+        ImageObj.AddRecord("Puerta", R.drawable.zi_puerta, CatID);
+        ImageObj.AddRecord("Silla", R.drawable.zi_silla, CatID);
+        ImageObj.AddRecord("Jardín", R.drawable.zi_jardin, CatID);
+        ImageObj.AddRecord("Gradas", R.drawable.zi_gradas, CatID);
+        ImageObj.AddRecord("Comedor", R.drawable.zi_comedor, CatID);
+        ImageObj.AddRecord("Piso", R.drawable.zi_piso, CatID);
+        ImageObj.AddRecord("Techo", R.drawable.zi_techo, CatID);
+        ImageObj.AddRecord("Mesa", R.drawable.zi_mesa, CatID);
+        ImageObj.AddRecord("Sillón", R.drawable.zi_sillon, CatID);
+        ImageObj.AddRecord("Casa", R.drawable.zi_casa, CatID);
+        ImageObj.AddRecord("Sala", R.drawable.zi_sala, CatID);
+        ImageObj.AddRecord("Cocina", R.drawable.zi_cocina, CatID);
+        ImageObj.AddRecord("Ventana", R.drawable.zi_ventana, CatID);
+    }
+
+    // Categoria LUGARES
+    void Create_Lugares(){
+        int CatID = CategoryObj.AddRecord("Lugares", R.drawable.zc_lugares);
+        ImageObj.AddRecord("Bosque", R.drawable.zi_bosque, CatID);
+        ImageObj.AddRecord("Playa", R.drawable.zi_banio, CatID);
+        ImageObj.AddRecord("Cine", R.drawable.zi_cine, CatID);
+        ImageObj.AddRecord("Tienda", R.drawable.zi_tienda, CatID);
+        ImageObj.AddRecord("Parque", R.drawable.zi_parque, CatID);
+        ImageObj.AddRecord("Zoológico", R.drawable.zi_zoo, CatID);
+        ImageObj.AddRecord("Parque de diversiones", R.drawable.zi_pardediversiones, CatID);
+        ImageObj.AddRecord("Supermercado", R.drawable.zi_supermercado, CatID);
+        ImageObj.AddRecord("Panaderia", R.drawable.zi_panaderia, CatID);
+        ImageObj.AddRecord("Restaurante", R.drawable.zi_restaurant, CatID);
+        ImageObj.AddRecord("Farmacia", R.drawable.zi_farmacia, CatID);
+        ImageObj.AddRecord("Hospital", R.drawable.zi_hospital, CatID);
     }
 
     void LoadDefData(){
         Create_Animales();
         Create_Cocina();
+        Create_Comida();
+        Create_Cosas();
+        Create_Escuela();
+        Create_Hogar();
+        Create_Lugares();
     }
 
     View.OnClickListener LoadDefDataHandler = new View.OnClickListener() {

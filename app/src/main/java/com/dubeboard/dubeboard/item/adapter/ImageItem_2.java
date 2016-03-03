@@ -42,12 +42,13 @@ public class ImageItem_2 extends ArrayAdapter<clsImage> {
         ViewHolder holder = null;
         clsImage Record = data.get(position);
         if (convertView == null) {
-            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            //LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             convertView = inflater.inflate(layoutResourceId, null);
 
             holder = new ViewHolder();
-            holder.txtTitle = (TextView) convertView.findViewById(R.id.txtTitle);
-            holder.imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
+            //holder.txtTitle = (TextView) convertView.findViewById(R.id.txtTitle);
+            //holder.imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
