@@ -92,7 +92,7 @@ public class clsCategory {
     public int AddRecord(String Name, int intImg) {
         clsCategory record = getByName(Name);
         Bitmap bmp = BitmapFactory.decodeResource(Context.getResources(), intImg);
-        bmp = gl.scaleDown(bmp, 400, true);
+        bmp = gl.scaleDown(bmp, 230, true);
         byte[] Img = gl.BitmaptoByteArray(bmp);
 
         if (record == null) {
