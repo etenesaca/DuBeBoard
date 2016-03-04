@@ -84,7 +84,7 @@ public class AddCategoryActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        lblName = (TextView) findViewById(R.id.lblName);
+        lblName = (TextView) findViewById(R.id.lblLanguaje);
         lblImage = (TextView) findViewById(R.id.lblImage);
         lblImage = (TextView) findViewById(R.id.lblImage);
         lblChildImages = (TextView) findViewById(R.id.lblChildImages);

@@ -67,8 +67,11 @@ public class ImageActivity extends AppCompatActivity {
                 final TextView tvCategory = (TextView) view.findViewById(R.id.tvCategory);
 
                 tvName.setText(null);
+                tvName.setVisibility(View.GONE);
                 tvCategory.setText(null);
+                tvCategory.setVisibility(View.GONE);
                 ivImage.setImageBitmap(null);
+                ivImage.setScaleType(ImageView.ScaleType.CENTER);
                 ivImage.setImageDrawable(Context.getResources().getDrawable(R.drawable.img_def_48x48));
             }
         });

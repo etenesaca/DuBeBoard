@@ -41,6 +41,7 @@ public class ImageItem_2 extends ArrayAdapter<clsImage> {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         clsImage Record = data.get(position);
+        /*
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             //LayoutInflater inflater = ((Activity) context).getLayoutInflater();
@@ -53,7 +54,7 @@ public class ImageItem_2 extends ArrayAdapter<clsImage> {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-
+        */
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         convertView = inflater.inflate(layoutResourceId, null);
 

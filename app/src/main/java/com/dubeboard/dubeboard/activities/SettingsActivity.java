@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,7 +15,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dubeboard.dubeboard.R;
@@ -29,7 +33,15 @@ public class SettingsActivity extends AppCompatActivity {
     clsCategory CategoryObj = new clsCategory(Context);
     clsImage ImageObj = new clsImage(Context);
 
+    TextView lblLanguaje;
+    TextView lblSizeText;
+    TextView lblLoadDefData;
     Button btnLoadDefData;
+    Spinner spLanguaje;
+    Spinner spSizeText;
+
+    String[] lstLanguaje = new String[]{"Esp", "Eng"};
+    String[] lstSizeText = new String[]{"12","14","16","18","20","24","28","32","40","48"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +53,30 @@ public class SettingsActivity extends AppCompatActivity {
         btnLoadDefData = (Button) findViewById(R.id.btnLoadDefData);
         btnLoadDefData.setOnClickListener(LoadDefDataHandler);
 
+        getSupportActionBar().setTitle("Configuraciones");
+
         // Rescatamos el Action Bar y activamos el boton HomeActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        lblLanguaje = (TextView) findViewById(R.id.lblLanguaje);
+        lblSizeText = (TextView) findViewById(R.id.lblSizeText);
+        lblLoadDefData = (TextView) findViewById(R.id.lblLoadDefData);
+        spLanguaje = (Spinner) findViewById(R.id.spLanguaje);
+        spSizeText = (Spinner) findViewById(R.id.spSizeText);
+
+        // Establecer las fuentes
+        Typeface Roboto_light = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
+        Typeface Roboto_bold = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Bold.ttf");
+
+        lblLanguaje.setTypeface(Roboto_bold);
+        lblSizeText.setTypeface(Roboto_bold);
+        lblLoadDefData.setTypeface(Roboto_bold);
+
+        ArrayAdapter<String> adapterLanguaje = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, lstLanguaje);
+        ArrayAdapter<String> adapterSizeText = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, lstSizeText);
+        spLanguaje.setAdapter(adapterLanguaje);
+        spSizeText.setAdapter(adapterSizeText);
     }
 
     // Categoria Animales
@@ -262,30 +295,45 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
-    void LoadDefData(){
-        Create_Animales();
-        Create_Cocina();
-        Create_Comida();
-        Create_Cosas();
-        Create_Escuela();
-        Create_Hogar();
-        Create_Lugares();
-        Create_Cuerpo();
-        Create_Postres();
-        Create_Verbos();
-    }
-    protected class LoadData extends AsyncTask<String, Void, String> {
+    protected class LoadData extends AsyncTask<String, String, String> {
         ProgressDialog pDialog;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = ProgressDialog.show(SettingsActivity.this, "", "Cargando Datos");
+            pDialog = ProgressDialog.show(SettingsActivity.this, "Cargando Datos", "Esperando..");
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            pDialog.setMessage(String.valueOf(values[0]));
         }
 
         @Override
         protected String doInBackground(String... params) {
-            LoadDefData();
+            int num_cat = 10;
+            int cnum = 1;
+            publishProgress(cnum + " - " + num_cat + " Animales"); cnum ++;
+            Create_Animales();
+            publishProgress(cnum + " - " + num_cat + " Cocina"); cnum ++;
+            Create_Cocina();
+            publishProgress(cnum + " - " + num_cat + " Comida"); cnum ++;
+            Create_Comida();
+            publishProgress(cnum + " - " + num_cat + " Cosas"); cnum ++;
+            Create_Cosas();
+            publishProgress(cnum + " - " + num_cat + " Escuela"); cnum ++;
+            Create_Escuela();
+            publishProgress(cnum + " - " + num_cat + " Hogar"); cnum ++;
+            Create_Hogar();
+            publishProgress(cnum + " - " + num_cat + " Lugares"); cnum ++;
+            Create_Lugares();
+            publishProgress(cnum + " - " + num_cat + " Cuerpo"); cnum ++;
+            Create_Cuerpo();
+            publishProgress(cnum + " - " + num_cat + " Postres"); cnum ++;
+            Create_Postres();
+            publishProgress(cnum + " - " + num_cat + " Verbos"); cnum ++;
+            Create_Verbos();
             return null;
         }
 

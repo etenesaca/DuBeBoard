@@ -45,22 +45,31 @@ public class ImageItem_1 extends ArrayAdapter<clsImage> {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         final clsImage Record = data.get(position);
-
+        /*
         if (convertView == null) {
             //LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(layoutResourceId, null);
 
             holder = new ViewHolder();
-            /*
+
             holder.tvName = (TextView) convertView.findViewById(R.id.tvName);
             holder.tvCategory = (TextView) convertView.findViewById(R.id.tvCategory);
             holder.ivImage = (ImageView) convertView.findViewById(R.id.ivImage);
-            */
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+        */
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        convertView = inflater.inflate(layoutResourceId, null);
+
+        holder = new ViewHolder();
+
+        holder.tvName = (TextView) convertView.findViewById(R.id.tvName);
+        holder.tvCategory = (TextView) convertView.findViewById(R.id.tvCategory);
+        holder.ivImage = (ImageView) convertView.findViewById(R.id.ivImage);
 
         tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
             @Override
@@ -129,9 +138,9 @@ public class ImageItem_1 extends ArrayAdapter<clsImage> {
             Typeface Roboto_bold = Typeface.createFromAsset(ctx.getAssets(), "fonts/Roboto-Bold.ttf");
             Typeface Roboto_light = Typeface.createFromAsset(ctx.getAssets(), "fonts/Roboto-Light.ttf");
 
-            v.tvName = (TextView) convertView.findViewById(R.id.tvName);
-            v.tvCategory = (TextView) convertView.findViewById(R.id.tvCategory);
-            v.ivImage = (ImageView) convertView.findViewById(R.id.ivImage);
+            //v.tvName = (TextView) convertView.findViewById(R.id.tvName);
+            //v.tvCategory = (TextView) convertView.findViewById(R.id.tvCategory);
+            //v.ivImage = (ImageView) convertView.findViewById(R.id.ivImage);
 
             v.tvName.setText(Record.get_name());
             v.tvName.setVisibility(View.VISIBLE);

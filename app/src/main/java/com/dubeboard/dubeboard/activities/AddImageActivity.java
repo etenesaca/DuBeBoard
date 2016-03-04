@@ -88,7 +88,7 @@ public class AddImageActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        lblName = (TextView) findViewById(R.id.lblName);
+        lblName = (TextView) findViewById(R.id.lblLanguaje);
         lblCategory = (TextView) findViewById(R.id.lblCategory);
         lblImage = (TextView) findViewById(R.id.lblImage);
         txtName = (EditText) findViewById(R.id.tvName);
