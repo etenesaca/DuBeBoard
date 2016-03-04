@@ -26,6 +26,7 @@ import com.dubeboard.dubeboard.clsCategory;
 import com.dubeboard.dubeboard.clsImage;
 import com.dubeboard.dubeboard.gl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -73,8 +74,11 @@ public class SettingsActivity extends AppCompatActivity {
         lblSizeText.setTypeface(Roboto_bold);
         lblLoadDefData.setTypeface(Roboto_bold);
 
-        ArrayAdapter<String> adapterLanguaje = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, lstLanguaje);
-        ArrayAdapter<String> adapterSizeText = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, lstSizeText);
+        //ArrayAdapter<String> adapterLanguaje = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, lstLanguaje);
+        //ArrayAdapter<String> adapterSizeText = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, lstSizeText);
+
+        ArrayAdapter<String> adapterLanguaje = new ArrayAdapter(Context, android.R.layout.simple_spinner_item, lstLanguaje);
+        ArrayAdapter<String> adapterSizeText = new ArrayAdapter(Context, android.R.layout.simple_spinner_item, lstSizeText);
         spLanguaje.setAdapter(adapterLanguaje);
         spSizeText.setAdapter(adapterSizeText);
     }
