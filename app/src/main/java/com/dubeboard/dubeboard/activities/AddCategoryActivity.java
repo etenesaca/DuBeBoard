@@ -1,5 +1,6 @@
 package com.dubeboard.dubeboard.activities;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -135,7 +136,9 @@ public class AddCategoryActivity extends AppCompatActivity {
     }
     /** Clase Asincrona para recuperar los datos del registro seleccionado **/
     protected class LoadData extends AsyncTask<String, Void, HashMap<String, Object>> {
+        ProgressDialog pDialog;
         int RecordID;
+
         public LoadData(int RecordID) {
             this.RecordID = RecordID;
         }
@@ -143,11 +146,7 @@ public class AddCategoryActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
+            pDialog = ProgressDialog.show(AddCategoryActivity.this, "", "Cargando Datos");
         }
 
         @Override
@@ -175,6 +174,7 @@ public class AddCategoryActivity extends AppCompatActivity {
 
             lyChildImages.setVisibility(View.VISIBLE);
             lblChildImages.setTypeface(Roboto_bold);
+            pDialog.dismiss();
         }
     }
 
