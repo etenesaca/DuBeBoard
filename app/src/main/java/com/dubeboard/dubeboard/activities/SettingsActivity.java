@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -21,6 +22,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dubeboard.dubeboard.Config;
 import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsCategory;
 import com.dubeboard.dubeboard.clsImage;
@@ -31,6 +33,8 @@ import java.util.HashMap;
 
 public class SettingsActivity extends AppCompatActivity {
     Context Context = (Context) this;
+    Config Configuration = new Config(Context);
+
     clsCategory CategoryObj = new clsCategory(Context);
     clsImage ImageObj = new clsImage(Context);
 
@@ -41,8 +45,29 @@ public class SettingsActivity extends AppCompatActivity {
     Spinner spLanguaje;
     Spinner spSizeText;
 
-    String[] lstLanguaje = new String[]{"Esp", "Eng"};
+    String[] lstLanguaje = new String[]{
+            "Español - spa_ES",
+            "Español - spa_MEX",
+            "Español - es_US",
+            "Inglés - en_US",
+            "Inglés - en_CA",
+            "Alemán - de_DE",
+            "Italiano - it_IT",
+            "Italiano - it_CH",
+            "Francés - fr_FR",
+            "Francés - fr_CA",
+            "Portugues - pt_BR",
+            "Portugues - pt_PT",
+            "Chino - zh_CN",
+            "Japones - ja_JP",
+            "Ruso - ru_RU",
+            "Árabe - ar_EG",
+            "Árabe - ar_IL"
+    };
     String[] lstSizeText = new String[]{"12","14","16","18","20","24","28","32","40","48"};
+
+    HashMap<String,Integer> MapLanguaje = new HashMap<String,Integer>();
+    HashMap<String,Integer> MapTextSize = new HashMap<String,Integer>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +75,8 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Crear una instancia de la Clase de Configuraciones
 
         btnLoadDefData = (Button) findViewById(R.id.btnLoadDefData);
         btnLoadDefData.setOnClickListener(LoadDefDataHandler);
@@ -81,6 +108,10 @@ public class SettingsActivity extends AppCompatActivity {
         ArrayAdapter<String> adapterSizeText = new ArrayAdapter(Context, android.R.layout.simple_spinner_item, lstSizeText);
         spLanguaje.setAdapter(adapterLanguaje);
         spSizeText.setAdapter(adapterSizeText);
+
+        // Recuperar los datos de la configuración
+        spLanguaje.setSelection(gl.getIndexSpinner(spLanguaje, Configuration.getLang()));
+        spSizeText.setSelection(gl.getIndexSpinner(spSizeText, Configuration.getTextSize() + ""));
     }
 
     // Categoria Animales
@@ -252,7 +283,7 @@ public class SettingsActivity extends AppCompatActivity {
         ImageObj.AddRecord("Dulces", R.drawable.zi_dulces, CatID);
     }
 
-    // Categoria POSTRES
+    // Categoria VERBOS
     void Create_Verbos(){
         int Img = R.drawable.image_def_128;
         int CatID = CategoryObj.AddRecord("Verbos", Img);
@@ -367,6 +398,10 @@ public class SettingsActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_save:
+                // Guardar las preferencias
+                Configuration.setLang(spLanguaje.getSelectedItem() + "");
+                Configuration.setTextSize(spSizeText.getSelectedItem() + "");
+
                 final Intent HomeActivity = new Intent(SettingsActivity.this, HomeActivity.class);
                 finish();
                 startActivity(ImageActivity);

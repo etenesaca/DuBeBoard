@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.dubeboard.dubeboard.Config;
 import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsCategory;
 import com.dubeboard.dubeboard.clsImage;
@@ -40,7 +41,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    android.content.Context Context = (Context) this;
+    Context Context = (Context) this;
+    Config Configuration = new Config(Context);
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -93,6 +95,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         gvImage = (GridView) findViewById(R.id.gvImage);
         tvWords = (TextView) findViewById(R.id.tvWords);
         btnClear = (Button) findViewById(R.id.btnClear);
+
+        tvWords.setTextSize(Configuration.getTextSize());
 
         // Obtener todas las categorias de la base de datos
         final List<clsCategory> Categories = CategoryObj.getAll();
@@ -170,8 +174,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onInit(int status) {
                 if(status != TextToSpeech.ERROR) {
-                    //tts.setLanguage(Locale.UK);
-                    tts.setLanguage(new Locale("spa", "ES"));
+                    tts.setLanguage(Configuration.getLangLocale());
                 }
             }
         });

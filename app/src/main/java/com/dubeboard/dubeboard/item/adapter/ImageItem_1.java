@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dubeboard.dubeboard.Config;
 import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsImage;
 import com.dubeboard.dubeboard.clsImage;
@@ -28,6 +29,8 @@ import java.util.Locale;
 
 public class ImageItem_1 extends ArrayAdapter<clsImage> {
     Context context;
+    Config Configuration = new Config(context);
+
     int layoutResourceId;
     ArrayList<clsImage> data = new ArrayList<clsImage>();
 
@@ -75,8 +78,7 @@ public class ImageItem_1 extends ArrayAdapter<clsImage> {
             @Override
             public void onInit(int status) {
                 if(status != TextToSpeech.ERROR) {
-                    //tts.setLanguage(Locale.UK);
-                    tts.setLanguage(new Locale("spa", "ES"));
+                    tts.setLanguage(Configuration.getLangLocale());
                 }
             }
         });

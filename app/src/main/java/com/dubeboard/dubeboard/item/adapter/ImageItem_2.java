@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dubeboard.dubeboard.Config;
 import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsImage;
 import com.dubeboard.dubeboard.clsImage;
@@ -27,6 +28,8 @@ import java.util.Locale;
 
 public class ImageItem_2 extends ArrayAdapter<clsImage> {
     Context context;
+    Config Configuration = new Config(context);
+
     int layoutResourceId;
     ArrayList<clsImage> data = new ArrayList<clsImage>();
 
