@@ -29,7 +29,7 @@ import java.util.Locale;
 
 public class ImageItem_1 extends ArrayAdapter<clsImage> {
     Context context;
-    Config Configuration = new Config(context);
+    Config Configuration;
 
     int layoutResourceId;
     ArrayList<clsImage> data = new ArrayList<clsImage>();
@@ -41,6 +41,7 @@ public class ImageItem_1 extends ArrayAdapter<clsImage> {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
+        this.Configuration = new Config(context);
         this.data = data;
     }
 
