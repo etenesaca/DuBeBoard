@@ -1,13 +1,15 @@
 package com.dubeboard.dubeboard.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -26,11 +28,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dubeboard.dubeboard.Config;
+import com.dubeboard.dubeboard.ManageDB;
 import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsCategory;
 import com.dubeboard.dubeboard.clsImage;
 import com.dubeboard.dubeboard.item.adapter.CategoryItem_2;
-import com.dubeboard.dubeboard.item.adapter.ImageItem_1;
 import com.dubeboard.dubeboard.item.adapter.ImageItem_2;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -38,7 +40,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     Context Context = (Context) this;
@@ -98,12 +99,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         tvWords.setTextSize(Configuration.getTextSize());
 
-        // Obtener todas las categorias de la base de datos
-        final List<clsCategory> Categories = CategoryObj.getAll();
-        for(clsCategory im : Categories){
-            CategoryList.add(im);
-        }
-
         lvCategory.setRecyclerListener(new AbsListView.RecyclerListener() {
             @Override
             public void onMovedToScrapHeap(View view) {
@@ -114,32 +109,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 txtTitle.setVisibility(View.GONE);
                 imgIcon.setImageBitmap(null);
                 imgIcon.setScaleType(ImageView.ScaleType.CENTER);
-                imgIcon.setImageDrawable(Context.getResources().getDrawable(R.drawable.img_def_48x48));
-
-                //view.setBackgroundColor(Color.TRANSPARENT);
+                imgIcon.setImageDrawable(Context.getResources().getDrawable(R.drawable.loading_24x24));
             }
         });
         lvCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                clsCategory CategorySelected = adapterCategory.getItem(position);
-                // Obtener las imagenes relacionadas a esta categoria
-                ImageList.clear();
-                for (clsImage im : CategorySelected.getChildImages(Context)) {
-                    ImageList.add(im);
-                }
-                adapterImage = new ImageItem_2(Context, R.layout.list_item_simple, ImageList);
-                gvImage.setAdapter(adapterImage);
-
+                LoadListDataImage(adapterCategory.getItem(position));
                 for (int a = 0; a < parent.getChildCount(); a++) {
                     parent.getChildAt(a).setBackgroundColor(Color.TRANSPARENT);
                 }
                 view.setBackgroundColor(Color.GREEN);
             }
         });
-
-        adapterCategory = new CategoryItem_2(this, R.layout.list_item_simple, CategoryList);
-        lvCategory.setAdapter(adapterCategory);
 
         gvImage.setRecyclerListener(new AbsListView.RecyclerListener() {
             @Override
@@ -151,7 +133,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 txtTitle.setVisibility(View.GONE);
                 imgIcon.setImageBitmap(null);
                 imgIcon.setScaleType(ImageView.ScaleType.CENTER);
-                imgIcon.setImageDrawable(Context.getResources().getDrawable(R.drawable.img_def_48x48));
+                imgIcon.setImageDrawable(Context.getResources().getDrawable(R.drawable.loading_24x24));
 
                 //view.setBackgroundColor(Color.TRANSPARENT);
             }
@@ -179,12 +161,81 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        final List<clsImage> images = ImageObj.getAll();
-        for (clsImage im : images) {
-            ImageList.add(im);
+        LoadListDataCategory();
+    }
+
+    void LoadListDataCategory(){
+        LoadDataCategory Task = new LoadDataCategory();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            Task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } else { Task.execute(); }
+    }
+    protected class LoadDataCategory extends AsyncTask<String, Void, String> {
+        ProgressDialog pDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = ProgressDialog.show(HomeActivity.this, "", "Cargando Datos");
         }
-        adapterImage = new ImageItem_2(Context, R.layout.list_item_simple, ImageList);
-        gvImage.setAdapter(adapterImage);
+
+        @Override
+        protected String doInBackground(String... params) {
+            CategoryList.clear();
+            for(clsCategory x : CategoryObj.getAll()){
+                CategoryList.add(x);
+            }
+            adapterCategory = new CategoryItem_2(Context, R.layout.list_item_simple, CategoryList);
+            return "";
+        }
+
+        @Override
+        protected void onPostExecute(String res) {
+            super.onPostExecute(res);
+            lvCategory.setAdapter(adapterCategory);
+            if (CategoryList.size() > 0) {
+                LoadListDataImage(CategoryList.get(0));
+            }
+            pDialog.dismiss();
+        }
+    }
+
+    void LoadListDataImage(clsCategory SelectedCategory){
+        LoadDataImage Task = new LoadDataImage(SelectedCategory);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            Task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } else { Task.execute(); }
+    }
+    protected class LoadDataImage extends AsyncTask<String, Void, String> {
+        ProgressDialog pDialog;
+        clsCategory SelectedCategory;
+
+        public LoadDataImage(clsCategory SelectedCategory) {
+            this.SelectedCategory = SelectedCategory;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = ProgressDialog.show(HomeActivity.this, "", "Cargando Datos");
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            ImageList.clear();
+            for(clsImage x : SelectedCategory.getChildImages(Context)){
+                ImageList.add(x);
+            }
+            adapterImage = new ImageItem_2(Context, R.layout.list_item_simple, ImageList);
+            return "";
+        }
+
+        @Override
+        protected void onPostExecute(String res) {
+            super.onPostExecute(res);
+            gvImage.setAdapter(adapterImage);
+            pDialog.dismiss();
+        }
     }
 
     @Override
