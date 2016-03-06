@@ -78,6 +78,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:id="@+id/spSizeText" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="60dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/app_name"
+                    android:id="@+id/lblSizeTextSample"
+                    android:gravity="center_vertical"
+                    android:textAlignment="center" />
             </LinearLayout>
 
             <LinearLayout

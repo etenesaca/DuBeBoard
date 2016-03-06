@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -40,6 +41,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     TextView lblLanguaje;
     TextView lblSizeText;
+    TextView lblSizeTextSample;
     TextView lblLoadDefData;
     Button btnLoadDefData;
     Spinner spLanguaje;
@@ -89,6 +91,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         lblLanguaje = (TextView) findViewById(R.id.lblLanguaje);
         lblSizeText = (TextView) findViewById(R.id.lblSizeText);
+        lblSizeTextSample = (TextView) findViewById(R.id.lblSizeTextSample);
         lblLoadDefData = (TextView) findViewById(R.id.lblLoadDefData);
         spLanguaje = (Spinner) findViewById(R.id.spLanguaje);
         spSizeText = (Spinner) findViewById(R.id.spSizeText);
@@ -108,10 +111,21 @@ public class SettingsActivity extends AppCompatActivity {
         ArrayAdapter<String> adapterSizeText = new ArrayAdapter(Context, android.R.layout.simple_spinner_item, lstSizeText);
         spLanguaje.setAdapter(adapterLanguaje);
         spSizeText.setAdapter(adapterSizeText);
+        spSizeText.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                lblSizeTextSample.setTextSize(Integer.parseInt(spSizeText.getSelectedItem() + ""));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
         // Recuperar los datos de la configuración
         spLanguaje.setSelection(gl.getIndexSpinner(spLanguaje, Configuration.getLang()));
         spSizeText.setSelection(gl.getIndexSpinner(spSizeText, Configuration.getTextSize() + ""));
+        lblSizeTextSample.setTextSize(Configuration.getTextSize());
     }
 
     // Categoria Animales
