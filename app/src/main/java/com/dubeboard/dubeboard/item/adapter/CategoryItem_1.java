@@ -69,6 +69,8 @@ public class CategoryItem_1 extends ArrayAdapter<clsCategory> {
 
         protected clsCategory Record;
         protected View convertView;
+        Typeface Roboto_bold;
+        Typeface Roboto_light;
 
         public LoadView(View convertView, clsCategory Record) {
             this.Record = Record;
@@ -88,6 +90,9 @@ public class CategoryItem_1 extends ArrayAdapter<clsCategory> {
         @Override
         protected HashMap<String, Object> doInBackground(ViewHolder... params) {
             v = params[0];
+            Roboto_bold = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Bold.ttf");
+            Roboto_light = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto-Light.ttf");
+
             HashMap<String, Object> res = new HashMap<String, Object>();
             // Obtener la imagen
             res.put("bmp", gl.build_image(context, Record.get_image()));
@@ -99,9 +104,6 @@ public class CategoryItem_1 extends ArrayAdapter<clsCategory> {
         @Override
         protected void onPostExecute(HashMap<String, Object> res) {
             super.onPostExecute(res);
-            Context ctx = (Context) context;
-            Typeface Roboto_bold = Typeface.createFromAsset(ctx.getAssets(), "fonts/Roboto-Bold.ttf");
-            Typeface Roboto_light = Typeface.createFromAsset(ctx.getAssets(), "fonts/Roboto-Light.ttf");
 
             v.txtTitle.setText(Record.get_name());
             v.txtTitle.setVisibility(View.VISIBLE);
