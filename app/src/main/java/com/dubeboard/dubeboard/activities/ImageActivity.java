@@ -180,13 +180,10 @@ public class ImageActivity extends AppCompatActivity {
         return true;
     }
 
-    private Menu menu;
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.image, menu);
-        this.menu = menu;
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);

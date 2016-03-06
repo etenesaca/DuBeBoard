@@ -1,6 +1,7 @@
 package com.dubeboard.dubeboard.activities;
 
 import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,9 +10,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
@@ -21,11 +24,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dubeboard.dubeboard.ListViewDinamicSize;
+import com.dubeboard.dubeboard.ManageDB;
 import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsCategory;
-import com.dubeboard.dubeboard.clsImage;
 import com.dubeboard.dubeboard.gl;
 import com.dubeboard.dubeboard.item.adapter.CategoryItem_1;
+import com.dubeboard.dubeboard.item.adapter.ImageItem_1;
 import com.dubeboard.dubeboard.item.adapter.ImageItem_3;
 
 import java.util.ArrayList;
@@ -85,52 +89,54 @@ public class CategoryActivity extends AppCompatActivity {
                 txtTitle.setVisibility(View.GONE);
                 imgIcon.setImageBitmap(null);
                 imgIcon.setScaleType(ImageView.ScaleType.CENTER);
-                imgIcon.setImageDrawable(Context.getResources().getDrawable(R.drawable.img_def_48x48));
+                imgIcon.setImageDrawable(Context.getResources().getDrawable(R.drawable.loading_24x24));
             }
         });
 
-        LoadCategories Task = new LoadCategories();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            Task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } else { Task.execute(); }
+        LoadListData();
         registerForContextMenu(dataList);
     }
 
-    protected class LoadCategories extends AsyncTask<String, Void, HashMap<String, Object>> {
+    void LoadListData(){
+        LoadListData("");
+    }
+    void LoadListData(String TextToSearch){
+        LoadData Task = new LoadData(TextToSearch);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            Task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } else { Task.execute(); }
+    }
+    protected class LoadData extends AsyncTask<String, Void, String> {
         ProgressDialog pDialog;
+        List<Object[]> args;
 
-        public LoadCategories() { }
+        public LoadData(String TextToSearch) {
+            List<Object[]> args = new ArrayList<Object[]>();
+            if (!TextToSearch.equals("")){
+                args.add(new Object[]{ManageDB.ColumnsCategory.CATEGORY_NAME, "like",  "%" + TextToSearch + "%"});
+            }
+            this.args = args;
+        }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Context ctx = (Context) Context;
-
-            pDialog = new ProgressDialog(CategoryActivity.this);
-            pDialog.setMessage("Cargando Datos");
-            pDialog.setCancelable(false);
-            pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            pDialog.show();
+            pDialog = ProgressDialog.show(CategoryActivity.this, "", "Cargando Datos");
         }
 
         @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected HashMap<String, Object> doInBackground(String... params) {
-            // Obtener todas las categorias de la base de datos
-            final List<clsCategory> Categories = CategoryObj.getAll();
-            for(clsCategory im : Categories){
+        protected String doInBackground(String... params) {
+            CategoryList.clear();
+            final List<clsCategory> images = CategoryObj.getRecords(args);
+            for(clsCategory im : images){
                 CategoryList.add(im);
             }
             adapter = new CategoryItem_1(Context, R.layout.list_item_category_1, CategoryList);
-            return null;
+            return "";
         }
 
         @Override
-        protected void onPostExecute(HashMap<String, Object> res) {
+        protected void onPostExecute(String res) {
             super.onPostExecute(res);
             dataList.setAdapter(adapter);
             pDialog.dismiss();
@@ -170,8 +176,34 @@ public class CategoryActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //MenuInflater inflater = getMenuInflater();
-        //inflater.inflate(R.menu.category, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.category, menu);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+            SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+            search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
+            search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    LoadListData(query);
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    return false;
+                }
+            });
+            search.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus){
+                        LoadListData();
+                    }
+                }
+            });
+        }
         return true;
     }
 
