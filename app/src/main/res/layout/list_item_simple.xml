@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:scaleType="center"
-        android:src="@drawable/img_def_48x48" />
+        android:src="@drawable/loading_24x24" />
 
     <TextView
         android:id="@+id/txtTitle"

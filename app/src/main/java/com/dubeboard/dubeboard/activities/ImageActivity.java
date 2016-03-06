@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -65,14 +66,20 @@ public class ImageActivity extends AppCompatActivity {
                 final ImageView ivImage = (ImageView) view.findViewById(R.id.ivImage);
                 final TextView tvName = (TextView) view.findViewById(R.id.tvName);
                 final TextView tvCategory = (TextView) view.findViewById(R.id.tvCategory);
+                final ImageButton btnSpeech = (ImageButton) view.findViewById(R.id.btnSpeech);
 
                 tvName.setText(null);
                 tvName.setVisibility(View.GONE);
+
                 tvCategory.setText(null);
                 tvCategory.setVisibility(View.GONE);
+
+                btnSpeech.setVisibility(View.GONE);
+
                 ivImage.setImageBitmap(null);
+                ivImage.setImageDrawable(null);
                 ivImage.setScaleType(ImageView.ScaleType.CENTER);
-                ivImage.setImageDrawable(Context.getResources().getDrawable(R.drawable.img_def_48x48));
+                ivImage.setImageDrawable(Context.getResources().getDrawable(R.drawable.loading_24x24));
             }
         });
         dataList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

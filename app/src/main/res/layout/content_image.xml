@@ -18,5 +18,8 @@
         android:layout_height="fill_parent"
         android:id="@+id/lvImage"
         android:layout_alignParentTop="true"
+        android:scrollingCache="false"
+        android:animationCache="false"
+        android:smoothScrollbar="true"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
