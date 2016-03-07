@@ -9,6 +9,7 @@
     android:paddingRight="8dp"
     android:paddingTop="8dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:background="@drawable/bg4"
     tools:context=".activities.HomeActivity"
     tools:showIn="@layout/app_bar_home">
 

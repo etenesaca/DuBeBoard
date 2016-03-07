@@ -341,7 +341,40 @@ public class SettingsActivity extends AppCompatActivity {
         ImageObj.AddRecord("Caminar", Img, CatID);
         ImageObj.AddRecord("Puner", Img, CatID);
         ImageObj.AddRecord("Necesitar", Img, CatID);
+    }
 
+    // Categoria PRENDAS
+    void Create_Prendas(){
+        int CatID = CategoryObj.AddRecord("Prendas", R.drawable.zi_vestido);
+        ImageObj.AddRecord("Vestido", R.drawable.zi_vestido, CatID);
+        ImageObj.AddRecord("Camisa", R.drawable.zi_camisa, CatID);
+        ImageObj.AddRecord("Camiseta", R.drawable.zi_camiseta, CatID);
+        ImageObj.AddRecord("Sueter", R.drawable.zi_sueter, CatID);
+        ImageObj.AddRecord("Casaca", R.drawable.zi_casaca, CatID);
+        ImageObj.AddRecord("Bufanda", R.drawable.zi_bufanda, CatID);
+        ImageObj.AddRecord("Pantalones", R.drawable.zi_pantalones, CatID);
+        ImageObj.AddRecord("Zapatos", R.drawable.zi_zapatos, CatID);
+        ImageObj.AddRecord("Zapatos Deportivos", R.drawable.zi_zapato_depor, CatID);
+        ImageObj.AddRecord("Medias", R.drawable.zi_medias, CatID);
+        ImageObj.AddRecord("Pijama", R.drawable.zi_pijama, CatID);
+        ImageObj.AddRecord("Pañuelo", R.drawable.zi_panuelo, CatID);
+        ImageObj.AddRecord("Toalla", R.drawable.zi_toalla, CatID);
+    }
+
+    // Categoria TRANSPORTE
+    void Create_Transporte(){
+        int CatID = CategoryObj.AddRecord("Transporte", R.drawable.zc_transporte);
+        ImageObj.AddRecord("Carro", R.drawable.zi_carro, CatID);
+        ImageObj.AddRecord("Bus", R.drawable.zi_bus, CatID);
+        ImageObj.AddRecord("Avión", R.drawable.zi_avion, CatID);
+        ImageObj.AddRecord("Tren", R.drawable.zi_tren, CatID);
+        ImageObj.AddRecord("Camión", R.drawable.zi_camion, CatID);
+        ImageObj.AddRecord("Helicóptero", R.drawable.zi_helicoptero, CatID);
+        ImageObj.AddRecord("Bicicleta", R.drawable.zi_bicicleta, CatID);
+        ImageObj.AddRecord("Bote", R.drawable.zi_bote, CatID);
+        ImageObj.AddRecord("Barco", R.drawable.zi_barco, CatID);
+        ImageObj.AddRecord("Motocicleta", R.drawable.zi_motocicleta, CatID);
+        ImageObj.AddRecord("Ambulancia", R.drawable.zi_ambulancia, CatID);
     }
 
     protected class LoadData extends AsyncTask<String, String, String> {
@@ -361,7 +394,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            int num_cat = 10;
+            int num_cat = 12;
             int cnum = 1;
             publishProgress(cnum + " - " + num_cat + " Animales"); cnum ++;
             Create_Animales();
@@ -383,6 +416,10 @@ public class SettingsActivity extends AppCompatActivity {
             Create_Postres();
             publishProgress(cnum + " - " + num_cat + " Verbos"); cnum ++;
             Create_Verbos();
+            publishProgress(cnum + " - " + num_cat + " Prendas"); cnum ++;
+            Create_Prendas();
+            publishProgress(cnum + " - " + num_cat + " Transporte"); cnum ++;
+            Create_Transporte();
             return null;
         }
 
