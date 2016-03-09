@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -72,9 +73,11 @@ public class ImageActivity extends AppCompatActivity {
 
                 tvName.setText(null);
                 tvName.setVisibility(View.GONE);
+                //tvName.setTypeface(null, Typeface.BOLD);
 
                 tvCategory.setText(null);
                 tvCategory.setVisibility(View.GONE);
+                //tvCategory.setTypeface(null, Typeface.NORMAL);
 
                 btnSpeech.setVisibility(View.GONE);
 
@@ -162,10 +165,8 @@ public class ImageActivity extends AppCompatActivity {
     public boolean onContextItemSelected(MenuItem item)
     {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-        switch (item.getItemId()){
-            case 0:
-                break;
-            case 1:
+        switch (menuItems[item.getItemId()]){
+            case "Eliminar":
                 clsImage RowtoDelete = adapter.getItem(info.position);
                 ImageObj.Delete(RowtoDelete.get_id());
                 adapter.remove(RowtoDelete);

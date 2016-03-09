@@ -153,10 +153,8 @@ public class CategoryActivity extends AppCompatActivity {
     public boolean onContextItemSelected(MenuItem item)
     {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-        switch (item.getItemId()){
-            case 0:
-                break;
-            case 1:
+        switch (menuItems[item.getItemId()]){
+            case "Eliminar":
                 clsCategory RowtoDelete = adapter.getItem(info.position);
                 CategoryObj.Delete(RowtoDelete.get_id());
                 adapter.remove(RowtoDelete);

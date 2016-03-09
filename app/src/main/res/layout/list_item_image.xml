@@ -31,8 +31,8 @@
             android:gravity="center_vertical">
 
             <ImageView
-                android:layout_width="75dp"
-                android:layout_height="75dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:id="@+id/ivImage"
                 android:src="@drawable/loading_24x24"
                 android:scaleType="center"
@@ -56,16 +56,15 @@
                 android:text="Cat 1"
                 android:id="@+id/tvCategory"
                 android:textIsSelectable="false"
-                android:textSize="15dp" />
+                android:textSize="11dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="18dp"
                 android:text="Img 001"
-                android:id="@+id/tvName" />
+                android:id="@+id/tvName"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
