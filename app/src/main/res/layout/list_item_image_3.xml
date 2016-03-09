@@ -8,6 +8,7 @@
     android:clickable="false"
     android:contextClickable="false"
     android:focusable="false"
+    android:descendantFocusability="blocksDescendants"
     android:focusableInTouchMode="false">
 
     <LinearLayout
@@ -19,12 +20,12 @@
         android:layout_marginRight="5dp"
         android:baselineAligned="true"
         android:orientation="horizontal"
-        android:background="@drawable/shape">
+        android:background="@drawable/shape"
+        android:weightSum="1">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="vertical"
             android:weightSum="1">
 
@@ -42,46 +43,29 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:layout_marginTop="10dp"
-            android:layout_weight="4"
+            android:layout_weight="0.99"
             android:orientation="vertical"
             tools:ignore="UseCompoundDrawables">
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="8dp"
-                android:gravity="center|left">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Img 001"
-                    android:id="@+id/tvName" />
-
-            </LinearLayout>
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Img 001"
+                android:id="@+id/tvName"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp" />
         </LinearLayout>
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1.5"
-            android:orientation="vertical"
-            android:weightSum="1">
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center">
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/btnSpeech"
-                    android:src="@drawable/ic_surround_sound_black_24dp" />
-            </LinearLayout>
+            <ImageButton
+                android:layout_width="60dp"
+                android:layout_height="fill_parent"
+                android:id="@+id/btnSpeech"
+                android:src="@drawable/ic_surround_sound_black_24dp" />
 
         </LinearLayout>
 

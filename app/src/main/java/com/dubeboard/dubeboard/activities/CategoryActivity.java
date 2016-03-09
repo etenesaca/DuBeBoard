@@ -44,7 +44,7 @@ public class CategoryActivity extends AppCompatActivity {
     ArrayList<clsCategory> CategoryList = new ArrayList<clsCategory>();
     CategoryItem_1 adapter;
     GridView dataList;
-    String[] menuItems = new String[]{"Editar", "Eliminar"};
+    String[] menuItems = new String[]{ "Eliminar" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

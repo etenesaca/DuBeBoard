@@ -44,7 +44,7 @@ public class ImageActivity extends AppCompatActivity {
     ArrayList<clsImage> ImageList = new ArrayList<clsImage>();
     ImageItem_1 adapter;
     GridView dataList;
-    String[] menuItems = new String[]{"Editar", "Eliminar"};
+    String[] menuItems = new String[]{ "Eliminar" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,14 +93,17 @@ public class ImageActivity extends AppCompatActivity {
         dataList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent ImageActivity = new Intent(ImageActivity.this, AddImageActivity.class);
-                clsImage ItemSelected = adapter.getItem(position);
-                ImageActivity.putExtra("current_id", ItemSelected.get_id() + "");
-                startActivity(ImageActivity);
+                OpenImage(adapter.getItem(position));
             }
         });
         LoadListData();
         registerForContextMenu(dataList);
+    }
+
+    public void OpenImage(clsImage ImageToOpen){
+        Intent ImageActivity = new Intent(Context, AddImageActivity.class);
+        ImageActivity.putExtra("current_id", ImageToOpen.get_id() + "");
+        startActivity(ImageActivity);
     }
 
     void LoadListData(){
