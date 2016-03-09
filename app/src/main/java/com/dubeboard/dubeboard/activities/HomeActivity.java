@@ -23,6 +23,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -54,7 +55,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     GridView gvImage;
     ListView lvCategory;
     TextView tvWords;
-    Button btnClear;
+    ImageButton btnClear;
+    ImageButton btnSpeech;
     TextToSpeech tts;
 
     clsCategory CategoryObj = new clsCategory(Context);
@@ -72,14 +74,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tts.speak(tvWords.getText() + "", TextToSpeech.QUEUE_FLUSH, null);
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -95,7 +89,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         lvCategory = (ListView) findViewById(R.id.lvCategory);
         gvImage = (GridView) findViewById(R.id.gvImage);
         tvWords = (TextView) findViewById(R.id.tvWords);
-        btnClear = (Button) findViewById(R.id.btnClear);
+        btnClear = (ImageButton) findViewById(R.id.btnClear);
+        btnSpeech = (ImageButton) findViewById(R.id.btnSpeech);
 
         tvWords.setTextSize(Configuration.getTextSize());
 
@@ -149,6 +144,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 tvWords.setText("");
+            }
+        });
+        btnSpeech.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tts.speak(tvWords.getText() + "", TextToSpeech.QUEUE_FLUSH, null);
             }
         });
 
