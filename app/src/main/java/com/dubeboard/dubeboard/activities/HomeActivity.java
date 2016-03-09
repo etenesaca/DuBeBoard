@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,7 +20,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -29,18 +27,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dubeboard.dubeboard.Config;
-import com.dubeboard.dubeboard.ManageDB;
 import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsCategory;
 import com.dubeboard.dubeboard.clsImage;
-import com.dubeboard.dubeboard.item.adapter.CategoryItem_2;
-import com.dubeboard.dubeboard.item.adapter.ImageItem_2;
+import com.dubeboard.dubeboard.item.adapter.CategoryItem_home;
+import com.dubeboard.dubeboard.item.adapter.ImageItem_home;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     Context Context = (Context) this;
@@ -61,11 +57,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     clsCategory CategoryObj = new clsCategory(Context);
     ArrayList<clsCategory> CategoryList = new ArrayList<clsCategory>();
-    CategoryItem_2 adapterCategory;
+    CategoryItem_home adapterCategory;
 
     clsImage ImageObj = new clsImage(Context);
     ArrayList<clsImage> ImageList = new ArrayList<clsImage>();
-    ImageItem_2 adapterImage;
+    ImageItem_home adapterImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,7 +182,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             for(clsCategory x : CategoryObj.getAll()){
                 CategoryList.add(x);
             }
-            adapterCategory = new CategoryItem_2(Context, R.layout.list_item_simple, CategoryList);
+            adapterCategory = new CategoryItem_home(Context, R.layout.list_item_simple, CategoryList);
             return "";
         }
 
@@ -227,7 +223,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             for(clsImage x : SelectedCategory.getChildImages(Context)){
                 ImageList.add(x);
             }
-            adapterImage = new ImageItem_2(Context, R.layout.list_item_simple, ImageList);
+            adapterImage = new ImageItem_home(Context, R.layout.list_item_simple, ImageList);
             return "";
         }
 

@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.dubeboard.dubeboard.*;
-import com.dubeboard.dubeboard.item.adapter.ImageItem_3;
+import com.dubeboard.dubeboard.item.adapter.ImageItem_category;
 
 
 public class AddCategoryActivity extends AppCompatActivity {
@@ -52,7 +52,7 @@ public class AddCategoryActivity extends AppCompatActivity {
 
     String imgDecodableString;
     ArrayList<clsImage> ImageList = new ArrayList<clsImage>();
-    ImageItem_3 adapterImage;
+    ImageItem_category adapterImage;
 
     Typeface Roboto_light;
     Typeface Roboto_bold;
@@ -176,7 +176,7 @@ public class AddCategoryActivity extends AppCompatActivity {
             for(clsImage im : SelectedRecord.getChildImages(Context)){
                 ImageList.add(im);
             }
-            adapterImage = new ImageItem_3(Context, R.layout.list_item_image_category, ImageList);
+            adapterImage = new ImageItem_category(Context, R.layout.list_item_image_category, ImageList);
             return res;
         }
 

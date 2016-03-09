@@ -25,7 +25,7 @@ import android.widget.TextView;
 import com.dubeboard.dubeboard.ManageDB;
 import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsCategory;
-import com.dubeboard.dubeboard.item.adapter.CategoryItem_1;
+import com.dubeboard.dubeboard.item.adapter.CategoryItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class CategoryActivity extends AppCompatActivity {
 
     clsCategory CategoryObj = new clsCategory(Context);
     ArrayList<clsCategory> CategoryList = new ArrayList<clsCategory>();
-    CategoryItem_1 adapter;
+    CategoryItem adapter;
     GridView dataList;
     String[] menuItems = new String[]{ "Eliminar" };
 
@@ -125,7 +125,7 @@ public class CategoryActivity extends AppCompatActivity {
             for(clsCategory im : images){
                 CategoryList.add(im);
             }
-            adapter = new CategoryItem_1(Context, R.layout.list_item_category, CategoryList);
+            adapter = new CategoryItem(Context, R.layout.list_item_category, CategoryList);
             return "";
         }
 
