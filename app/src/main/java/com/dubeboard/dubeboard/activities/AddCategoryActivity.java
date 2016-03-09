@@ -176,7 +176,7 @@ public class AddCategoryActivity extends AppCompatActivity {
             for(clsImage im : SelectedRecord.getChildImages(Context)){
                 ImageList.add(im);
             }
-            adapterImage = new ImageItem_3(Context, R.layout.list_item_image_3, ImageList);
+            adapterImage = new ImageItem_3(Context, R.layout.list_item_image_category, ImageList);
             return res;
         }
 

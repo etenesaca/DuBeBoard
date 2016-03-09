@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,17 +23,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dubeboard.dubeboard.ListViewDinamicSize;
 import com.dubeboard.dubeboard.ManageDB;
 import com.dubeboard.dubeboard.R;
-import com.dubeboard.dubeboard.clsCategory;
 import com.dubeboard.dubeboard.clsImage;
-import com.dubeboard.dubeboard.gl;
 import com.dubeboard.dubeboard.item.adapter.ImageItem_1;
-import com.dubeboard.dubeboard.item.adapter.ImageItem_3;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class ImageActivity extends AppCompatActivity {
@@ -140,7 +134,7 @@ public class ImageActivity extends AppCompatActivity {
             for(clsImage im : images){
                 ImageList.add(im);
             }
-            adapter = new ImageItem_1(Context, R.layout.list_item_image_1, ImageList);
+            adapter = new ImageItem_1(Context, R.layout.list_item_image, ImageList);
             return "";
         }
 
