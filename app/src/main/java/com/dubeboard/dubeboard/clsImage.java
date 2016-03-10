@@ -214,9 +214,7 @@ public class clsImage {
 
     // Delete
     public void Delete(int record_id) {
-        SQLiteDatabase db = new ManageDB(Context).getWritableDatabase();
-        db.delete(ManageDB.TABLE_IMAGE, ManageDB.ColumnsImage.IMAGE_ID + " = " + record_id, null);
-        db.close();
+        ManageDB.DeleteRecord(Context, ManageDB.TABLE_IMAGE, record_id);
     }
 
     // Count Records
