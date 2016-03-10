@@ -23,12 +23,12 @@ import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class CategoryItem_1 extends ArrayAdapter<clsCategory> {
+public class CategoryItem extends ArrayAdapter<clsCategory> {
     Context context;
     int layoutResourceId;
     ArrayList<clsCategory> data = new ArrayList<clsCategory>();
 
-    public CategoryItem_1(Context context, int layoutResourceId, ArrayList<clsCategory> data) {
+    public CategoryItem(Context context, int layoutResourceId, ArrayList<clsCategory> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;

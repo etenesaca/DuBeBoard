@@ -23,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -42,7 +43,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.dubeboard.dubeboard.*;
-import com.dubeboard.dubeboard.item.adapter.ImageItem_3;
+import com.dubeboard.dubeboard.item.adapter.ImageItem_category;
 
 
 public class AddCategoryActivity extends AppCompatActivity {
@@ -51,7 +52,7 @@ public class AddCategoryActivity extends AppCompatActivity {
 
     String imgDecodableString;
     ArrayList<clsImage> ImageList = new ArrayList<clsImage>();
-    ImageItem_3 adapterImage;
+    ImageItem_category adapterImage;
 
     Typeface Roboto_light;
     Typeface Roboto_bold;
@@ -126,7 +127,16 @@ public class AddCategoryActivity extends AppCompatActivity {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                 Task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             } else { Task.execute(); }
+
+            // Codigo para habilitar la Crear de menus al mantener presionado
+            registerForContextMenu(lvImages);
             btnGallery.requestFocus();
+            lvImages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    OpenImage(adapterImage.getItem(position));
+                }
+            });
         }
         else{
             SelectedRecord = null;
@@ -134,6 +144,13 @@ public class AddCategoryActivity extends AppCompatActivity {
             lyChildImages.setVisibility(View.GONE);
         }
     }
+    public void OpenImage(clsImage ImageToOpen){
+        Intent ImageActivity = new Intent(Context, AddImageActivity.class);
+        ImageActivity.putExtra("current_id", ImageToOpen.get_id() + "");
+        startActivity(ImageActivity);
+    }
+
+
     /** Clase Asincrona para recuperar los datos del registro seleccionado **/
     protected class LoadData extends AsyncTask<String, Void, HashMap<String, Object>> {
         ProgressDialog pDialog;
@@ -159,7 +176,7 @@ public class AddCategoryActivity extends AppCompatActivity {
             for(clsImage im : SelectedRecord.getChildImages(Context)){
                 ImageList.add(im);
             }
-            adapterImage = new ImageItem_3(Context, R.layout.list_item_image_3, ImageList);
+            adapterImage = new ImageItem_category(Context, R.layout.list_item_image_category, ImageList);
             return res;
         }
 

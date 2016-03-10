@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,17 +22,12 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dubeboard.dubeboard.ListViewDinamicSize;
 import com.dubeboard.dubeboard.ManageDB;
 import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsCategory;
-import com.dubeboard.dubeboard.gl;
-import com.dubeboard.dubeboard.item.adapter.CategoryItem_1;
-import com.dubeboard.dubeboard.item.adapter.ImageItem_1;
-import com.dubeboard.dubeboard.item.adapter.ImageItem_3;
+import com.dubeboard.dubeboard.item.adapter.CategoryItem;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -42,9 +36,9 @@ public class CategoryActivity extends AppCompatActivity {
 
     clsCategory CategoryObj = new clsCategory(Context);
     ArrayList<clsCategory> CategoryList = new ArrayList<clsCategory>();
-    CategoryItem_1 adapter;
+    CategoryItem adapter;
     GridView dataList;
-    String[] menuItems = new String[]{"Editar", "Eliminar"};
+    String[] menuItems = new String[]{ "Eliminar" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +125,7 @@ public class CategoryActivity extends AppCompatActivity {
             for(clsCategory im : images){
                 CategoryList.add(im);
             }
-            adapter = new CategoryItem_1(Context, R.layout.list_item_category_1, CategoryList);
+            adapter = new CategoryItem(Context, R.layout.list_item_category, CategoryList);
             return "";
         }
 
@@ -159,10 +153,8 @@ public class CategoryActivity extends AppCompatActivity {
     public boolean onContextItemSelected(MenuItem item)
     {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-        switch (item.getItemId()){
-            case 0:
-                break;
-            case 1:
+        switch (menuItems[item.getItemId()]){
+            case "Eliminar":
                 clsCategory RowtoDelete = adapter.getItem(info.position);
                 CategoryObj.Delete(RowtoDelete.get_id());
                 adapter.remove(RowtoDelete);

@@ -6,34 +6,27 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dubeboard.dubeboard.Config;
 import com.dubeboard.dubeboard.R;
-import com.dubeboard.dubeboard.clsImage;
-import com.dubeboard.dubeboard.clsImage;
+import com.dubeboard.dubeboard.clsCategory;
 import com.dubeboard.dubeboard.gl;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 
-public class ImageItem_2 extends ArrayAdapter<clsImage> {
+public class CategoryItem_home extends ArrayAdapter<clsCategory> {
     Context context;
-    Config Configuration = new Config(context);
-
     int layoutResourceId;
-    ArrayList<clsImage> data = new ArrayList<clsImage>();
+    ArrayList<clsCategory> data = new ArrayList<clsCategory>();
 
-    public ImageItem_2(Context context, int layoutResourceId, ArrayList<clsImage> data) {
+    public CategoryItem_home(Context context, int layoutResourceId, ArrayList<clsCategory> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -43,28 +36,19 @@ public class ImageItem_2 extends ArrayAdapter<clsImage> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
-        clsImage Record = data.get(position);
-        /*
+        clsCategory Record = data.get(position);
+
         if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            //LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             convertView = inflater.inflate(layoutResourceId, null);
 
             holder = new ViewHolder();
-            //holder.txtTitle = (TextView) convertView.findViewById(R.id.txtTitle);
-            //holder.imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
+            holder.txtTitle = (TextView) convertView.findViewById(R.id.txtTitle);
+            holder.imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        */
-        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-        convertView = inflater.inflate(layoutResourceId, null);
-
-        holder = new ViewHolder();
-        holder.txtTitle = (TextView) convertView.findViewById(R.id.txtTitle);
-        holder.imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
-        convertView.setTag(holder);
 
         // Ejecutar la Tarea de acuerdo a la version de Android
         LoadView Task = new LoadView(convertView, Record);
@@ -80,10 +64,10 @@ public class ImageItem_2 extends ArrayAdapter<clsImage> {
     protected class LoadView extends AsyncTask<ViewHolder, Void, HashMap<String, Object>> {
         protected ViewHolder v;
 
-        protected clsImage Record;
+        protected clsCategory Record;
         protected View convertView;
 
-        public LoadView(View convertView, clsImage Record) {
+        public LoadView(View convertView, clsCategory Record) {
             this.Record = Record;
             this.convertView = convertView;
         }
@@ -110,9 +94,6 @@ public class ImageItem_2 extends ArrayAdapter<clsImage> {
         @Override
         protected void onPostExecute(HashMap<String, Object> res) {
             super.onPostExecute(res);
-
-            //v.txtTitle = (TextView) convertView.findViewById(R.id.txtTitle);
-            //v.imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
 
             v.txtTitle.setText(Record.get_name());
             v.txtTitle.setVisibility(View.VISIBLE);

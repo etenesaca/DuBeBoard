@@ -3,6 +3,7 @@ package com.dubeboard.dubeboard.item.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
@@ -17,69 +18,61 @@ import android.widget.TextView;
 import com.dubeboard.dubeboard.Config;
 import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsImage;
+import com.dubeboard.dubeboard.clsImage;
 import com.dubeboard.dubeboard.gl;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class ImageItem_3 extends ArrayAdapter<clsImage> {
+public class ImageItem_home extends ArrayAdapter<clsImage> {
     Context context;
-    Config Configuration;
+    Config Configuration = new Config(context);
 
     int layoutResourceId;
     ArrayList<clsImage> data = new ArrayList<clsImage>();
 
-    ImageButton btnSpeech;
-    TextToSpeech tts;
-
-    public ImageItem_3(Context context, int layoutResourceId, ArrayList<clsImage> data) {
+    public ImageItem_home(Context context, int layoutResourceId, ArrayList<clsImage> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
-        this.Configuration = new Config(context);
         this.data = data;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
-        final clsImage Record = data.get(position);
-
+        clsImage Record = data.get(position);
+        /*
         if (convertView == null) {
-            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            //LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             convertView = inflater.inflate(layoutResourceId, null);
 
             holder = new ViewHolder();
-            holder.tvName = (TextView) convertView.findViewById(R.id.tvName);
-            holder.ivImage = (ImageView) convertView.findViewById(R.id.ivImage);
+            //holder.txtTitle = (TextView) convertView.findViewById(R.id.txtTitle);
+            //holder.imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+        */
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        convertView = inflater.inflate(layoutResourceId, null);
 
-        tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if(status != TextToSpeech.ERROR) {
-                    tts.setLanguage(Configuration.getLangLocale());
-                }
-            }
-        });
-
-        btnSpeech = (ImageButton) convertView.findViewById(R.id.btnSpeech);
-        btnSpeech.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tts.speak(Record.get_name() + "", TextToSpeech.QUEUE_FLUSH, null);
-            }
-        });
+        holder = new ViewHolder();
+        holder.txtTitle = (TextView) convertView.findViewById(R.id.txtTitle);
+        holder.imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
+        convertView.setTag(holder);
 
         // Ejecutar la Tarea de acuerdo a la version de Android
         LoadView Task = new LoadView(convertView, Record);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             Task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, holder);
-        } else { Task.execute(holder); }
+        } else {
+            Task.execute(holder);
+        }
         return convertView;
     }
 
@@ -118,16 +111,19 @@ public class ImageItem_3 extends ArrayAdapter<clsImage> {
         protected void onPostExecute(HashMap<String, Object> res) {
             super.onPostExecute(res);
 
-            v.tvName.setText(Record.get_name());
-            v.tvName.setVisibility(View.VISIBLE);
-            v.ivImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            v.ivImage.setImageBitmap((Bitmap) res.get("bmp"));
+            //v.txtTitle = (TextView) convertView.findViewById(R.id.txtTitle);
+            //v.imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
+
+            v.txtTitle.setText(Record.get_name());
+            v.txtTitle.setVisibility(View.VISIBLE);
+            v.imgIcon.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            v.imgIcon.setImageBitmap((Bitmap) res.get("bmp"));
         }
     }
 
     static class ViewHolder
     {
-        TextView tvName;
-        ImageView ivImage;
+        ImageView imgIcon;
+        TextView txtTitle;
     }
 }

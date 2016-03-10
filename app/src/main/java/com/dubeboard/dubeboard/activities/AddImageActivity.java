@@ -37,7 +37,7 @@ import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsCategory;
 import com.dubeboard.dubeboard.clsImage;
 import com.dubeboard.dubeboard.gl;
-import com.dubeboard.dubeboard.item.adapter.CategoryItem_1;
+import com.dubeboard.dubeboard.item.adapter.CategoryItem;
 
 import java.io.File;
 import java.io.FileDescriptor;
@@ -75,7 +75,7 @@ public class AddImageActivity extends AppCompatActivity {
 
     ArrayList<String> CategoryList = new ArrayList<String>();
     HashMap<String,Integer> MapCategory = new HashMap<String,Integer>();
-    CategoryItem_1 adapter;
+    CategoryItem adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
