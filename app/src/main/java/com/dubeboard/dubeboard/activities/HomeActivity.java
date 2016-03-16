@@ -31,7 +31,7 @@ import com.dubeboard.dubeboard.R;
 import com.dubeboard.dubeboard.clsCategory;
 import com.dubeboard.dubeboard.clsImage;
 import com.dubeboard.dubeboard.item.adapter.CategoryItem_home;
-import com.dubeboard.dubeboard.item.adapter.ImageItem_home;
+import com.dubeboard.dubeboard.item.adapter.ImageItem_Home;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -61,7 +61,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     clsImage ImageObj = new clsImage(Context);
     ArrayList<clsImage> ImageList = new ArrayList<clsImage>();
-    ImageItem_home adapterImage;
+    ImageItem_Home adapterImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -223,7 +223,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             for(clsImage x : SelectedCategory.getChildImages(Context)){
                 ImageList.add(x);
             }
-            adapterImage = new ImageItem_home(Context, R.layout.list_item_simple, ImageList);
+            adapterImage = new ImageItem_Home(Context, R.layout.list_item_simple, ImageList);
             return "";
         }
 

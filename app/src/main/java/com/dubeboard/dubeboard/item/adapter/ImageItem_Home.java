@@ -26,14 +26,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class ImageItem_home extends ArrayAdapter<clsImage> {
+public class ImageItem_Home extends ArrayAdapter<clsImage> {
     Context context;
     Config Configuration = new Config(context);
 
     int layoutResourceId;
     ArrayList<clsImage> data = new ArrayList<clsImage>();
 
-    public ImageItem_home(Context context, int layoutResourceId, ArrayList<clsImage> data) {
+    public ImageItem_Home(Context context, int layoutResourceId, ArrayList<clsImage> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;

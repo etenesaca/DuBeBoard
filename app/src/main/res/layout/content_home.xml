@@ -46,14 +46,14 @@
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:id="@+id/btnClear"
-                android:src="@drawable/ic_surround_sound_black_24dp"
+                android:src="@drawable/ic_backspace_black_18dp"
                 android:layout_weight="5" />
 
             <ImageButton
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:id="@+id/btnSpeech"
-                android:src="@drawable/ic_surround_sound_black_24dp"
+                android:src="@drawable/ic_hearing_black_18dp"
                 android:layout_weight="5" />
         </LinearLayout>
 
