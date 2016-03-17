@@ -226,7 +226,6 @@ public class SettingsActivity extends AppCompatActivity {
     // Categoria HOGAR
     void Create_Hogar(){
         int CatID = CategoryObj.AddRecord("Hogar", R.drawable.zc_casahogar);
-        ImageObj.AddRecord("Hogar", R.drawable.zc_casahogar, CatID);
         ImageObj.AddRecord("Baño", R.drawable.zi_banio, CatID);
         ImageObj.AddRecord("Dormitorio", R.drawable.zi_dormitorio, CatID);
         ImageObj.AddRecord("Cama", R.drawable.zi_cama, CatID);
@@ -288,9 +287,9 @@ public class SettingsActivity extends AppCompatActivity {
         int CatID = CategoryObj.AddRecord("Postres", R.drawable.zc_postre);
         ImageObj.AddRecord("Postre", R.drawable.zc_postre, CatID);
         ImageObj.AddRecord("Chocolate", R.drawable.zi_chocolate, CatID);
-        ImageObj.AddRecord("Galeltas", R.drawable.zi_galleta, CatID);
+        ImageObj.AddRecord("Galletas", R.drawable.zi_galleta, CatID);
         ImageObj.AddRecord("Pastel", R.drawable.zi_pastel, CatID);
-        ImageObj.AddRecord("Brawonie", R.drawable.zi_brownie, CatID);
+        ImageObj.AddRecord("Brownie", R.drawable.zi_brownie, CatID);
         ImageObj.AddRecord("Tarta", R.drawable.zi_tarta, CatID);
         ImageObj.AddRecord("Gelatina", R.drawable.zi_gelatina, CatID);
         ImageObj.AddRecord("Chicle", R.drawable.zi_chicle, CatID);
@@ -299,8 +298,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     // Categoria VERBOS
     void Create_Verbos(){
-        int Img = R.drawable.image_def_128;
-        int CatID = CategoryObj.AddRecord("Verbos", Img);
+        int Img = R.drawable.zi_verde;
+        int CatID = CategoryObj.AddRecord("Verbos", R.drawable.zc_verbos);
         ImageObj.AddRecord("Estar", Img, CatID);
         ImageObj.AddRecord("Ser", Img, CatID);
         ImageObj.AddRecord("Ver", Img, CatID);
@@ -339,13 +338,151 @@ public class SettingsActivity extends AppCompatActivity {
         ImageObj.AddRecord("Parar", Img, CatID);
         ImageObj.AddRecord("Correr", Img, CatID);
         ImageObj.AddRecord("Caminar", Img, CatID);
-        ImageObj.AddRecord("Puner", Img, CatID);
+        ImageObj.AddRecord("Poner", Img, CatID);
         ImageObj.AddRecord("Necesitar", Img, CatID);
+    }
+
+    // Categoria VERBOSPRESENTE
+    void Create_VerbosPresente(){
+        int Img = R.drawable.zi_verde;
+        int CatID = CategoryObj.AddRecord("Verbos presente", R.drawable.zc_verbospresente);
+        ImageObj.AddRecord("Estoy", Img, CatID);
+        ImageObj.AddRecord("Soy", Img, CatID);
+        ImageObj.AddRecord("Veo", Img, CatID);
+        ImageObj.AddRecord("Escucho", Img, CatID);
+        ImageObj.AddRecord("Despierto", Img, CatID);
+        ImageObj.AddRecord("Juego", Img, CatID);
+        ImageObj.AddRecord("Meto", Img, CatID);
+        ImageObj.AddRecord("Rompo", Img, CatID);
+        ImageObj.AddRecord("Pinto", Img, CatID);
+        ImageObj.AddRecord("Tengo", Img, CatID);
+        ImageObj.AddRecord("Siento", Img, CatID);
+        ImageObj.AddRecord("Toco", Img, CatID);
+        ImageObj.AddRecord("Busco", Img, CatID);
+        ImageObj.AddRecord("Olvido", Img, CatID);
+        ImageObj.AddRecord("Corto", Img, CatID);
+        ImageObj.AddRecord("Amo", Img, CatID);
+        ImageObj.AddRecord("Cojo", Img, CatID);
+        ImageObj.AddRecord("Voy", Img, CatID);
+        ImageObj.AddRecord("Vengo", Img, CatID);
+        ImageObj.AddRecord("Cierro", Img, CatID);
+        ImageObj.AddRecord("Caigo", Img, CatID);
+        ImageObj.AddRecord("Traigo", Img, CatID);
+        ImageObj.AddRecord("Llevo", Img, CatID);
+        ImageObj.AddRecord("Ayudo", Img, CatID);
+        ImageObj.AddRecord("Doy", Img, CatID);
+        ImageObj.AddRecord("Recibo", Img, CatID);
+        ImageObj.AddRecord("Quiero", Img, CatID);
+        ImageObj.AddRecord("Duermo", Img, CatID);
+        ImageObj.AddRecord("Como", Img, CatID);
+        ImageObj.AddRecord("Bebo", Img, CatID);
+        ImageObj.AddRecord("Hablo", Img, CatID);
+        ImageObj.AddRecord("Estudio", Img, CatID);
+        ImageObj.AddRecord("Pienso", Img, CatID);
+        ImageObj.AddRecord("Nado", Img, CatID);
+        ImageObj.AddRecord("Siento", Img, CatID);
+        ImageObj.AddRecord("Paro", Img, CatID);
+        ImageObj.AddRecord("Corro", Img, CatID);
+        ImageObj.AddRecord("Camino", Img, CatID);
+        ImageObj.AddRecord("Pongo", Img, CatID);
+        ImageObj.AddRecord("Necesito", Img, CatID);
+    }
+
+    // Categoria VERBOSFUTURO
+    void Create_VerbosFuturo(){
+        int Img = R.drawable.zi_verde;
+        int CatID = CategoryObj.AddRecord("Verbos futuro", R.drawable.zc_verbosfuturo);
+        ImageObj.AddRecord("Estaré", Img, CatID);
+        ImageObj.AddRecord("Seré", Img, CatID);
+        ImageObj.AddRecord("Veré", Img, CatID);
+        ImageObj.AddRecord("Escucharé", Img, CatID);
+        ImageObj.AddRecord("Despertaré", Img, CatID);
+        ImageObj.AddRecord("Jugaré", Img, CatID);
+        ImageObj.AddRecord("Meteré", Img, CatID);
+        ImageObj.AddRecord("Romperé", Img, CatID);
+        ImageObj.AddRecord("Pintaré", Img, CatID);
+        ImageObj.AddRecord("Tendré", Img, CatID);
+        ImageObj.AddRecord("Sentiré", Img, CatID);
+        ImageObj.AddRecord("Tocaré", Img, CatID);
+        ImageObj.AddRecord("Buscaré", Img, CatID);
+        ImageObj.AddRecord("Olvidaré", Img, CatID);
+        ImageObj.AddRecord("Cortaré", Img, CatID);
+        ImageObj.AddRecord("Amaré", Img, CatID);
+        ImageObj.AddRecord("Cogeré", Img, CatID);
+        ImageObj.AddRecord("Iré", Img, CatID);
+        ImageObj.AddRecord("Vendré", Img, CatID);
+        ImageObj.AddRecord("Cerrare", Img, CatID);
+        ImageObj.AddRecord("Caeré", Img, CatID);
+        ImageObj.AddRecord("Traeré", Img, CatID);
+        ImageObj.AddRecord("Llevaré", Img, CatID);
+        ImageObj.AddRecord("Ayudaré", Img, CatID);
+        ImageObj.AddRecord("Daré", Img, CatID);
+        ImageObj.AddRecord("Recibiré", Img, CatID);
+        ImageObj.AddRecord("Querré", Img, CatID);
+        ImageObj.AddRecord("Dormiré", Img, CatID);
+        ImageObj.AddRecord("Comeré", Img, CatID);
+        ImageObj.AddRecord("Beberé", Img, CatID);
+        ImageObj.AddRecord("Hablaré", Img, CatID);
+        ImageObj.AddRecord("Estudiaré", Img, CatID);
+        ImageObj.AddRecord("Pensaré", Img, CatID);
+        ImageObj.AddRecord("Nadaré", Img, CatID);
+        ImageObj.AddRecord("Sentiré", Img, CatID);
+        ImageObj.AddRecord("Pararé", Img, CatID);
+        ImageObj.AddRecord("Correré", Img, CatID);
+        ImageObj.AddRecord("Caminaré", Img, CatID);
+        ImageObj.AddRecord("Pondré", Img, CatID);
+        ImageObj.AddRecord("Necesitaré", Img, CatID);
+    }
+
+    // Categoria VERBOS PASADO
+    void Create_VerbosPasado(){
+        int Img = R.drawable.zi_verde;
+        int CatID = CategoryObj.AddRecord("Verbos pasado", R.drawable.zc_verbospasado);
+        ImageObj.AddRecord("Estaba", Img, CatID);
+        ImageObj.AddRecord("Fui", Img, CatID);
+        ImageObj.AddRecord("Ví", Img, CatID);
+        ImageObj.AddRecord("Escuché", Img, CatID);
+        ImageObj.AddRecord("Desperte", Img, CatID);
+        ImageObj.AddRecord("Jugué", Img, CatID);
+        ImageObj.AddRecord("Metí", Img, CatID);
+        ImageObj.AddRecord("Rompí", Img, CatID);
+        ImageObj.AddRecord("Pinté", Img, CatID);
+        ImageObj.AddRecord("Tuve", Img, CatID);
+        ImageObj.AddRecord("Sentí", Img, CatID);
+        ImageObj.AddRecord("Toqué", Img, CatID);
+        ImageObj.AddRecord("Busqué", Img, CatID);
+        ImageObj.AddRecord("Olvidé", Img, CatID);
+        ImageObj.AddRecord("Corté", Img, CatID);
+        ImageObj.AddRecord("Amé", Img, CatID);
+        ImageObj.AddRecord("Cogí", Img, CatID);
+        ImageObj.AddRecord("Iba", Img, CatID);
+        ImageObj.AddRecord("Vine", Img, CatID);
+        ImageObj.AddRecord("Cerré", Img, CatID);
+        ImageObj.AddRecord("Caí", Img, CatID);
+        ImageObj.AddRecord("Traje", Img, CatID);
+        ImageObj.AddRecord("Llevé", Img, CatID);
+        ImageObj.AddRecord("Ayudé", Img, CatID);
+        ImageObj.AddRecord("Di", Img, CatID);
+        ImageObj.AddRecord("Recibí", Img, CatID);
+        ImageObj.AddRecord("Quise", Img, CatID);
+        ImageObj.AddRecord("Dormí", Img, CatID);
+        ImageObj.AddRecord("Comí", Img, CatID);
+        ImageObj.AddRecord("Bebí", Img, CatID);
+        ImageObj.AddRecord("Hablé", Img, CatID);
+        ImageObj.AddRecord("Estudie", Img, CatID);
+        ImageObj.AddRecord("Pensé", Img, CatID);
+        ImageObj.AddRecord("Nadé", Img, CatID);
+        ImageObj.AddRecord("Senté", Img, CatID);
+        ImageObj.AddRecord("Paré", Img, CatID);
+        ImageObj.AddRecord("Corrí", Img, CatID);
+        ImageObj.AddRecord("Caminé", Img, CatID);
+        ImageObj.AddRecord("Puse", Img, CatID);
+        ImageObj.AddRecord("Necesité", Img, CatID);
     }
 
     // Categoria PRENDAS
     void Create_Prendas(){
-        int CatID = CategoryObj.AddRecord("Prendas", R.drawable.zi_vestido);
+        int CatID = CategoryObj.AddRecord("Prendas", R.drawable.zc_vestir);
         ImageObj.AddRecord("Vestido", R.drawable.zi_vestido, CatID);
         ImageObj.AddRecord("Camisa", R.drawable.zi_camisa, CatID);
         ImageObj.AddRecord("Camiseta", R.drawable.zi_camiseta, CatID);
@@ -377,6 +514,140 @@ public class SettingsActivity extends AppCompatActivity {
         ImageObj.AddRecord("Ambulancia", R.drawable.zi_ambulancia, CatID);
     }
 
+    // Categoria COLORES
+
+    void Create_Colores(){
+        int CatID = CategoryObj.AddRecord("Colores", R.drawable.zc_colores);
+        ImageObj.AddRecord("Blanco", R.drawable.zi_blanco, CatID);
+        ImageObj.AddRecord("Negro", R.drawable.zi_negro, CatID);
+        ImageObj.AddRecord("Azul", R.drawable.zi_azul, CatID);
+        ImageObj.AddRecord("Amarillo", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Rojo", R.drawable.zi_rojo, CatID);
+        ImageObj.AddRecord("Morado", R.drawable.zi_morado, CatID);
+        ImageObj.AddRecord("Rosado", R.drawable.zi_rosado, CatID);
+        ImageObj.AddRecord("Gris", R.drawable.zi_gris, CatID);
+        ImageObj.AddRecord("Naranja", R.drawable.zi_naranja, CatID);
+        ImageObj.AddRecord("Verde", R.drawable.zi_verde, CatID);
+        ImageObj.AddRecord("Café", R.drawable.zi_cafecolor, CatID);
+
+    }
+    // Categoria Numeros
+    void Create_Numeros(){
+        int CatID = CategoryObj.AddRecord("Numeros", R.drawable.zc_numeros);
+        ImageObj.AddRecord("Cero", R.drawable.zi_cero, CatID);
+        ImageObj.AddRecord("Uno", R.drawable.zi_uno, CatID);
+        ImageObj.AddRecord("Dos", R.drawable.zi_dos, CatID);
+        ImageObj.AddRecord("Tres", R.drawable.zi_tres, CatID);
+        ImageObj.AddRecord("Cuatro", R.drawable.zi_cuatro, CatID);
+        ImageObj.AddRecord("Cinco", R.drawable.zi_cinco, CatID);
+        ImageObj.AddRecord("Seis", R.drawable.zi_seis, CatID);
+        ImageObj.AddRecord("Siete", R.drawable.zi_siete, CatID);
+        ImageObj.AddRecord("Ocho", R.drawable.zi_ocho, CatID);
+        ImageObj.AddRecord("Nueve", R.drawable.zi_nueve, CatID);
+        ImageObj.AddRecord("Diez", R.drawable.zi_diez, CatID);
+        ImageObj.AddRecord("Once", R.drawable.zi_once, CatID);
+        ImageObj.AddRecord("Doce", R.drawable.zi_doce, CatID);
+        ImageObj.AddRecord("Trece", R.drawable.zi_trece, CatID);
+        ImageObj.AddRecord("Catorce", R.drawable.zi_catorce, CatID);
+        ImageObj.AddRecord("Quince", R.drawable.zi_quince, CatID);
+        ImageObj.AddRecord("Dieciseis", R.drawable.zi_dieciseis, CatID);
+        ImageObj.AddRecord("Diecisiete", R.drawable.zi_diecisiete, CatID);
+        ImageObj.AddRecord("Dieciocho", R.drawable.zi_dieciocho, CatID);
+        ImageObj.AddRecord("Diecinueve", R.drawable.zi_diecinueve, CatID);
+        ImageObj.AddRecord("Veinte", R.drawable.zi_veinte, CatID);
+
+    }
+
+    // Categoria Numeros
+    void Create_Pronombres(){
+        int Img = R.drawable.zi_blanco;
+        int CatID = CategoryObj.AddRecord("Pronombres", R.drawable.zc_pronombres);
+        ImageObj.AddRecord("Yo", Img, CatID);
+        ImageObj.AddRecord("Tú", Img, CatID);
+        ImageObj.AddRecord("El", Img, CatID);
+        ImageObj.AddRecord("Ella", Img, CatID);
+        ImageObj.AddRecord("Nosotros", Img, CatID);
+        ImageObj.AddRecord("Ellos", Img, CatID);
+        ImageObj.AddRecord("Ellas", Img, CatID);
+        ImageObj.AddRecord("Ustedes", Img, CatID);
+        ImageObj.AddRecord("Lo", Img, CatID);
+        ImageObj.AddRecord("La", Img, CatID);
+        ImageObj.AddRecord("Los", Img, CatID);
+        ImageObj.AddRecord("Las", Img, CatID);
+        ImageObj.AddRecord("Un", Img, CatID);
+        ImageObj.AddRecord("Unas", Img, CatID);
+        ImageObj.AddRecord("Mi", Img, CatID);
+        ImageObj.AddRecord("Mío", Img, CatID);
+        ImageObj.AddRecord("Me", Img, CatID);
+        ImageObj.AddRecord("Le", Img, CatID);
+        ImageObj.AddRecord("Les", Img, CatID);
+        ImageObj.AddRecord("Qué", Img, CatID);
+        ImageObj.AddRecord("Quién", Img, CatID);
+        ImageObj.AddRecord("Cómo", Img, CatID);
+        ImageObj.AddRecord("Cuando", Img, CatID);
+        ImageObj.AddRecord("Por qué", Img, CatID);
+        ImageObj.AddRecord("Porque", Img, CatID);
+        ImageObj.AddRecord("Para qué", Img, CatID);
+
+    }
+    void Create_Adjetivos() {
+        int CatID = CategoryObj.AddRecord("Adjetivos", R.drawable.zc_adjetivos);
+        ImageObj.AddRecord("Hermoso", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Nuevo", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Viejo", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Feo", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Aburrido", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Alegre", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Alto", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Ancho", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Amargo", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Bajo", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Bonito", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Bueno", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Caliente", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Común", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Conocido", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Contento", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Corto", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Débil", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Delgado", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Diferente", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Dificil", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Divertido", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Dulce", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Duro", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Enfermo", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Fácil", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Feo", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Frío", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Fuerte", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Gordo", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Grande", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Húmedo", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Igual", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Interesante", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Joven", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Largo", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Lento", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Malo", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Mayor", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Menor", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Mucho", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Nuevo", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Peor", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Pequeño", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Pobre", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Poco", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Rápido", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Rico", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Salado", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Sano", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Seco", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Tímido", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Triste", R.drawable.zi_amarillo, CatID);
+        ImageObj.AddRecord("Vivo", R.drawable.zi_amarillo, CatID);
+
+    }
     protected class LoadData extends AsyncTask<String, String, String> {
         ProgressDialog pDialog;
 
@@ -394,7 +665,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            int num_cat = 12;
+            int num_cat = 19;
             int cnum = 1;
             publishProgress(cnum + " - " + num_cat + " Animales"); cnum ++;
             Create_Animales();
@@ -420,6 +691,20 @@ public class SettingsActivity extends AppCompatActivity {
             Create_Prendas();
             publishProgress(cnum + " - " + num_cat + " Transporte"); cnum ++;
             Create_Transporte();
+            publishProgress(cnum + " - " + num_cat + " Numeros"); cnum ++;
+            Create_Numeros();
+            publishProgress(cnum + " - " + num_cat + "Colores"); cnum ++;
+            Create_Colores();
+            publishProgress(cnum + " - " + num_cat + "Pronombres"); cnum ++;
+            Create_Pronombres();
+            publishProgress(cnum + " - " + num_cat + "Adjetivos"); cnum ++;
+            Create_Adjetivos();
+            publishProgress(cnum + " - " + num_cat + "Verbos presente"); cnum ++;
+            Create_VerbosPresente();
+            publishProgress(cnum + " - " + num_cat + "Verbos pasado"); cnum ++;
+            Create_VerbosPasado();
+            publishProgress(cnum + " - " + num_cat + "Verbos futuro"); cnum ++;
+            Create_VerbosFuturo();
             return null;
         }
 
