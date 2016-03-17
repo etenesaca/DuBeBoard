@@ -22,6 +22,7 @@
         android:textColor="@android:color/white"
         android:background="@color/background_footer"
         android:layout_gravity="bottom"
-        android:text="Título" />
+        android:text="Título"
+        android:textSize="20dp" />
 
 </FrameLayout>
